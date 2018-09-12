@@ -1,0 +1,1852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.0.Final-v20160602-2145-B47" targetNamespace="http://org.eclipse.bpmn2/default/process">
+  <bpmn2:process id="CombosPCC20" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Start">
+      <bpmn2:outgoing>SequenceFlow_43</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:scriptTask id="ScriptTask_1" name="OBTENER_PAQ">
+      <bpmn2:incoming>SequenceFlow_42</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
+      <bpmn2:script>var vProductIDData=PRODUCT_ID.split(&quot;,&quot;);
+var vProductIDIlimitado=PRODUCT_ILIMITADO.split(&quot;,&quot;);
+var index1=0;
+var index2=0;
+var vHasIlimitado=false;
+var vEvaluaCondicion=false;
+var  vEvaluaCondicion2=false;
+
+if(typeof vProductIDIlimitado !='undefined'){
+    vHasIlimitado=true;
+}
+
+LOGGER.info(tLinea  +'LLEGO A PAQUETE'+  vProductIDData+ tLinea );
+LOGGER.info(tLinea  +'vProductIDData.length: '+  vProductIDData.length+ tLinea );
+LOGGER.info(tLinea  +'vProductIDIlimitado.length: '+  vProductIDIlimitado.length+ tLinea );
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="Packages" default="SequenceFlow_23">
+      <bpmn2:incoming>SequenceFlow_41</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_23</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:scriptTask id="ScriptTask_2" name="SET_PACKAGE">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_54</bpmn2:outgoing>
+      <bpmn2:script>vProductId=vProductIDData[index1];
+index1+=1;
+LOGGER.info(tLinea  +'SET_PACKAGE '+  vProductId+ tLinea );
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="Si" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">vEvaluaCondicion</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:serviceTask id="ServiceTask_2" name="ExecuteOrderTask">
+      <bpmn2:incoming>SequenceFlow_54</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_1">
+        <bpmn2:dataInput id="DataInput_1" name="CHANNEL_ID"/>
+        <bpmn2:dataInput id="DataInput_2" name="EXTERNAL_TRANSACTION_ID"/>
+        <bpmn2:dataInput id="DataInput_3" name="COMMENT"/>
+        <bpmn2:dataInput id="DataInput_4" name="SUBSCRIBER_ID"/>
+        <bpmn2:dataInput id="DataInput_5" name="PRODUCT_ID"/>
+        <bpmn2:dataInput id="DataInput_6" name="ORDER_TYPE"/>
+        <bpmn2:dataInput id="DataInput_7" name="ExecuteOrderTask__retryPolicyNumber"/>
+        <bpmn2:dataOutput id="DataOutput_4" name="BPMN_RESPONSE_CODE"/>
+        <bpmn2:dataOutput id="DataOutput_6" name="BPMN_RESPONSE_MESSAGE"/>
+        <bpmn2:dataOutput id="DataOutput_8" name="TRXID"/>
+        <bpmn2:dataOutput id="DataOutput_9" name="MESSAGE"/>
+        <bpmn2:inputSet id="InputSet_1" name="Input Set 107">
+          <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_3</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_7</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_1" name="Output Set 4">
+          <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_6</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_8</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_9</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn2:targetRef>DataInput_1</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_1">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">channelId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn2:targetRef>DataInput_2</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_2">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">transactionId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn2:targetRef>DataInput_3</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_3">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5">'Paquete con Cuota'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>DataInput_4</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_4">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_8">DataInput_6</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>DataInput_5</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_5">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">vProductId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">DataInput_8</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn2:targetRef>DataInput_6</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_6">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_11">'PURCHASE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_12">DataInput_11</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_7">
+        <bpmn2:targetRef>DataInput_7</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_7">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_14">DataInput_31</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_4">
+        <bpmn2:sourceRef>DataOutput_4</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_42">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_22">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_87">vBpmnResponseCode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_6">
+        <bpmn2:sourceRef>DataOutput_6</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_50">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_107">DataOutput_6</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_109">vBpmnResponseMessage</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_8">
+        <bpmn2:sourceRef>DataOutput_8</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_52">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">DataOutput_8</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_90">vTransactionFather</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_9">
+        <bpmn2:sourceRef>DataOutput_9</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_29">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_61">DataOutput_9</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_78">vMessageChild</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_5" name="VALIDA_PROVISIONING">
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      <bpmn2:script>var vProvisioning=false;
+var vResponse1=false;
+var vErrorQuotaMessage='0';
+
+if (typeof vBpmnResponseCode != 'undefined')  {
+
+    vResponse1 = true;
+if (vBpmnResponseCode == '0')   {
+
+        vProvisioning = true;
+
+    }
+    else{
+        vErrorQuotaMessage=vProductId+&quot;;&quot;+vBpmnResponseCode ;
+    }
+
+}
+
+
+LOGGER.info(tLinea  +'vErrorQuotaMessage: '+ vErrorQuotaMessage+ tLinea );
+LOGGER.info(tLinea  +'ExecuteOrderTask__responseCode: '+ ExecuteOrderTask__responseCode  + tLinea );
+LOGGER.info(tLinea  +'transactionId: '+ transactionId  + tLinea );</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:scriptTask id="ScriptTask_6" name="MESSAGE">
+      <bpmn2:incoming>SequenceFlow_53</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:script>MESSAGE=MENSAJE_ERROR_PROCESAMIENTO;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_3" name="KannelSendSMSTask">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_4">
+        <bpmn2:dataInput id="DataInput_8" name="FROM"/>
+        <bpmn2:dataInput id="DataInput_9" name="TO"/>
+        <bpmn2:dataInput id="DataInput_10" name="MESSAGE"/>
+        <bpmn2:inputSet id="InputSet_4" name="ISNoPerfil">
+          <bpmn2:dataInputRefs>DataInput_8</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_9</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_10</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_4" name="Output Set 5"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_8">
+        <bpmn2:targetRef>DataInput_8</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_15">SMS_FROM</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">DataInput_56</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_9">
+        <bpmn2:targetRef>DataInput_9</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">'504'+subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">DataInput_57</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_10">
+        <bpmn2:targetRef>DataInput_10</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_10">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">MESSAGE</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">DataInput_78</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_7" name="SET_ERROR">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      <bpmn2:script>
+
+var BPMN_RESPONSE_CODE ='103';
+
+var BPMN_RESPONSE_MESSAGE;
+
+if(vErrorQuotaMessage!='0'){
+    
+    BPMN_RESPONSE_MESSAGE = 'ERROR : Error en aprovisionamiento de paquete cuota';
+    }
+    else if(vErrorUnlimitedMessage!='0'){
+        BPMN_RESPONSE_MESSAGE = 'ERROR : Error en aprovisionamiento de paquete ilimitado';
+    }
+    else{
+        BPMN_RESPONSE_MESSAGE = 'ERROR : Error de Procesamiento';
+    }
+
+
+
+MESSAGE;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_2" name="End">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ScriptTask_6" targetRef="ServiceTask_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ServiceTask_3" targetRef="ScriptTask_7"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ScriptTask_7" targetRef="EndEvent_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ServiceTask_2" targetRef="ScriptTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_16" sourceRef="ScriptTask_1" targetRef="ScriptTask_20"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="HasUnlimited" default="SequenceFlow_40">
+      <bpmn2:incoming>SequenceFlow_28</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_26</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_40</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_23" name="No" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_17"/>
+    <bpmn2:serviceTask id="ServiceTask_4" name="ScheduleTask">
+      <bpmn2:incoming>SequenceFlow_27</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_25</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_23">
+        <bpmn2:dataInput id="DataInput_11" name="CHANNELID"/>
+        <bpmn2:dataInput id="DataInput_12" name="EXTERNALTRANSACTIONID"/>
+        <bpmn2:dataInput id="DataInput_13" name="COMMENT"/>
+        <bpmn2:dataInput id="DataInput_14" name="MSISDN"/>
+        <bpmn2:dataInput id="DataInput_15" name="PRODUCTID"/>
+        <bpmn2:dataInput id="DataInput_16" name="TASKID"/>
+        <bpmn2:dataInput id="DataInput_70" name="SUBSCRIBERID"/>
+        <bpmn2:dataInput id="DataInput_71" name="SCHEDULETYPE"/>
+        <bpmn2:dataInput id="DataInput_72" name="SCHEDULEDATE"/>
+        <bpmn2:dataInput id="DataInput_73" name="RECURRENT"/>
+        <bpmn2:dataInput id="DataInput_74" name="QUANTITY"/>
+        <bpmn2:dataInput id="DataInput_75" name="DESCRIPTION"/>
+        <bpmn2:dataOutput id="DataOutput_5" name="RETURN_VALUE"/>
+        <bpmn2:inputSet id="InputSet_25" name="Input Set 107">
+          <bpmn2:dataInputRefs>DataInput_11</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_12</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_13</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_14</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_15</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_16</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_70</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_71</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_72</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_73</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_74</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_75</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_25" name="Output Set 4">
+          <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_11">
+        <bpmn2:targetRef>DataInput_11</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_11">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_24">channelId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_25">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_12">
+        <bpmn2:targetRef>DataInput_12</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_12">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_26">vTransactionFather</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_27">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_13">
+        <bpmn2:targetRef>DataInput_13</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_13">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_28">'Paquete Ilimitado'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_14">
+        <bpmn2:targetRef>DataInput_14</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_14">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_30">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_31">DataInput_6</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_15">
+        <bpmn2:targetRef>DataInput_15</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_15">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_32">vProductId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_33">DataInput_8</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_16">
+        <bpmn2:targetRef>DataInput_16</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_16">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_34">'9'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_35">DataInput_11</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_70">
+        <bpmn2:targetRef>DataInput_70</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_82">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_166">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_164">DataInput_70</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_71">
+        <bpmn2:targetRef>DataInput_71</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_83">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_169">'19'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_167">DataInput_71</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_72">
+        <bpmn2:targetRef>DataInput_72</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_85">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_175">vExecutionTime</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_173">DataInput_72</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_73">
+        <bpmn2:targetRef>DataInput_73</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_86">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_178">'FALSE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_176">DataInput_73</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_74">
+        <bpmn2:targetRef>DataInput_74</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_87">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_181">'1'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_179">DataInput_74</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_75">
+        <bpmn2:targetRef>DataInput_75</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_88">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_184">'Purchase Producto Ilimitado por Combo: ' +productId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_182">DataInput_75</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_5">
+        <bpmn2:sourceRef>DataOutput_5</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_49">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_103">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105">vBpmnResponseCode2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_10" name="VALIDA_PROVISIONING">
+      <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
+      <bpmn2:script>var vProvisioning2=false;
+var vResponse2=false;
+var vErrorUnlimitedMessage='0';
+
+if (typeof vBpmnResponseCode2 != 'undefined')  {
+
+    vResponse2 = true;
+    vProvisioning2 = true;  
+
+}
+
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_25" sourceRef="ServiceTask_4" targetRef="ScriptTask_10"/>
+    <bpmn2:scriptTask id="ScriptTask_11" name="SET_UNLIMITED">
+      <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_27</bpmn2:outgoing>
+      <bpmn2:script>vProductId = vProductIDIlimitado[index2];
+
+index2 += 1;
+var vExecutionTime = new Date();
+
+vExecutionTime.setMinutes(vExecutionTime.getMinutes() + 1);
+
+vExecutionTime  = parseTimeToScheduleDate(vExecutionTime);
+
+
+
+
+
+
+
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_26" name="Si" sourceRef="ExclusiveGateway_4" targetRef="ScriptTask_11">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_38">vEvaluaCondicion2</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_27" sourceRef="ScriptTask_11" targetRef="ServiceTask_4"/>
+    <bpmn2:serviceTask id="ServiceTask_5" name="SubscriberLocationTask">
+      <bpmn2:incoming>SequenceFlow_52</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_34</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_28">
+        <bpmn2:dataInput id="DataInput_18" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_19" name="SubscriberLocationTask__failOverPolicy"/>
+        <bpmn2:dataInput id="DataInput_17" name="SubscriberLocationTask__retryPolicyNumber"/>
+        <bpmn2:dataOutput id="DataOutput_1" name="CELL_ID"/>
+        <bpmn2:dataOutput id="DataOutput_2" name="CI"/>
+        <bpmn2:dataOutput id="DataOutput_3" name="LAC"/>
+        <bpmn2:inputSet id="InputSet_31" name="ISSubscriberLocation">
+          <bpmn2:dataInputRefs>DataInput_18</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_19</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_17</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_31" name="OSsubscriberLocation">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_18">
+        <bpmn2:targetRef>DataInput_18</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_18">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_39">'504'+subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_40">DataInput_152</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_19">
+        <bpmn2:targetRef>DataInput_19</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_19">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_41">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_42">DataInput_153</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_17">
+        <bpmn2:targetRef>DataInput_17</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_17">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_77">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_36">DataInput_17</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_20">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_43">DataOutput_43</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_44">vCellId</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_21">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_45">DataOutput_44</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_46">vCI</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn2:sourceRef>DataOutput_3</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_22">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47">DataOutput_45</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_48">vLAC</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_12" name="Verificar Subscriber Location">
+      <bpmn2:incoming>SequenceFlow_34</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_35</bpmn2:outgoing>
+      <bpmn2:script>if (typeof vCellId == 'undefined') {
+
+    var vCellId = 0;
+
+};
+
+if (typeof vCI == 'undefined') {
+
+    var vCI = '';
+
+};
+
+if (typeof vLAC == 'undefined') {
+
+    var vLAC = '';
+
+};
+
+
+
+var vExternalTransactionID;
+vExternalTransactionID='0';
+if(typeof externalTransacionId!='undefined' &amp;&amp; externalTransacionId!=null)
+{
+    vExternalTransactionID=externalTransacionId;
+}
+
+
+
+
+LOGGER.info(tLinea  + 'Llego a calcular location'  + tLinea );
+LOGGER.info(tLinea  + 'vCellId: ' + vCellId  + tLinea );</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_6" name="NotifyTriggerTask">
+      <bpmn2:incoming>SequenceFlow_35</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_36</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_29">
+        <bpmn2:dataInput id="DataInput_20" name="transactionId"/>
+        <bpmn2:dataInput id="DataInput_21" name="PRODUCT_ID"/>
+        <bpmn2:dataInput id="DataInput_22" name="SOURCE"/>
+        <bpmn2:dataInput id="DataInput_23" name="SUBSCRIBER_ID"/>
+        <bpmn2:dataInput id="DataInput_24" name="ORDER_TYPE"/>
+        <bpmn2:dataInput id="DataInput_25" name="EVENT_TYPE"/>
+        <bpmn2:dataInput id="DataInput_27" name="URL"/>
+        <bpmn2:dataInput id="DataInput_28" name="NotifyTriggerTask__failOverPolicy"/>
+        <bpmn2:dataInput id="DataInput_29" name="CELL_ID_EMISOR"/>
+        <bpmn2:dataInput id="DataInput_30" name="CI_EMISOR"/>
+        <bpmn2:dataInput id="DataInput_31" name="LAC_EMISOR"/>
+        <bpmn2:dataInput id="DataInput_35" name="EXTERNAL_TRANSACTION_ID"/>
+        <bpmn2:dataInput id="DataInput_26" name="NotifyTriggerTask__retryPolicyNumber"/>
+        <bpmn2:inputSet id="InputSet_32" name="Input Set 25">
+          <bpmn2:dataInputRefs>DataInput_20</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_21</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_22</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_23</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_24</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_25</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_27</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_28</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_29</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_30</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_31</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_35</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_26</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_32" name="Output Set 3"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_20">
+        <bpmn2:targetRef>DataInput_20</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_23">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_49">transactionId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_50">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_21">
+        <bpmn2:targetRef>DataInput_21</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_24">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_51">productId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_52">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_22">
+        <bpmn2:targetRef>DataInput_22</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_25">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_53">channelId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_54">DataInput_3</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_23">
+        <bpmn2:targetRef>DataInput_23</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_26">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_55">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_56">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_24">
+        <bpmn2:targetRef>DataInput_24</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_27">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_57">'PURCHASE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_58">DataInput_9</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_25">
+        <bpmn2:targetRef>DataInput_25</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_28">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_59">'Combo de Internet'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_60">DataInput_22</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_27">
+        <bpmn2:targetRef>DataInput_27</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_30">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_63">'http://ocep.tigohn.local:9002/cpeEvent'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_64">DataInput_42</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_28">
+        <bpmn2:targetRef>DataInput_28</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_31">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_65">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_66">DataInput_78</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_29">
+        <bpmn2:targetRef>DataInput_29</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_32">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_67">vCellId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_68">DataInput_79</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_30">
+        <bpmn2:targetRef>DataInput_30</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_33">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_69">vCI</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_70">DataInput_84</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_31">
+        <bpmn2:targetRef>DataInput_31</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_34">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_71">vLAC</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_72">DataInput_85</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_35">
+        <bpmn2:targetRef>DataInput_35</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_38">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_79">vExternalTransactionID</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_80">DataInput_12</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_26">
+        <bpmn2:targetRef>DataInput_26</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_37">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_106">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_88">DataInput_26</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_13" name="MESSAGE">
+      <bpmn2:incoming>SequenceFlow_36</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:script>var vEnviaSMSCombos=false;
+
+if(typeof(ENVIO_SMS)!='undefined'){
+    if(ENVIO_SMS=='1'){
+        vEnviaSMSCombos=true;
+        }
+}
+MESSAGE=MENSAJE_EXITO;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_7" name="KannelSendSMSTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_20</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_38</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_30">
+        <bpmn2:dataInput id="DataInput_36" itemSubjectRef="ciclos.bpmn#ItemDefinition_172" name="TO"/>
+        <bpmn2:dataInput id="DataInput_37" itemSubjectRef="ciclos.bpmn#ItemDefinition_172" name="FROM"/>
+        <bpmn2:dataInput id="DataInput_38" name="MESSAGE"/>
+        <bpmn2:inputSet id="InputSet_33" name="Input Set 101">
+          <bpmn2:dataInputRefs>DataInput_36</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_37</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_38</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_33" name="Output Set 54"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_36">
+        <bpmn2:targetRef>DataInput_36</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_39">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_81">'504'+subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_82">DataInput_57</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_37">
+        <bpmn2:targetRef>DataInput_37</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_40">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_83">SMS_FROM</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_84">DataInput_58</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_38">
+        <bpmn2:targetRef>DataInput_38</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_41">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_85">MESSAGE</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_86">DataInput_59</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_14" name="SET_RESPONSE">
+      <bpmn2:incoming>SequenceFlow_38</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_39</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+var BPMN_RESPONSE_MESSAGE = 'Success';&#xD;
+MESSAGE;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_4" name="End">
+      <bpmn2:incoming>SequenceFlow_39</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_34" sourceRef="ServiceTask_5" targetRef="ScriptTask_12"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_35" sourceRef="ScriptTask_12" targetRef="ServiceTask_6"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_36" sourceRef="ServiceTask_6" targetRef="ScriptTask_13"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_38" sourceRef="ServiceTask_7" targetRef="ScriptTask_14"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_39" sourceRef="ScriptTask_14" targetRef="EndEvent_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_40" name="No" sourceRef="ExclusiveGateway_4" targetRef="ScriptTask_19"/>
+    <bpmn2:scriptTask id="ScriptTask_15" name="FUNCIONES">
+      <bpmn2:incoming>SequenceFlow_43</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_42</bpmn2:outgoing>
+      <bpmn2:script>var tTiempo = new Date();
+
+var STR_PAD_LEFT = 1;
+
+var STR_PAD_RIGHT = 2;
+
+var STR_PAD_BOTH = 3;
+
+var vRemark2 = ';NA;';
+
+
+
+if(typeof REMARK_ZEROBALANCE2 != 'undefined'){
+
+    vRemark2 =REMARK_ZEROBALANCE2;
+
+}
+
+
+//Convierte un valor texto a al formato dd/MM/yyyy hh:mm:ss
+
+function parseDateToStringSchedule(date){
+
+    var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+
+    month = padStr(String(month), 2, '0', STR_PAD_LEFT);
+
+    var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
+
+    var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
+
+    var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
+
+    var format = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+
+
+
+    return format;
+
+}
+
+
+//Convierte un Time a un string de Date en formato dd/MM/yyyy hh:mm:ss
+
+function parseTimeToScheduleDate(gTime) {
+
+    var date = new Date();
+
+    date.setTime(gTime);
+
+    var strDate = parseDateToStringSchedule(date);
+
+    return strDate;
+
+}
+
+
+
+
+
+
+//Convierte un valor texto a al formato yyyy-MM-dd hh:mm:ss
+
+function parseDate2String (Fecha) {
+
+    var Texto = ' ';
+
+    var tAnio = Fecha.getFullYear();
+
+    var tMes = Fecha.getMonth() + 1;
+
+    var tDia = Fecha.getDate();
+
+    var tHora = Fecha.getHours();
+
+    var tMinutos = Fecha.getMinutes();
+
+    var tSegundos = Fecha.getSeconds();
+
+    Texto = String(tAnio) + '-';
+
+    if (tMes &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tMes) + '-';
+
+    if (tDia &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tDia) + ' ';
+
+    if (tHora &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tHora) + ':';
+
+    if (tMinutos &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tMinutos) + ':';   
+
+    if (tSegundos &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tSegundos);
+
+    return Texto;
+
+};
+
+ 
+
+//Convierte un valor texto a al formato yyyyMMdd
+
+function parseDate2StringYYYYMMDD (Fecha) {
+
+    var Texto = ' ';
+
+    var tAnio = Fecha.getFullYear();
+
+    var tMes = Fecha.getMonth() + 1;
+
+    var tDia = Fecha.getDate();
+
+    Texto = String(tAnio);
+
+    if (tMes &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tMes);
+
+    if (tDia &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tDia);
+
+ 
+
+    return Texto;
+
+};
+
+ 
+
+//Convierte un texto de fecha a variable Date
+
+function parseISODate (Texto) {
+
+    Texto = Texto.replace(/\D/g,' ');
+
+    var Partes = Texto.split(' ');
+
+//    Partes[1]--; //restar 1 al mes
+
+    var tAnio = Partes[0];
+
+    var tMes = Partes[1] - 1;
+
+    var tDia = Partes[2];
+
+   
+
+    var tHora = Partes[3];
+
+    var tMinutos = Partes[4];
+
+    var tSegundos = Partes[5];
+
+   
+
+    return new Date(tAnio,tMes,tDia,tHora,tMinutos,tSegundos);
+
+};
+
+ 
+
+//Convierte un Time a un string de Date en formato yyyy-MM-ddThh:mm:ss.000-06:00
+
+function parseDCOMString  (gTime) {
+
+    var tTiempo = new Date();
+
+    tTiempo.setTime(gTime);
+
+    var Texto = parseDate2String(tTiempo);
+
+    Texto = Texto.replace(' ','T') + '.000-06:00';   
+
+    return Texto;
+
+};
+
+
+
+function parseTCOMString (inputT) {
+
+    var Texto = parseDate2String(parseISODate(inputT));
+
+    Texto = Texto.replace(' ','T') +UTC_000_0600;
+
+    return Texto;
+
+};
+
+
+
+//Convierte un Time a un string de Date en formato yyyyMMddhhmiss
+
+function parseTimeToDHDate(gTime) {
+
+    var date = new Date();
+
+    date.setTime(gTime);
+
+    var strDate = parseDateToStringDH(date);
+
+    return strDate;
+
+};
+
+
+
+//Convierte un valor texto a al formato yyyyMMddhhmiss
+
+function parseDateToStringDH(date){
+
+    var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+
+    month = padStr(String(month), 2, '0', STR_PAD_LEFT);
+
+    var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
+
+    var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
+
+    var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
+
+    var format = year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds;
+
+
+
+    return format;
+
+};
+
+
+
+//Funcion a la cual se le manda un valor y le hace lpad o rpad con el caracter indicado y la longitud indicada
+
+function padStr(str, len, pad, dir) {
+
+
+
+    if (typeof(len) == 'undefined') { var len = 0; };
+
+    if (typeof(pad) == 'undefined') { var pad = ' '; };
+
+    if (typeof(dir) == 'undefined') { var dir = STR_PAD_RIGHT; };
+
+
+
+    if (len + 1 >= str.length) {
+
+
+
+        switch (dir){
+
+
+
+            case STR_PAD_LEFT:
+
+                str = Array(len + 1 - str.length).join(pad) + str;
+
+            break;
+
+
+
+            case STR_PAD_BOTH:
+
+                var right = Math.ceil((padlen = len - str.length) / 2);
+
+                var left = padlen - right;
+
+                str = Array(left+1).join(pad) + str + Array(right+1).join(pad);
+
+            break;
+
+
+
+            default:
+
+                str = str + Array(len + 1 - str.length).join(pad);
+
+            break;
+
+
+
+        }; // switch
+
+
+
+    };
+
+
+
+    return str;
+
+
+
+};
+
+
+
+
+
+
+
+
+
+var tSaltoL = '\n';
+
+var tLinea = tSaltoL + '************************************************************************' + tSaltoL ;
+
+
+
+
+
+//Convierte un Time a un string de Date en formato yyyy-MM-ddThh:mm:ss
+
+function parseDSPRString  (gTime) {
+
+    var tTiempo = new Date();
+
+    tTiempo.setTime(gTime);
+
+    var Texto = parseDate2String(tTiempo);
+
+    Texto = Texto.replace(' ','T');   
+
+    return Texto;
+
+};
+
+
+
+
+
+//Convierte un valor texto a al formato dd/MM/yyyy hh:mm:ss;
+
+function parseDateToStringSchedule2(date){
+
+    var day = date.getDate();
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+
+    var hours = date.getHours();
+
+    var minutes = date.getMinutes();
+
+    var seconds = date.getSeconds();  
+
+   if (day &lt; 10) day = '0' + day; 
+
+   if (month &lt; 10) month = '0' + month; 
+
+   if (hours &lt; 10) hours = '0' + hours; 
+
+   if (minutes &lt; 10) minutes = '0' + minutes; 
+
+   if (seconds &lt; 10) seconds = '0' + seconds; 
+
+  
+
+    var format = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+
+
+
+  return format;
+
+}
+
+
+
+function parseDate2CBS (Fecha) {
+
+    var Texto = ' ';
+
+    var tAnio = Fecha.getFullYear();
+
+    var tMes = Fecha.getMonth() + 1;
+
+    var tDia = Fecha.getDate();
+
+    var tHora = Fecha.getHours();
+
+    var tMinutos = Fecha.getMinutes();
+
+    var tSegundos = Fecha.getSeconds();
+
+    Texto = String(tAnio);
+
+    if (tMes &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tMes);
+
+    if (tDia &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tDia);
+
+    if (tHora &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tHora);
+
+    if (tMinutos &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tMinutos);    
+
+    if (tSegundos &lt; 10) Texto = Texto + '0';
+
+    Texto = Texto +  String(tSegundos);
+
+    return Texto;
+
+};</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_42" sourceRef="ScriptTask_15" targetRef="ScriptTask_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_43" sourceRef="StartEvent_1" targetRef="ScriptTask_15"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_7" name="IsOK" gatewayDirection="Diverging" default="SequenceFlow_53">
+      <bpmn2:incoming>SequenceFlow_32</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_52</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_53</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_52" name="Si" sourceRef="ExclusiveGateway_7" targetRef="ServiceTask_5">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_89">vEvaluaResponse</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_53" name="No" sourceRef="ExclusiveGateway_7" targetRef="ScriptTask_6"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_54" sourceRef="ScriptTask_2" targetRef="ServiceTask_2"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" name="Exito?" gatewayDirection="Diverging" default="SequenceFlow_7">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_44</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="ScriptTask_5" targetRef="ExclusiveGateway_2"/>
+    <bpmn2:scriptTask id="ScriptTask_3" name="MESSAGE">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script>if(typeof vBpmnResponseMessage!='undefined')
+{
+	if( typeof vMessageChild != 'undefined'){
+		
+	MESSAGE=vMessageChild;
+	}
+}
+else{
+	MESSAGE=MENSAJE_ERROR_PROCESAMIENTO;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_1" name="KannelSendSMSTask">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_21">
+        <bpmn2:dataInput id="DataInput_39" name="FROM"/>
+        <bpmn2:dataInput id="DataInput_40" name="TO"/>
+        <bpmn2:dataInput id="DataInput_41" name="MESSAGE"/>
+        <bpmn2:inputSet id="InputSet_29" name="ISNoPerfil">
+          <bpmn2:dataInputRefs>DataInput_39</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_40</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_41</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_29" name="Output Set 5"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_39">
+        <bpmn2:targetRef>DataInput_39</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_43">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_91">SMS_FROM</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_92">DataInput_56</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_40">
+        <bpmn2:targetRef>DataInput_40</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_44">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_93">'504'+subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_94">DataInput_57</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_41">
+        <bpmn2:targetRef>DataInput_41</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_45">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_95">MESSAGE</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_96">DataInput_78</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_4" name="SET_ERROR">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE ='101';
+
+var BPMN_RESPONSE_MESSAGE;
+
+if(vErrorQuotaMessage!='0'){
+    
+    BPMN_RESPONSE_MESSAGE = vBpmnResponseMessage;
+    }
+   
+    else{
+        BPMN_RESPONSE_MESSAGE = 'ERROR : Error de Procesamiento';
+    }
+
+MESSAGE;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_1" name="End">
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_3" targetRef="ServiceTask_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ServiceTask_1" targetRef="ScriptTask_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ScriptTask_4" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" name="No" sourceRef="ExclusiveGateway_2" targetRef="ScriptTask_3"/>
+    <bpmn2:scriptTask id="ScriptTask_8" name="MESSAGE">
+      <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:script>MESSAGE=MENSAJE_ERROR_PROCESAMIENTO;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_8" name="KannelSendSMSTask">
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_32">
+        <bpmn2:dataInput id="DataInput_42" name="FROM"/>
+        <bpmn2:dataInput id="DataInput_43" name="TO"/>
+        <bpmn2:dataInput id="DataInput_44" name="MESSAGE"/>
+        <bpmn2:inputSet id="InputSet_40" name="ISNoPerfil">
+          <bpmn2:dataInputRefs>DataInput_42</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_43</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_44</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_40" name="Output Set 5"/>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_42">
+        <bpmn2:targetRef>DataInput_42</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_46">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_97">SMS_FROM</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_98">DataInput_56</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_43">
+        <bpmn2:targetRef>DataInput_43</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_47">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_99">'504'+subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_100">DataInput_57</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_44">
+        <bpmn2:targetRef>DataInput_44</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_48">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_101">MESSAGE</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_102">DataInput_78</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_9" name="SET_ERROR">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+      <bpmn2:script>
+
+var BPMN_RESPONSE_CODE ='102';
+
+var BPMN_RESPONSE_MESSAGE;
+
+if(vErrorUnlimitedMessage !='0'){
+    
+    BPMN_RESPONSE_MESSAGE = vBpmnResponseMessage2;
+    }
+   
+    else{
+        BPMN_RESPONSE_MESSAGE = 'ERROR : Error de Procesamiento';
+    }
+
+
+
+MESSAGE;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_3" name="End">
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="ScriptTask_8" targetRef="ServiceTask_8"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ServiceTask_8" targetRef="ScriptTask_9"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="ScriptTask_9" targetRef="EndEvent_3"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="ExitoIlim?" gatewayDirection="Diverging" default="SequenceFlow_18">
+      <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_45</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_17" sourceRef="ScriptTask_10" targetRef="ExclusiveGateway_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_18" name="No" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_8"/>
+    <bpmn2:scriptTask id="ScriptTask_17" name="VALIDA_CICLO2">
+      <bpmn2:incoming>SequenceFlow_23</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_45</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_28</bpmn2:outgoing>
+      <bpmn2:script>vEvaluaCondicion2=vHasIlimitado==true &amp;&amp; index2&lt;vProductIDIlimitado.length;
+
+LOGGER.info(tLinea+'vTransactionFather:' +vTransactionFather +tLinea);</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_28" sourceRef="ScriptTask_17" targetRef="ExclusiveGateway_4"/>
+    <bpmn2:scriptTask id="ScriptTask_19" name="VALIDA_RESPONSE">
+      <bpmn2:incoming>SequenceFlow_40</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_32</bpmn2:outgoing>
+      <bpmn2:script>var vEvaluaResponse=false;
+
+vEvaluaResponse=vErrorQuotaMessage=='0' &amp;&amp; vErrorUnlimitedMessage=='0';</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_32" sourceRef="ScriptTask_19" targetRef="ExclusiveGateway_7"/>
+    <bpmn2:scriptTask id="ScriptTask_20" name="CONDICION1">
+      <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_44</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_41</bpmn2:outgoing>
+      <bpmn2:script>vEvaluaCondicion=index1&lt;vProductIDData.length;
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_41" sourceRef="ScriptTask_20" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_44" name="Si" sourceRef="ExclusiveGateway_2" targetRef="ScriptTask_20">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_113">vProvisioning==true</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_45" name="Si" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_17">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_114">vProvisioning2==true</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_5" name="EnviaSMS" gatewayDirection="Diverging" default="SequenceFlow_21">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_20</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ScriptTask_13" targetRef="ExclusiveGateway_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_20" name="Si" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_7">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_62">vEnviaSMSCombos</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_21" name="No" sourceRef="ExclusiveGateway_5" targetRef="ScriptTask_14"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CombosPCC20">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="27.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="25.0" x="5.0" y="63.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="ScriptTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="69.0" y="91.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="89.0" x="79.0" y="108.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="99.0" y="266.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="55.0" x="97.0" y="316.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="529.0" y="266.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="86.0" x="541.0" y="283.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_2" bpmnElement="ServiceTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="528.0" y="169.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_9" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="101.0" x="532.0" y="186.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_5">
+        <dc:Bounds height="50.0" width="110.0" x="374.0" y="160.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="86.0" x="386.0" y="170.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_6" bpmnElement="ScriptTask_6">
+        <dc:Bounds height="50.0" width="110.0" x="374.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="57.0" x="400.0" y="660.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_3" bpmnElement="ServiceTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="530.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="99.0" x="535.0" y="653.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_7" bpmnElement="ScriptTask_7">
+        <dc:Bounds height="50.0" width="110.0" x="706.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="74.0" x="724.0" y="660.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="857.0" y="650.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="22.0" x="864.0" y="686.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_4" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="99.0" y="476.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_31" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="86.0" y="526.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_4" bpmnElement="ServiceTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="379.0" y="476.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_34" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="79.0" x="394.0" y="493.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_10" bpmnElement="ScriptTask_10">
+        <dc:Bounds height="50.0" width="110.0" x="555.0" y="476.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_35" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="86.0" x="567.0" y="486.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_11" bpmnElement="ScriptTask_11" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="234.0" y="476.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_38" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="94.0" x="242.0" y="493.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_5" bpmnElement="ServiceTask_5">
+        <dc:Bounds height="50.0" width="110.0" x="218.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_44" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="77.0" x="234.0" y="788.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_12" bpmnElement="ScriptTask_12">
+        <dc:Bounds height="50.0" width="110.0" x="379.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_45" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="66.0" x="401.0" y="780.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_6" bpmnElement="ServiceTask_6">
+        <dc:Bounds height="50.0" width="110.0" x="568.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_46" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="96.0" x="575.0" y="795.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_13" bpmnElement="ScriptTask_13">
+        <dc:Bounds height="50.0" width="110.0" x="739.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_47" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="57.0" x="765.0" y="795.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_7" bpmnElement="ServiceTask_7">
+        <dc:Bounds height="50.0" width="110.0" x="1134.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_48" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="99.0" x="1139.0" y="788.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_14" bpmnElement="ScriptTask_14">
+        <dc:Bounds height="50.0" width="110.0" x="1134.0" y="676.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_49" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="97.0" x="1140.0" y="693.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_3" bpmnElement="EndEvent_4">
+        <dc:Bounds height="36.0" width="36.0" x="1296.0" y="683.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_50" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="22.0" x="1303.0" y="719.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_15" bpmnElement="ScriptTask_15">
+        <dc:Bounds height="50.0" width="110.0" x="69.0" y="20.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_58" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="71.0" x="88.0" y="37.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_7" bpmnElement="ExclusiveGateway_7" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="247.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_63" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="27.0" x="258.0" y="693.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="258.0" y="160.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="33.0" x="266.0" y="210.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="228.0" y="20.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_10" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="57.0" x="254.0" y="37.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="379.0" y="19.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="99.0" x="384.0" y="29.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="529.0" y="20.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="74.0" x="547.0" y="37.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="677.0" y="27.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="22.0" x="684.0" y="63.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_8" bpmnElement="ScriptTask_8">
+        <dc:Bounds height="50.0" width="110.0" x="677.0" y="380.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_28" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="57.0" x="703.0" y="397.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_8" bpmnElement="ServiceTask_8">
+        <dc:Bounds height="50.0" width="110.0" x="677.0" y="292.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_29" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="99.0" x="682.0" y="302.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_9" bpmnElement="ScriptTask_9">
+        <dc:Bounds height="50.0" width="110.0" x="677.0" y="218.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_30" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="74.0" x="695.0" y="235.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_4" bpmnElement="EndEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="821.0" y="225.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_32" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="22.0" x="828.0" y="261.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="584.0" y="380.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_43" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="53.0" x="583.0" y="430.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_17" bpmnElement="ScriptTask_17" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="70.0" y="380.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_72" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="91.0" x="79.0" y="397.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_19" bpmnElement="ScriptTask_19" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="69.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_76" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="67.0" x="90.0" y="653.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_20" bpmnElement="ScriptTask_20" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="69.0" y="160.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_78" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="86.0" y="177.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_5" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="924.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="55.0" x="922.0" y="828.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_2">
+        <di:waypoint xsi:type="dc:Point" x="149.0" y="291.0"/>
+        <di:waypoint xsi:type="dc:Point" x="339.0" y="291.0"/>
+        <di:waypoint xsi:type="dc:Point" x="529.0" y="291.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6">
+          <dc:Bounds height="15.0" width="11.0" x="334.0" y="292.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ScriptTask_6" targetElement="BPMNShape_ServiceTask_3">
+        <di:waypoint xsi:type="dc:Point" x="484.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="507.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="530.0" y="668.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ServiceTask_3" targetElement="BPMNShape_ScriptTask_7">
+        <di:waypoint xsi:type="dc:Point" x="640.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="673.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="706.0" y="668.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_22"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ScriptTask_7" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="816.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="836.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="857.0" y="668.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_23"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="528.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="506.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="484.0" y="185.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_24"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_20">
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="141.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="150.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="160.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_26"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_24" bpmnElement="SequenceFlow_23" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_17">
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="316.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="348.0"/>
+        <di:waypoint xsi:type="dc:Point" x="125.0" y="380.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_33">
+          <dc:Bounds height="15.0" width="16.0" x="117.0" y="349.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_26" bpmnElement="SequenceFlow_25" sourceElement="BPMNShape_ServiceTask_4" targetElement="BPMNShape_ScriptTask_10">
+        <di:waypoint xsi:type="dc:Point" x="489.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="522.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="555.0" y="501.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_37"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_27" bpmnElement="SequenceFlow_26" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_ScriptTask_11">
+        <di:waypoint xsi:type="dc:Point" x="149.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="191.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="234.0" y="501.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_39">
+          <dc:Bounds height="15.0" width="11.0" x="187.0" y="502.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_28" bpmnElement="SequenceFlow_27" sourceElement="BPMNShape_ScriptTask_11" targetElement="BPMNShape_ServiceTask_4">
+        <di:waypoint xsi:type="dc:Point" x="344.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="361.0" y="501.0"/>
+        <di:waypoint xsi:type="dc:Point" x="379.0" y="501.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_40"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_35" bpmnElement="SequenceFlow_34" sourceElement="BPMNShape_ServiceTask_5" targetElement="BPMNShape_ScriptTask_12">
+        <di:waypoint xsi:type="dc:Point" x="328.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="353.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="379.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_51"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_36" bpmnElement="SequenceFlow_35" sourceElement="BPMNShape_ScriptTask_12" targetElement="BPMNShape_ServiceTask_6">
+        <di:waypoint xsi:type="dc:Point" x="489.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="528.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="568.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_52"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_37" bpmnElement="SequenceFlow_36" sourceElement="BPMNShape_ServiceTask_6" targetElement="BPMNShape_ScriptTask_13">
+        <di:waypoint xsi:type="dc:Point" x="678.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="708.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="739.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_53"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_39" bpmnElement="SequenceFlow_38" sourceElement="BPMNShape_ServiceTask_7" targetElement="BPMNShape_ScriptTask_14">
+        <di:waypoint xsi:type="dc:Point" x="1189.0" y="778.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1189.0" y="752.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1189.0" y="726.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_55"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_40" bpmnElement="SequenceFlow_39" sourceElement="BPMNShape_ScriptTask_14" targetElement="BPMNShape_EndEvent_3">
+        <di:waypoint xsi:type="dc:Point" x="1244.0" y="701.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1270.0" y="701.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1296.0" y="701.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_56"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_41" bpmnElement="SequenceFlow_40" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_ScriptTask_19">
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="526.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="584.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="643.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_57">
+          <dc:Bounds height="15.0" width="16.0" x="117.0" y="586.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_43" bpmnElement="SequenceFlow_42" sourceElement="BPMNShape_ScriptTask_15" targetElement="BPMNShape_ScriptTask_1">
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="70.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="80.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="91.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_59"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_44" bpmnElement="SequenceFlow_43" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_15">
+        <di:waypoint xsi:type="dc:Point" x="36.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="52.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="69.0" y="45.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_60"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_53" bpmnElement="SequenceFlow_52" sourceElement="BPMNShape_ExclusiveGateway_7" targetElement="BPMNShape_ServiceTask_5">
+        <di:waypoint xsi:type="dc:Point" x="272.0" y="693.0"/>
+        <di:waypoint xsi:type="dc:Point" x="272.0" y="735.0"/>
+        <di:waypoint xsi:type="dc:Point" x="273.0" y="778.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_65">
+          <dc:Bounds height="15.0" width="11.0" x="267.0" y="737.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_54" bpmnElement="SequenceFlow_53" sourceElement="BPMNShape_ExclusiveGateway_7" targetElement="BPMNShape_ScriptTask_6">
+        <di:waypoint xsi:type="dc:Point" x="297.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="335.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="374.0" y="668.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_66">
+          <dc:Bounds height="15.0" width="16.0" x="329.0" y="669.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_55" bpmnElement="SequenceFlow_54" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ServiceTask_2">
+        <di:waypoint xsi:type="dc:Point" x="584.0" y="266.0"/>
+        <di:waypoint xsi:type="dc:Point" x="584.0" y="243.0"/>
+        <di:waypoint xsi:type="dc:Point" x="583.0" y="219.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_67"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="374.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="341.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="308.0" y="185.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="338.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="358.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="379.0" y="44.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_4">
+        <di:waypoint xsi:type="dc:Point" x="489.0" y="44.0"/>
+        <di:waypoint xsi:type="dc:Point" x="509.0" y="44.0"/>
+        <di:waypoint xsi:type="dc:Point" x="529.0" y="45.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_EndEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="639.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="658.0" y="45.0"/>
+        <di:waypoint xsi:type="dc:Point" x="677.0" y="45.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_25"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="283.0" y="160.0"/>
+        <di:waypoint xsi:type="dc:Point" x="283.0" y="115.0"/>
+        <di:waypoint xsi:type="dc:Point" x="283.0" y="70.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_27">
+          <dc:Bounds height="15.0" width="16.0" x="276.0" y="116.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ScriptTask_8" targetElement="BPMNShape_ServiceTask_8">
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="380.0"/>
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="361.0"/>
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="342.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_36"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ServiceTask_8" targetElement="BPMNShape_ScriptTask_9">
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="292.0"/>
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="280.0"/>
+        <di:waypoint xsi:type="dc:Point" x="732.0" y="268.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_41"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ScriptTask_9" targetElement="BPMNShape_EndEvent_4">
+        <di:waypoint xsi:type="dc:Point" x="787.0" y="243.0"/>
+        <di:waypoint xsi:type="dc:Point" x="804.0" y="243.0"/>
+        <di:waypoint xsi:type="dc:Point" x="821.0" y="243.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_42"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_ScriptTask_10" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="610.0" y="476.0"/>
+        <di:waypoint xsi:type="dc:Point" x="610.0" y="453.0"/>
+        <di:waypoint xsi:type="dc:Point" x="609.0" y="430.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_61"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_8">
+        <di:waypoint xsi:type="dc:Point" x="634.0" y="405.0"/>
+        <di:waypoint xsi:type="dc:Point" x="655.0" y="405.0"/>
+        <di:waypoint xsi:type="dc:Point" x="677.0" y="405.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_68">
+          <dc:Bounds height="15.0" width="16.0" x="649.0" y="406.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_25" bpmnElement="SequenceFlow_28" sourceElement="BPMNShape_ScriptTask_17" targetElement="BPMNShape_ExclusiveGateway_4">
+        <di:waypoint xsi:type="dc:Point" x="125.0" y="430.0"/>
+        <di:waypoint xsi:type="dc:Point" x="125.0" y="453.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="476.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_73"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_32" bpmnElement="SequenceFlow_32" sourceElement="BPMNShape_ScriptTask_19" targetElement="BPMNShape_ExclusiveGateway_7">
+        <di:waypoint xsi:type="dc:Point" x="179.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="213.0" y="668.0"/>
+        <di:waypoint xsi:type="dc:Point" x="247.0" y="668.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_77"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_34" bpmnElement="SequenceFlow_41" sourceElement="BPMNShape_ScriptTask_20" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="210.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="238.0"/>
+        <di:waypoint xsi:type="dc:Point" x="124.0" y="266.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_79"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_42" bpmnElement="SequenceFlow_44" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ScriptTask_20">
+        <di:waypoint xsi:type="dc:Point" x="258.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="219.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="179.0" y="185.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_80">
+          <dc:Bounds height="15.0" width="11.0" x="214.0" y="186.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_45" bpmnElement="SequenceFlow_45" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_17">
+        <di:waypoint xsi:type="dc:Point" x="584.0" y="405.0"/>
+        <di:waypoint xsi:type="dc:Point" x="382.0" y="405.0"/>
+        <di:waypoint xsi:type="dc:Point" x="180.0" y="405.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_81">
+          <dc:Bounds height="15.0" width="11.0" x="377.0" y="406.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_ScriptTask_13" targetElement="BPMNShape_ExclusiveGateway_5">
+        <di:waypoint xsi:type="dc:Point" x="849.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="886.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="924.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_62"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_20" bpmnElement="SequenceFlow_20" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ServiceTask_7">
+        <di:waypoint xsi:type="dc:Point" x="974.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1054.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1134.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_70">
+          <dc:Bounds height="15.0" width="11.0" x="1049.0" y="804.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ScriptTask_14">
+        <di:waypoint xsi:type="dc:Point" x="949.0" y="778.0"/>
+        <di:waypoint xsi:type="dc:Point" x="949.0" y="701.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1134.0" y="701.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_71">
+          <dc:Bounds height="15.0" width="16.0" x="996.0" y="702.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

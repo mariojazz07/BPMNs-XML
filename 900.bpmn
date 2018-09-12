@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.6.Final-v20160330-1631-B1306" targetNamespace="http://org.eclipse.bpmn2/default/process">
+  <bpmn2:process id="Consulta0101" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="EndEvent_1" name="End Event 1">
+      <bpmn2:incoming>SequenceFlow_20</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:scriptTask id="ScriptTask_5" name="Inicio">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+var vInternet = false;&#xD;
+var bExiste = false;&#xD;
+var vHoy = new Date();&#xD;
+&#xD;
+var NexusPCC = {Services:[]};&#xD;
+var paqueteY = {};&#xD;
+var FechaPI = new Date();    &#xD;
+var FechaPF = new Date();&#xD;
+var IDs = [];&#xD;
+var productsID = [];&#xD;
+var IlimitadosJ = [];&#xD;
+var APP_FACEBOOK = '';&#xD;
+var APP_CLASH_OF_CLANS ='';&#xD;
+var APP_CLASH_ROYALE = '';&#xD;
+var APP_INSTAGRAM = '';&#xD;
+var APP_POKEMON_GO = '';&#xD;
+var APP_WHATSAPP = '';&#xD;
+var APP_YOUTUBE = '';&#xD;
+&#xD;
+BILLCYCLEDAY = '7';&#xD;
+&#xD;
+var Jproductos = [{&#xD;
+        &quot;ProductID&quot;: 353,&#xD;
+        &quot;Name&quot;:&quot;ILI-353&quot;,&#xD;
+        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 3,&#xD;
+        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;&#xD;
+    },{&#xD;
+        &quot;ProductID&quot;: 1103,&#xD;
+        &quot;Name&quot;:&quot;ILI-1103&quot;,&#xD;
+        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 3,&#xD;
+        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 355,&#xD;
+        &quot;Name&quot;:&quot;ILI-355&quot;,&#xD;
+        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 1105,&#xD;
+        &quot;Name&quot;:&quot;ILI-1105&quot;,&#xD;
+        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 403,&#xD;
+        &quot;Name&quot;:&quot;ILI-403&quot;,&#xD;
+        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 7,&#xD;
+        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 1113,&#xD;
+        &quot;Name&quot;:&quot;ILI-1113&quot;,&#xD;
+        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 7,&#xD;
+        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 416,&#xD;
+        &quot;Name&quot;:&quot;ILI-416&quot;,&#xD;
+        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 1115,&#xD;
+        &quot;Name&quot;:&quot;ILI-1115&quot;,&#xD;
+        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 720,&#xD;
+        &quot;Name&quot;:&quot;ILI-720&quot;,&#xD;
+        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 2,&#xD;
+        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 1078,&#xD;
+        &quot;Name&quot;:&quot;ILI-1078&quot;,&#xD;
+        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 2,&#xD;
+        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 721,&#xD;
+        &quot;Name&quot;:&quot;ILI-721&quot;,&#xD;
+        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 1079,&#xD;
+        &quot;Name&quot;:&quot;ILI-1079&quot;,&#xD;
+        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
+        &quot;ServiceID&quot;: 1,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 526,&#xD;
+        &quot;Name&quot;:&quot;ILI-526&quot;,&#xD;
+        &quot;PName&quot;: &quot;Youtube Ilimitado (L 28/1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_YOUTUBE&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 4,&#xD;
+        &quot;QNAME&quot; : &quot;APP_YOUTUBE Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 527,&#xD;
+        &quot;Name&quot;:&quot;ILI-527&quot;,&#xD;
+        &quot;PName&quot;: &quot;Clash of Clan Ilimitado (L 12/1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_CLASH_OF_CLANS&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 5,&#xD;
+        &quot;QNAME&quot; : &quot;APP_CLASH_OF_CLANS Quota&quot;&#xD;
+    },&#xD;
+    {&#xD;
+        &quot;ProductID&quot;: 528,&#xD;
+        &quot;Name&quot;:&quot;ILI-528&quot;,&#xD;
+        &quot;PName&quot;: &quot;Clash Royale Ilimitado (L 17/1 dia)&quot;,&#xD;
+        &quot;SRV&quot; : &quot;APP_CLASH_ROYALE&quot;,&#xD;
+        &quot;QInitial&quot; : 2147483645.00,&#xD;
+        &quot;ServiceID&quot;: 6,&#xD;
+        &quot;QNAME&quot; : &quot;APP_CLASH_ROYALE Quota&quot;&#xD;
+    }&#xD;
+]&#xD;
+&#xD;
+&#xD;
+var PaqueteM = //Modelo&#xD;
+    {&#xD;
+        SRVNAME: &quot;Name&quot;,&#xD;
+        P:&quot;ProductID&quot;,&#xD;
+        I:&quot;Start&quot;,&#xD;
+        V:&quot;Vigencia&quot;,&#xD;
+        Initial : &quot;QInitial&quot;,&#xD;
+        SRV: &quot;QNAME&quot;,&#xD;
+        Name: &quot;PName&quot;,&#xD;
+        ServiceID: &quot;ServiceID&quot;,&#xD;
+        ProductID: &quot;ProductID&quot;,&#xD;
+        QTANAME: &quot;QNAME&quot;,&#xD;
+        QTAVALUE_MB: &quot;QInitial&quot;,&#xD;
+        QTACONSUMPTION_MB: &quot;QConsumption&quot;,&#xD;
+        //QTABALANCE:&quot;QBalance&quot;,&#xD;
+        QTABALANCE_MB: &quot;QBalance&quot;,&#xD;
+        QTAPERCENTAGE: &quot;QBalanceP&quot;,&#xD;
+        SRVSTARTDATETIME: &quot;Start&quot;,&#xD;
+        SRVENDDATETIME: &quot;End&quot;,&#xD;
+        SRVISEXPIRED:&quot;Expired&quot;,&#xD;
+        SRVPRODUCTTYPE:&quot;Type&quot;,&#xD;
+        USRBILLCYCLEDATE: &quot;BillCycleDate&quot;&#xD;
+        //Expirado:&quot;Expired&quot;,&#xD;
+        //Clase: &quot;Class&quot;&#xD;
+    };&#xD;
+&#xD;
+&#xD;
+if(typeof TYPE == 'undefined'){&#xD;
+    var TYPE = 'INTERNET';&#xD;
+}&#xD;
+&#xD;
+if (TYPE == &quot;INTERNET&quot;) {&#xD;
+    vInternet = true;&#xD;
+}&#xD;
+&#xD;
+function parseCBSDate2(Texto) {&#xD;
+    var FechaD = new Date();&#xD;
+    var tAnio = Texto.substr(6, 4);&#xD;
+    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
+    var tMes = Number(Texto.substring(0, 2)) - 1;&#xD;
+    var tDia = Texto.substr(3, 2);&#xD;
+    var tHora = Texto.substr(11, 2);&#xD;
+    var tMinutos = Texto.substr(14, 2);&#xD;
+    var tSegundos = Texto.substr(17, 2);&#xD;
+&#xD;
+    FechaD.setFullYear(tAnio,tMes, tDia);&#xD;
+    //FechaD.setMonth(tMes, tDia);&#xD;
+    //FechaD.setDate( tDia);&#xD;
+    FechaD.setHours(tHora, tMinutos,tSegundos,0);&#xD;
+    //FechaD.setMinutes(tMinutos);&#xD;
+    //FechaD.setSeconds(tSegundos);&#xD;
+    return FechaD;&#xD;
+};&#xD;
+&#xD;
+function parseCBSDate(Texto) {&#xD;
+    var FechaD = new Date();&#xD;
+    var tAnio = Texto.substr(0, 4);&#xD;
+    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
+    var tMes = Number(Texto.substring(4, 6)) - 1;&#xD;
+    var tDia = Texto.substr(6, 2);&#xD;
+    var tHora = Texto.substr(8, 2);&#xD;
+    var tMinutos = Texto.substr(10, 2);&#xD;
+    var tSegundos = Texto.substr(12, 2);&#xD;
+&#xD;
+    FechaD.setFullYear(tAnio,tMes, tDia);&#xD;
+    //FechaD.setMonth(tMes, tDia);&#xD;
+    //FechaD.setDate( tDia);&#xD;
+    FechaD.setHours(tHora, tMinutos,tSegundos,0);&#xD;
+    //FechaD.setMinutes(tMinutos);&#xD;
+    //FechaD.setSeconds(tSegundos);&#xD;
+    return FechaD;&#xD;
+};&#xD;
+&#xD;
+function parseTimeCBS  (gTime) {&#xD;
+    var tTiempo = new Date();&#xD;
+    tTiempo.setTime(gTime);&#xD;
+    var Texto = parseDate2CBS(tTiempo);&#xD;
+    return Texto;&#xD;
+};&#xD;
+&#xD;
+function parseDate2CBS (Fecha) {&#xD;
+    var Texto = ' ';&#xD;
+    var tAnio = Fecha.getFullYear();&#xD;
+    var tMes = Fecha.getMonth() + 1;&#xD;
+    var tDia = Fecha.getDate();&#xD;
+    var tHora = Fecha.getHours();&#xD;
+    var tMinutos = Fecha.getMinutes();&#xD;
+    var tSegundos = Fecha.getSeconds();&#xD;
+    Texto = String(tAnio);&#xD;
+    if (tMes &lt; 10) Texto = Texto + '0';&#xD;
+    Texto = Texto +  String(tMes);&#xD;
+    if (tDia &lt; 10) Texto = Texto + '0';&#xD;
+    Texto = Texto +  String(tDia);&#xD;
+    if (tHora &lt; 10) Texto = Texto + '0';&#xD;
+    Texto = Texto +  String(tHora);&#xD;
+    if (tMinutos &lt; 10) Texto = Texto + '0';&#xD;
+    Texto = Texto +  String(tMinutos);    &#xD;
+    if (tSegundos &lt; 10) Texto = Texto + '0';&#xD;
+    Texto = Texto +  String(tSegundos);&#xD;
+    return Texto;&#xD;
+};&#xD;
+&#xD;
+function getObjects(obj, key, val, level) {&#xD;
+    var levelX = level;&#xD;
+    var indexY = 0;&#xD;
+    var objects = [];&#xD;
+&#xD;
+    for (var i in obj) {&#xD;
+        if (typeof obj[i] == 'object') {&#xD;
+            if (obj[i].key != undefined) {&#xD;
+                if (PaqueteM[obj[i].key] != undefined) {&#xD;
+                    paqueteY[PaqueteM[obj[i].key]] = obj[i].value;&#xD;
+                };&#xD;
+            }&#xD;
+            objects = objects.concat(getObjects(obj[i], key, val, levelX + 1)); //Busca en Hijos&#xD;
+            if (level == 1) {&#xD;
+                if (paqueteY[PaqueteM[key]] != undefined) {&#xD;
+                    if (val.length > 0) { //Se sale sí ya encontró&#xD;
+                        paqueteY.index = val.indexOf(paqueteY[PaqueteM[key]])&#xD;
+                    };&#xD;
+                    if (paqueteY.index >= 0  || val.length  == 0 ) {&#xD;
+                        objects.push(paqueteY); //Inserta en arreglo a devolver&#xD;
+                    }&#xD;
+                }&#xD;
+                paqueteY = {}; //Limpia Paquete Formado&#xD;
+            };&#xD;
+         } else {&#xD;
+               if (PaqueteM.hasOwnProperty(i) ) {&#xD;
+                    paqueteY[PaqueteM[i]] = obj[i];&#xD;
+                };&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return objects;&#xD;
+};&#xD;
+&#xD;
+function calPorcentaje(fechaI, fechaF) {&#xD;
+    var dif_H = 0;&#xD;
+    var dif_F = 0;&#xD;
+    var porcentaje = 0;&#xD;
+    if ( vHoy > fechaI) {&#xD;
+        if (vHoy > fechaF) {&#xD;
+            dif_H = fechaF.getTime() - fechaI.getTime();&#xD;
+        } else {&#xD;
+            dif_H = vHoy.getTime() - fechaI.getTime();&#xD;
+        }&#xD;
+    } else {&#xD;
+        dif_H = 0;&#xD;
+    };&#xD;
+    if ( fechaF > fechaI) {&#xD;
+        dif_F = fechaF.getTime() - fechaI.getTime();&#xD;
+    } else {&#xD;
+        dif_F = 0;&#xD;
+    }&#xD;
+    if ( dif_F > 0) {&#xD;
+        porcentaje  = Number(100 - (dif_H / dif_F * 100) ).toFixed(2);&#xD;
+    } else {&#xD;
+        porcentaje = 100.0;    &#xD;
+    }        &#xD;
+    return Number(porcentaje).toFixed(2);&#xD;
+}&#xD;
+&#xD;
+function valorMB(ValorT) {&#xD;
+    var VarloN = Number(ValorT);&#xD;
+    ValorN = VarloN > 1024  ? Number((VarloN / 1024).toFixed(2)) : Number((VarloN).toFixed(2));&#xD;
+    return ValorN&#xD;
+}&#xD;
+&#xD;
+function extiende(obj, index) {&#xD;
+    var dif_H = 0;&#xD;
+    var dif_F = 0;&#xD;
+    obj.Expired = obj.Expired.toUpperCase() == 'TRUE';&#xD;
+    obj.QInitial = Number(obj.QInitial).toFixed(2);&#xD;
+    obj.QBalance = Number(obj.QBalance).toFixed(2);&#xD;
+    obj.QConsumption = Number(obj.QConsumption).toFixed(2);&#xD;
+    obj.QBalanceP = Number(obj.QBalanceP).toFixed(2);&#xD;
+    if (obj.Type == 'PL' ) {&#xD;
+        obj.Start = new BillCycle(BILLCYCLEDAY);&#xD;
+        obj.Start = parseDate2CBS(obj.Start.fecha);&#xD;
+        //obj.Start = '20170707000000'&#xD;
+&#xD;
+    };&#xD;
+&#xD;
+    if (obj.Type == 'ILI' ) {&#xD;
+        bExiste = true;&#xD;
+        FechaSI = parseCBSDate(String(obj.Start));&#xD;
+        FechaSF = parseCBSDate(String(obj.End));&#xD;
+        //if (FechaSF > vHoy) {&#xD;
+        //    obj.Class = &quot;Vigente&quot;&#xD;
+        //} else {&#xD;
+        //    obj.Class = &quot;Vencido&quot;&#xD;
+        //}&#xD;
+        obj.Class = &quot;Vencido&quot;&#xD;
+        obj.QBalanceP = calPorcentaje(FechaSI, FechaSF);&#xD;
+        addChildren(obj);&#xD;
+        //Eliminar campos que no deben ir&#xD;
+        delete obj.Type;&#xD;
+        delete obj.index;&#xD;
+    };&#xD;
+}&#xD;
+&#xD;
+function addChildren (servicioX) {&#xD;
+    //Productos que tienen SRVNAME&#xD;
+    Products = getObjects(Jproductos, &quot;SRV&quot;, [servicioX.Name], 1);&#xD;
+    IDs = [];&#xD;
+    productsID = [];&#xD;
+    for (var PID in Products) {&#xD;
+        //Concatenar Productos del mismo servicio&#xD;
+        IDs.push(Products[PID].ProductID);&#xD;
+        productsID.push(Products[PID]);&#xD;
+    }&#xD;
+    if (IDs.length > 0) {&#xD;
+        Hijos = getObjects(IlimitadosJ, &quot;P&quot;, IDs, 1);&#xD;
+        Child = false;&#xD;
+        for (var H in Hijos) {&#xD;
+            if (H == 0) {&#xD;
+                servicioX.Child = [];&#xD;
+            }&#xD;
+            //TODO: Vigilar que Hijo esté entre las fechas de Servicio&#xD;
+            FechaPI = parseCBSDate(String(Hijos[H].Start))&#xD;
+            FechaPF.setTime(FechaPI.getTime()+(Hijos[H].Vigencia * 60 * 1000));&#xD;
+            if (FechaPF >= FechaSI) {&#xD;
+                Child = true;&#xD;
+                //Agregar Campos del Child, similar al Padre, Se debe usar Servicio?&#xD;
+                Hijos[H].Name = productsID[Hijos[H].index].PName&#xD;
+                if (FechaPF > vHoy) {&#xD;
+                    Hijos[H].Expired = false;&#xD;
+                    if (FechaPI > vHoy) {&#xD;
+                        Hijos[H].Class = &quot;Pendiente&quot;&#xD;
+                    } else {&#xD;
+                        Hijos[H].Class = &quot;Vigente&quot;&#xD;
+                    }&#xD;
+                } else {&#xD;
+                    Hijos[H].Class = &quot;Vencido&quot;&#xD;
+                    Hijos[H].Expired = true;&#xD;
+                }       &#xD;
+                Hijos[H].QNAME = servicioX.QNAME&#xD;
+                Hijos[H].QBalanceP = calPorcentaje(FechaPI, FechaPF);&#xD;
+                Hijos[H].QBalance = servicioX.QBalance;&#xD;
+                Hijos[H].QInitial = servicioX.QInitial;&#xD;
+                Hijos[H].Start = parseTimeCBS(FechaPI.getTime());&#xD;
+                Hijos[H].End = parseTimeCBS(FechaPF.getTime());&#xD;
+                Hijos[H].QConsumption = servicioX.QConsumption;&#xD;
+                //eliminar Campos que no se usan&#xD;
+                delete Hijos[H].ProductID;&#xD;
+                delete Hijos[H].Vigencia;&#xD;
+                delete Hijos[H].index;&#xD;
+                servicioX.Child.push(Hijos[H]);&#xD;
+            }&#xD;
+        }&#xD;
+        if (!Child) { // No tiene hijos&#xD;
+            delete servicioX.Child;&#xD;
+        }&#xD;
+    }&#xD;
+&#xD;
+}&#xD;
+&#xD;
+&#xD;
+function extiendeH(obj) {&#xD;
+    obj.Expired = true;&#xD;
+    //obj.QInitial = Number(obj.QInitial).toFixed(2);&#xD;
+    //obj.QBalance = Number(obj.QBalance).toFixed(2);&#xD;
+    //obj.QConsumption = Number(obj.QConsumption).toFixed(2);&#xD;
+    obj.QInitial = valorMB(obj.QInitial);//Number(obj.QInitial).toFixed(2);&#xD;
+    obj.QBalance = valorMB(obj.QBalance);//Number(obj.QBalance).toFixed(2);&#xD;
+    obj.QConsumption = valorMB(obj.QInitial);//Number(obj.QConsumption).toFixed(2);&#xD;	
+    obj.QBalanceP = (obj.QBalance / obj.QInitial * 100).toFixed(2);&#xD;
+}&#xD;
+&#xD;
+&#xD;
+function sortByValue(jsObj){&#xD;
+      var sortedArray = [];&#xD;
+      for(var i in jsObj)&#xD;
+      {&#xD;
+        sortedArray.push([jsObj[i].Id, jsObj[i]]);&#xD;
+    }&#xD;
+    return sortedArray.sort();&#xD;
+}&#xD;
+&#xD;
+function parseMSDate(Texto) {&#xD;
+    var FechaD = new Date();&#xD;
+    var tAnio = Texto.substr(6, 4);&#xD;
+    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
+    var tMes = Number(Texto.substring(0, 2)) - 1;&#xD;
+    var tDia = Texto.substr(3, 2);&#xD;
+    var tHora = Texto.substr(11, 2);&#xD;
+    var tMinutos = Texto.substr(14, 2);&#xD;
+    var tSegundos = Texto.substr(17, 2);&#xD;
+&#xD;
+    FechaD.setFullYear(tAnio);&#xD;
+    FechaD.setMonth(tMes);&#xD;
+    FechaD.setDate(tDia);&#xD;
+    FechaD.setHours(tHora);&#xD;
+    FechaD.setMinutes(tMinutos);&#xD;
+    FechaD.setSeconds(tSegundos);&#xD;
+    return FechaD;&#xD;
+};&#xD;
+&#xD;
+&#xD;
+function BillCycle(Day) {&#xD;
+    if (!isNaN(Day)) {&#xD;
+        this.day = Day&#xD;
+        if ((this.day > 31) || (this.day &lt; 1)) {&#xD;
+            this.day = 1;&#xD;
+        }&#xD;
+        this.fecha = addMonth(vHoy.getTime() ,this.day);&#xD;
+    }&#xD;
+}&#xD;
+&#xD;
+&#xD;
+function lastDay (tiempoX) {&#xD;
+  var fechaT = new Date()&#xD;
+  fechaT.setTime(tiempoX)&#xD;
+  fechaT.setDate(1) //Set al dia 1 del mes&#xD;
+  fechaT.setMonth(fechaT.getMonth() + 1) &#xD;
+  fechaT.setDate(0) //Pone el ultimo dia del mes anterior&#xD;
+  return Number(fechaT.getDate())&#xD;
+}&#xD;
+&#xD;
+function addMonth (tiempoX, diaX) {&#xD;
+  var fechaX = new Date()&#xD;
+  var fechaT = new Date()&#xD;
+  var lastT = 0&#xD;
+    &#xD;
+  fechaX.setTime(tiempoX)&#xD;
+  fechaT.setTime(fechaX.getTime())&#xD;
+  lastT = lastDay(fechaT.getTime())&#xD;
+  if (lastT >= diaX) {&#xD;
+    fechaT.setDate(diaX) //Elevar al dia del corte&#xD;
+    if (fechaT &lt;= fechaX) {&#xD;
+        fechaT.setDate(lastT) //Elevar al ultimo dia del mes&#xD;
+        fechaT.setDate(fechaT.getDate() + 1) //Sumar 1 dia para pasar al sigiuente Mes&#xD;
+        if (diaX > 1 ) {&#xD;
+          fechaT = addMonth(fechaT.getTime(), diaX) //Sumar 1 mes&#xD;
+        }&#xD;
+    //} else {&#xD;
+    //  fechaT.setUTCDate(lastT) // Dejarla en el ultimo de este mes&#xD;
+    }&#xD;
+  }&#xD;
+  return fechaT&#xD;
+}&#xD;
+&#xD;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="StartEvent_1" targetRef="ScriptTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ScriptTask_5" targetRef="ServiceTask_7"/>
+    <bpmn2:endEvent id="EndEvent_3" name="End Event 1">
+      <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:serviceTask id="ServiceTask_2" name="PCCGetSubscriberAllInfTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_2">
+        <bpmn2:dataInput id="DataInput_4" name="USR_IDENTIFIER"/>
+        <bpmn2:dataInput id="DataInput_5" name="TYPE"/>
+        <bpmn2:dataInput id="DataInput_6" name="PCCGetSubscriberAllInfTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_5" name="JSON"/>
+        <bpmn2:dataOutput id="DataOutput_6" name="errorCode"/>
+        <bpmn2:dataOutput id="DataOutput_7" name="message"/>
+        <bpmn2:dataOutput id="DataOutput_8" name="platformError"/>
+        <bpmn2:inputSet id="InputSet_3" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_3" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_6</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_7</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_8</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>DataInput_4</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">'504' + subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>DataInput_5</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">'TRUE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn2:targetRef>DataInput_6</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_10">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_5">
+        <bpmn2:sourceRef>DataOutput_5</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_11">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_22">DataOutput_39</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">vPaqInfo</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_6">
+        <bpmn2:sourceRef>DataOutput_6</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_12">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_24">DataOutput_13</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_25">vErrorCodePcc</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_7">
+        <bpmn2:sourceRef>DataOutput_7</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_56">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_26">DataOutput_15</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_27">vMessageErrorPcc</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_8">
+        <bpmn2:sourceRef>DataOutput_8</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_13">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_28">DataOutput_16</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">vPlatformErrorPcc</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_5" name="Historico" gatewayDirection="Diverging" default="SequenceFlow_11">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:serviceTask id="ServiceTask_4" name="MasterStatusGetSubscriberProfileHistoryTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_4">
+        <bpmn2:dataInput id="DataInput_9" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_10" name="PROFILE"/>
+        <bpmn2:dataOutput id="DataOutput_14" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_6" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_10</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_9</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_6" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_14</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_9">
+        <bpmn2:targetRef>DataInput_9</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_21">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_44">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_45">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_10">
+        <bpmn2:targetRef>DataInput_10</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_22">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_46">'64'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_14">
+        <bpmn2:sourceRef>DataOutput_14</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_23">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_48">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_49">vMasterT</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_67">vInternet</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:scriptTask id="ScriptTask_6" name="Historico">
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_20</bpmn2:outgoing>
+      <bpmn2:script>&#xD;
+var MasterM =&#xD;
+{ &#xD;
+&#xD;
+    &quot;QUOTA_NAME&quot;: &quot;QNAME&quot;,&#xD;
+    &quot;QUOTA_INITIAL_VALUE&quot;: &quot;QInitial&quot;,&#xD;
+    &quot;QUOTA_CONSUMPTION&quot;: &quot;QConsumption&quot;,&#xD;
+    &quot;QUOTA_BALANCE&quot;: &quot;QBalance&quot;,&#xD;
+    &quot;QBalance&quot;: &quot;QBalanceP&quot;,&#xD;
+    &quot;SERVICE_NAME&quot;:&quot;Name&quot;,&#xD;
+    &quot;SERVICE_START_TIME&quot; : &quot;Start&quot;,&#xD;
+    &quot;SERVICE_END_TIME&quot; : &quot;End&quot;&#xD;
+    };&#xD;
+&#xD;
+&#xD;
+&#xD;
+var RegistroJ = {};&#xD;
+var RegistrosX = {};&#xD;a
+var IdX = '';&#xD;
+var Hijos = [];&#xD;
+var formado = [];&#xD;
+var ILIMITADOS = ['APP_FACEBOOK','APP_YOUTUBE','APP_WHATSAPP','APP_INSTAGRAM','APP_CLASH_OF_CLANS','APP_CLASH_ROYALE','APP_POKEMON_GO']&#xD;
+&#xD;
+if (typeof vMasterT != undefined) {&#xD;
+    MasterJ = JSON.parse(vMasterT);&#xD;
+    RegistrosX = MasterJ.subscriberProfileDetail[0].attributes.attributeResponse;&#xD;
+    &#xD;
+    for (var a in RegistrosX) {&#xD;
+        if (RegistrosX[a].name == 'SERVICE_END_TIME' || RegistrosX[a].name == 'SERVICE_START_TIME' ) {&#xD;
+            RegistrosX[a].value = Number(parseTimeCBS(parseCBSDate2(RegistrosX[a].value).getTime()));&#xD;
+        };&#xD;
+&#xD;
+        if (MasterM[RegistrosX[a].name] != undefined) {&#xD;
+            RegistrosX[a].name = MasterM[RegistrosX[a].name];&#xD;
+        };&#xD;
+        formado.push([RegistrosX[a].transactionId, {name: RegistrosX[a].name, value: RegistrosX[a].value} ]);&#xD;
+    };&#xD;
+    formado.sort();&#xD;
+    for (var a in formado) {&#xD;
+        if (IdX != formado[a][0]) {&#xD;
+            IdX = formado[a][0];&#xD;
+            if (a>0) {&#xD;
+                NexusPCC.Services.push(RegistroJ);&#xD;
+                extiendeH(RegistroJ);&#xD;
+            }&#xD;
+            RegistroJ = {};&#xD;
+        }&#xD;
+        RegistroJ[formado[a][1].name] = formado[a][1].value;&#xD;
+    };&#xD;
+    extiendeH(RegistroJ);&#xD;
+    NexusPCC.Services.push(RegistroJ);&#xD;
+&#xD;
+}&#xD;
+//Agregar Ilimitados&#xD;
+&#xD;
+for (var PID in Jproductos) {&#xD;
+    IDs.push(Jproductos[PID].ProductID);&#xD;
+    productsID.push(Jproductos[PID]);&#xD;
+}&#xD;
+&#xD;
+if (IDs.length > 0) {&#xD;
+    for (var i in ILIMITADOS) {&#xD;
+        if ((eval(ILIMITADOS[i]) != undefined)  &amp;&amp; eval(ILIMITADOS[i]).length > 0) {&#xD;
+            IlimitadosJ = JSON.parse(eval(ILIMITADOS[i]));&#xD;
+            Hijos = getObjects(IlimitadosJ, &quot;P&quot;, IDs, 1);&#xD;
+            for (var H in Hijos) {&#xD;
+                FechaPI = parseCBSDate(String(Hijos[H].Start))&#xD;
+                FechaPF.setTime(FechaPI.getTime()+(Hijos[H].Vigencia * 60 * 1000));&#xD;
+                if (FechaPF &lt; vHoy) {&#xD;
+                    Hijos[H].Name =  &quot;ILI-&quot; + productsID[Hijos[H].index].ProductID;&#xD;
+                    Hijos[H].QNAME  = productsID[Hijos[H].index].QNAME&#xD;
+                    Hijos[H].End = parseTimeCBS(FechaPF.getTime()); &#xD;
+                    Hijos[H].QBalanceP = &quot;0&quot;;&#xD;
+                    Hijos[H].QBalance = &quot;0.00&quot;;&#xD;
+                    Hijos[H].QInitial = productsID[Hijos[H].index].QInitial;&#xD;
+                    Hijos[H].QConsumption = Hijos[H].QInitial;&#xD;
+                    Hijos[H].Expired = true;&#xD;
+                    NexusPCC.Services.push(Hijos[H]);&#xD;
+                } else {&#xD;
+                    break;&#xD;
+                }&#xD;
+&#xD;
+            }&#xD;
+        }&#xD;
+    }        &#xD;
+}&#xD;
+// Ordenado descendente&#xD;
+NexusPCC.Services.sort(function(a, b) {&#xD;
+    return a.Start &lt; b.Start;&#xD;
+});&#xD;
+NexusPCC.Services.sort();&#xD;
+&#xD;
+SERVICES = JSON.stringify(NexusPCC);&#xD;
+//console.log(JSON.stringify(NexusPCC));&#xD;
+&#xD;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:scriptTask id="ScriptTask_9" name="ExtenderC">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
+      <bpmn2:script>var FechaSI = new Date();
+
+var FechaSF = new Date();
+
+var servicios = [];
+
+var Products = [];
+
+
+
+var quotas =[];
+
+var ServiciosPCC;
+
+var Bill
+
+
+
+
+
+
+
+
+
+
+
+
+
+if(typeof vPaqInfo != 'undefined'){
+
+    ServiciosPCC = JSON.parse(vPaqInfo);
+
+    if (ServiciosPCC.getSubscriberAllInfResponse.result.resultCode == 0) {
+
+        servicios = getObjects(ServiciosPCC.getSubscriberAllInfResponse.result.subscriber,&quot;USRBILLCYCLEDATE&quot;,[],1 );
+
+        //Bill = new BillCycle(servicios[0].BillCycleDate)
+
+        BILLCYCLEDAY =  String(servicios[0].BillCycleDate) //Bill.fecha        
+
+
+
+        servicios = getObjects(ServiciosPCC.getSubscriberAllInfResponse.result.subscribedService, &quot;SRVNAME&quot;,  [], 1);
+
+        for (var i in servicios) {
+
+            Quotas = getObjects(ServiciosPCC.getSubscriberAllInfResponse.result.subscriberQuota, &quot;SRVNAME&quot;, [servicios[i].Name], 1);
+
+            if (Quotas != undefined) {
+
+                for (var key in Quotas[0]) {
+
+                    servicios[i][key] = Quotas[0][key];
+
+                }
+
+            }
+
+            if (servicios[i].Type == 'ILI') {
+
+                if ((eval(servicios[i].Name) != undefined)  &amp;&amp; eval(servicios[i].Name).length > 0) {
+
+                    IlimitadosJ = JSON.parse(eval(servicios[i].Name));
+
+                } else {
+
+                    IlimitadosJ = []
+
+                }
+
+            } else {
+
+                IlimitadosJ = []
+
+            }
+
+            extiende(servicios[i], i); //Agrega campos
+			
+						
+			if (servicios[i].Name != 'Base_Service_OCS') {
+				NexusPCC.Services.push(servicios[i]);
+			}	
+
+        };
+
+    }
+
+}
+
+paqueteY = {};
+
+//********************************************* */
+
+SERVICES = JSON.stringify(NexusPCC);</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_20" sourceRef="ScriptTask_6" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_21" sourceRef="ScriptTask_9" targetRef="EndEvent_3"/>
+    <bpmn2:serviceTask id="ServiceTask_7" name="MasterStatusGetSubscriberProfileTask" implementation="##WebService">
+      <bpmn2:extensionElements>
+        <ext:style ext:shapeBackground="#0080ff"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_21">
+        <bpmn2:dataInput id="DataInput_12" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_15" name="PROFILE"/>
+        <bpmn2:dataOutput id="DataOutput_41" name="YOUTUBE"/>
+        <bpmn2:dataOutput id="DataOutput_42" name="FACEBOOK"/>
+        <bpmn2:dataOutput id="DataOutput_43" name="INSTAGRAM"/>
+        <bpmn2:dataOutput id="DataOutput_44" name="CLANS"/>
+        <bpmn2:dataOutput id="DataOutput_45" name="ROYALE"/>
+        <bpmn2:dataOutput id="DataOutput_46" name="POKEMON"/>
+        <bpmn2:dataOutput id="DataOutput_47" name="WHATSAPP"/>
+        <bpmn2:inputSet id="InputSet_8" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_15</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_12</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_8" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_41</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_42</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_43</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_44</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_45</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_46</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_47</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_12">
+        <bpmn2:targetRef>DataInput_12</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_48">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_114">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_115">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_15">
+        <bpmn2:targetRef>DataInput_15</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_57">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_116">'90'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_117">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_41">
+        <bpmn2:sourceRef>DataOutput_41</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_58">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_118">DataOutput_51</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_119">APP_YOUTUBE</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_42">
+        <bpmn2:sourceRef>DataOutput_42</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_59">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_120">DataOutput_52</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_121">APP_FACEBOOK</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_43">
+        <bpmn2:sourceRef>DataOutput_43</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_60">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_122">DataOutput_53</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_123">APP_INSTAGRAM</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_44">
+        <bpmn2:sourceRef>DataOutput_44</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_61">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_124">DataOutput_54</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_125">APP_CLASH_OF_CLANS</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_45">
+        <bpmn2:sourceRef>DataOutput_45</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_62">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_126">DataOutput_56</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_127">APP_CLASH_ROYALE</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_46">
+        <bpmn2:sourceRef>DataOutput_46</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_63">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_128">DataOutput_57</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_129">APP_POKEMON_GO</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_47">
+        <bpmn2:sourceRef>DataOutput_47</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_64">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_130">DataOutput_58</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_131">APP_WHATSAPP</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ServiceTask_7" targetRef="ExclusiveGateway_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="ServiceTask_4" targetRef="ScriptTask_6"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ServiceTask_2" targetRef="ScriptTask_9"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Consulta0101">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="226.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="68.0" x="210.0" y="36.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="142.0" y="536.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="128.0" y="572.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_5">
+        <dc:Bounds height="50.0" width="110.0" x="189.0" y="80.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_25" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="29.0" x="229.0" y="97.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="322.0" y="586.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="308.0" y="622.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="390.0" y="299.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="95.0" x="397.0" y="301.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="219.0" y="274.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="49.0" x="219.0" y="324.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_2" bpmnElement="ServiceTask_4">
+        <dc:Bounds height="50.0" width="161.0" x="80.0" y="362.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="142.0" x="89.0" y="364.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_6">
+        <dc:Bounds height="50.0" width="110.0" x="105.0" y="460.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_27" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="49.0" x="135.0" y="477.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_9">
+        <dc:Bounds height="50.0" width="110.0" x="285.0" y="491.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_29" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="57.0" x="311.0" y="508.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_6" bpmnElement="ServiceTask_7">
+        <dc:Bounds height="50.0" width="110.0" x="189.0" y="180.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="101.0" x="193.0" y="182.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_4">
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="36.0"/>
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="80.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ServiceTask_6">
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="130.0"/>
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="180.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ServiceTask_2">
+        <di:waypoint xsi:type="dc:Point" x="219.0" y="299.0"/>
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="299.0"/>
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="362.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="269.0" y="299.0"/>
+        <di:waypoint xsi:type="dc:Point" x="323.0" y="299.0"/>
+        <di:waypoint xsi:type="dc:Point" x="323.0" y="315.0"/>
+        <di:waypoint xsi:type="dc:Point" x="390.0" y="315.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_20" bpmnElement="SequenceFlow_20" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="510.0"/>
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="536.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_32" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="541.0"/>
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="586.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_33" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ServiceTask_6" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="230.0"/>
+        <di:waypoint xsi:type="dc:Point" x="244.0" y="274.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="412.0"/>
+        <di:waypoint xsi:type="dc:Point" x="160.0" y="460.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="390.0" y="331.0"/>
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="331.0"/>
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="491.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
