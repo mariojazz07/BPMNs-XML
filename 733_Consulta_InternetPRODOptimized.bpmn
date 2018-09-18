@@ -2551,7 +2551,7 @@ function getActiveApps(pArray){
       <bpmn2:dataInputAssociation id="DataInputAssociation_19">
         <bpmn2:targetRef>DataInput_19</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_31">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_68">'117'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_68">'118'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_66">DataInput_19</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -2587,6 +2587,7 @@ function getActiveApps(pArray){
         <bpmn2:dataInput id="DataInput_29" name="ExecuteOrderTask__retryPolicyNumber"/>
         <bpmn2:dataOutput id="DataOutput_2" name="BPMN_RESPONSE_CODE"/>
         <bpmn2:dataOutput id="DataOutput_4" name="BPMN_RESPONSE_MESSAGE"/>
+        <bpmn2:dataOutput id="DataOutput_11" name="JSON_RESPONSE"/>
         <bpmn2:inputSet id="InputSet_2" name="Input Set 107">
           <bpmn2:dataInputRefs>DataInput_21</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_22</bpmn2:dataInputRefs>
@@ -2600,6 +2601,7 @@ function getActiveApps(pArray){
         <bpmn2:outputSet id="OutputSet_1" name="Output Set 4">
           <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
           <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_11</bpmn2:dataOutputRefs>
         </bpmn2:outputSet>
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation id="DataInputAssociation_21">
@@ -2670,6 +2672,13 @@ function getActiveApps(pArray){
         <bpmn2:assignment id="Assignment_51">
           <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105">DataOutput_6</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_106">vBpmnResponseMessage</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_11">
+        <bpmn2:sourceRef>DataOutput_11</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_40">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_83">DataOutput_11</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_85">JSON_RESPONSE</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataOutputAssociation>
     </bpmn2:serviceTask>
