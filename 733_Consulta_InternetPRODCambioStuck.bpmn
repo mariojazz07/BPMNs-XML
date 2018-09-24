@@ -1,0 +1,3109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
+  <bpmn2:process id="ConsultaDatos2" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="EndEvent_1" name="End Event 1">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:serviceTask id="ServiceTask_2" name="PCCGetSubscriberAllInfTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_2">
+        <bpmn2:dataInput id="DataInput_4" name="USR_IDENTIFIER"/>
+        <bpmn2:dataInput id="DataInput_5" name="TYPE"/>
+        <bpmn2:dataInput id="DataInput_6" name="PCCGetSubscriberAllInfTask__failOverPolicy"/>
+        <bpmn2:dataInput id="DataInput_10" name="PCCGetSubscriberAllInfTask__retryPolicyNumber"/>
+        <bpmn2:dataOutput id="DataOutput_93" name="JSON"/>
+        <bpmn2:inputSet id="InputSet_3" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_10</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:inputSet id="InputSet_1" name="Input Set 1"/>
+        <bpmn2:outputSet id="OutputSet_3" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_93</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>DataInput_4</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_15">'504' + subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>DataInput_5</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">'TRUE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn2:targetRef>DataInput_6</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_10">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_10">
+        <bpmn2:targetRef>DataInput_10</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_5">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_14">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_93">
+        <bpmn2:sourceRef>DataOutput_93</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_113">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_229">DataOutput_93</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_231">vStrPcc</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_2" name="CbsFunctions">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
+      <bpmn2:script>function getJSON(strJson){&#xD;
+    var vExpr = '([b,c,s]+|[t*,n,s,(0-9)*]+|[v,(0-9)*]+):';&#xD;
+    var vNumExpr = '(&quot;[a-z]+&quot;:)([0-9]+)(\s*,|}|$)';&#xD;
+    var regEx;&#xD;
+    var numRegExp;&#xD;
+    var tmpJson = '';&#xD;
+&#xD;
+    if(typeof REG_EXP != 'undefined'){&#xD;
+        vExpr = REG_EXP;&#xD;
+    }&#xD;
+    &#xD;
+    regEx = new RegExp(vExpr, 'gi');&#xD;
+    numRegExp = new RegExp(vNumExpr, 'gmi');&#xD;
+    tmpJson = strJson.replace(regEx, '');&#xD;
+    tmpJson = tmpJson.replace(numRegExp, '$1&quot;$2&quot;$3');&#xD;
+    &#xD;
+    return JSON.parse(tmpJson);&#xD;
+}&#xD;
+&#xD;
+function getSupplementaryOfferings(validOfferings, jsonObj){&#xD;
+    var offeringObj;&#xD;
+    var supplementaryOfferings;&#xD;
+    var vItem;&#xD;
+    var vOfferingItem;&#xD;
+    var vOfferings = new Array();&#xD;
+    &#xD;
+    if(typeof(jsonObj.QueryCustomerInfoResultMsg) != 'undefined'){&#xD;
+        supplementaryOfferings = jsonObj.QueryCustomerInfoResultMsg.QueryCustomerInfoResult.Subscriber.SupplementaryOffering;&#xD;
+    }&#xD;
+    &#xD;
+    if(typeof(supplementaryOfferings) != 'undefined'){&#xD;
+        if(supplementaryOfferings instanceof Array){&#xD;
+            for(var i = 0; i &lt; supplementaryOfferings.length; i++){&#xD;
+                vItem = supplementaryOfferings[i];&#xD;
+                vOfferingItem = vItem.OfferingKey;&#xD;
+                if(typeof(vOfferingItem) != 'undefined'){&#xD;
+                    if(isValidOffering(validOfferings, vOfferingItem.OfferingID) || validOfferings == ''){&#xD;
+                        vOfferings.push(vItem);&#xD;
+                    }&#xD;
+                }&#xD;
+            }&#xD;
+        } else {&#xD;
+            vOfferingItem = supplementaryOfferings.OfferingKey;&#xD;
+            if(typeof(vOfferingItem) != 'undefined'){&#xD;
+                if(isValidOffering(validOfferings, vOfferingItem.OfferingID) || validOfferings == ''){&#xD;
+                    vOfferings.push(supplementaryOfferings);&#xD;
+                }&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return vOfferings;&#xD;
+}&#xD;
+&#xD;
+function getWalletByType(strWalletName, walletJson){&#xD;
+    var walletObj;&#xD;
+    var freeUnits;&#xD;
+    var vItem;&#xD;
+    &#xD;
+    if(typeof(walletJson.QueryFreeUnitResultMsg) != 'undefined'){&#xD;
+        freeUnits = walletJson.QueryFreeUnitResultMsg.QueryFreeUnitResult.FreeUnitItem;&#xD;
+    }&#xD;
+    &#xD;
+    if(typeof(freeUnits) != 'undefined'){&#xD;
+        if(freeUnits instanceof Array){&#xD;
+            for(var i = 0; i &lt; freeUnits.length; i++){&#xD;
+                vItem = freeUnits[i];&#xD;
+                if(vItem.FreeUnitType == strWalletName){&#xD;
+                    walletObj = vItem;&#xD;
+                    &#xD;
+                    break;&#xD;
+                }&#xD;
+            }&#xD;
+        } else {&#xD;
+            if(freeUnits.FreeUnitType == strWalletName){&#xD;
+                walletObj = freeUnits;&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return walletObj;&#xD;
+}&#xD;
+&#xD;
+function isValidOffering(validOfferings, offering){&#xD;
+    var flag = false;&#xD;
+    var tmpArray = validOfferings.split(',');&#xD;
+    &#xD;
+    for(var i = 0; i &lt; tmpArray.length; i++){&#xD;
+        if(tmpArray[i] == offering){&#xD;
+            flag = true;&#xD;
+            &#xD;
+            break;&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return flag;&#xD;
+}&#xD;
+&#xD;
+function trimExhaustedInstances(instances){&#xD;
+    var tmpInstances = new Array();&#xD;
+    var flag = false;&#xD;
+    &#xD;
+    if(instances instanceof Array){&#xD;
+        for(var i = 0; i &lt; instances.length; i++){&#xD;
+            if(typeof(instances[i].CurrentAmount) != 'undefined'){&#xD;
+                flag = true;&#xD;
+                if(new Number(instances[i].CurrentAmount) > 0){&#xD;
+                    tmpInstances.push(instances[i]);&#xD;
+                }&#xD;
+            }&#xD;
+        }&#xD;
+    } else {&#xD;
+        if(typeof(instances.CurrentAmount) != 'undefined'){&#xD;
+            flag = true;&#xD;
+            if(new Number(instances.CurrentAmount) > 0){&#xD;
+                tmpInstances.push(instances);&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    tmpInstances = flag ? tmpInstances : instances;&#xD;
+    &#xD;
+    return tmpInstances;&#xD;
+}&#xD;
+&#xD;
+function getSortedItems(itemArray){&#xD;
+    var sortedInstances = new Array();&#xD;
+    var tmpInstances = trimExhaustedInstances(itemArray);&#xD;
+    &#xD;
+    if(tmpInstances instanceof Array){&#xD;
+        if(tmpInstances.length > 0){&#xD;
+            sortedInstances = quickSort(tmpInstances, 0, (tmpInstances.length - 1));&#xD;
+        }&#xD;
+    } else{&#xD;
+        sortedInstances.push(tmpInstances);&#xD;
+    }&#xD;
+    &#xD;
+    return sortedInstances;&#xD;
+}&#xD;
+&#xD;
+function swap(items, firstIdx, secondIdx){&#xD;
+    var tmp = items[firstIdx];&#xD;
+    items[firstIdx] = items[secondIdx];&#xD;
+    items[secondIdx] = tmp;&#xD;
+    &#xD;
+    return items;&#xD;
+}&#xD;
+&#xD;
+function partition(items, pivot, left, right){&#xD;
+    var partitionIdx = left;&#xD;
+    var pivotValue = new Number(pivot.EffectiveTime);&#xD;
+    var itemI = 0;&#xD;
+    &#xD;
+    for(var i = left; i &lt; right; i++){&#xD;
+        itemI = new Number(items[i].EffectiveTime);&#xD;
+        &#xD;
+        if(itemI &lt; pivotValue){&#xD;
+            swap(items, i, partitionIdx);&#xD;
+            partitionIdx++;&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    swap(items, right, partitionIdx);&#xD;
+    &#xD;
+    return partitionIdx;&#xD;
+}&#xD;
+&#xD;
+function quickSort(items, left, right){&#xD;
+    var len = items.length;&#xD;
+    var pivot;&#xD;
+    var partitionIdx;&#xD;
+    &#xD;
+    if(len > 1){&#xD;
+        if(left &lt; right){&#xD;
+            pivot = items[right];&#xD;
+            partitionIdx = partition(items, pivot, left, right);&#xD;
+            &#xD;
+            //sort left and right&#xD;
+           quickSort(items, left, partitionIdx - 1);&#xD;
+           quickSort(items, partitionIdx + 1, right);&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return items;&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_4" name="SubscriberInfoByIdentityTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_4">
+        <bpmn2:dataInput id="DataInput_8" name="SUBPRIMARY_IDENTITY"/>
+        <bpmn2:dataInput id="DataInput_9" name="SubscriberInfoByIdentityTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_14" name="PRIMARY_OFFERINGID"/>
+        <bpmn2:dataOutput id="DataOutput_15" name="PAYMENT_MODE"/>
+        <bpmn2:dataOutput id="DataOutput_16" name="SUB_STATUS"/>
+        <bpmn2:dataOutput id="DataOutput_17" name="PRIMARY_OFFERING_STATUS"/>
+        <bpmn2:dataOutput id="DataOutput_18" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_6" name="Input Set 10">
+          <bpmn2:dataInputRefs>DataInput_8</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_9</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_6" name="Output Set 13">
+          <bpmn2:dataOutputRefs>DataOutput_14</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_15</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_16</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_17</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_18</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_8">
+        <bpmn2:targetRef>DataInput_8</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_21">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_41">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_42">DataInput_15</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_9">
+        <bpmn2:targetRef>DataInput_9</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_4">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_8">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2">DataInput_9</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_14">
+        <bpmn2:sourceRef>DataOutput_14</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_22">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_43">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_44">vPrimaryOffering</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_15">
+        <bpmn2:sourceRef>DataOutput_15</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_23">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_45">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_46">vPaymentMode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_16">
+        <bpmn2:sourceRef>DataOutput_16</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_24">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_48">vSubStatus</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_17">
+        <bpmn2:sourceRef>DataOutput_17</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_25">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_49">DataOutput_36</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_50">vPrimaryOfferingStatus</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_18">
+        <bpmn2:sourceRef>DataOutput_18</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_26">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_51">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_52">vStrOfferingInfo</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_4" name="PccFunctions">
+      <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:script>function processJson(strJsonInfo){&#xD;
+    var vSubscribedServices;&#xD;
+    var vSubscriberQuotas;&#xD;
+    var vSubscriber;&#xD;
+    var vJsonObj;&#xD;
+    var vDataObj = new Object();&#xD;
+    var vTmpObj = new Object();&#xD;
+    &#xD;
+    if(typeof strJsonInfo != 'undefined'){&#xD;
+        vJsonObj = JSON.parse(strJsonInfo);&#xD;
+        &#xD;
+        if(vJsonObj.getSubscriberAllInfResponse.result.resultCode == 0){&#xD;
+            vSubscriber = vJsonObj.getSubscriberAllInfResponse.result.subscriber;&#xD;
+            &#xD;
+            if(typeof vJsonObj.getSubscriberAllInfResponse.result.subscribedService != 'undefined'){&#xD;
+                vSubscribedServices = vJsonObj.getSubscriberAllInfResponse.result.subscribedService;&#xD;
+                vSubscriberQuotas = vJsonObj.getSubscriberAllInfResponse.result.subscriberQuota;&#xD;
+                &#xD;
+                if(vSubscribedServices instanceof Array){&#xD;
+                  for(var i = 0; i &lt; vSubscribedServices.length; i++){&#xD;
+                    vDataObj = setDataProperties(joinInfo(vSubscribedServices[i], vSubscriberQuotas), vDataObj);&#xD;
+                  }&#xD;
+                } else {&#xD;
+                  vDataObj = setDataProperties(joinInfo(vSubscribedServices, vSubscriberQuotas), vDataObj);&#xD;
+                }&#xD;
+            }&#xD;
+            &#xD;
+            vDataObj.User = joinInfo(undefined, undefined, vSubscriber);&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return vDataObj;&#xD;
+}&#xD;
+&#xD;
+function getAttribute(serviceItems, attribute){&#xD;
+    var attributeItem = {key: 'NA', value: 'NA'};&#xD;
+    &#xD;
+    if(typeof serviceItems != 'undefined'){&#xD;
+        for(var i = 0; i &lt; serviceItems.attribute.length; i++){&#xD;
+            if(serviceItems.attribute[i].key == attribute){&#xD;
+                attributeItem = serviceItems.attribute[i];&#xD;
+                &#xD;
+                break;&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return attributeItem;&#xD;
+}&#xD;
+&#xD;
+function getQuota(quotaItems, serviceName){&#xD;
+    var quotaItem = new Array();&#xD;
+    &#xD;
+    if(typeof(quotaItems) != 'undefined'){&#xD;
+        if(quotaItems instanceof Array){&#xD;
+            for(var i = 0; i &lt; quotaItems.length; i++){&#xD;
+                if(getAttribute(quotaItems[i], 'SRVNAME').value == serviceName){&#xD;
+                    quotaItem.push(quotaItems[i]);&#xD;
+                }&#xD;
+            }&#xD;
+        } else {&#xD;
+            if(getAttribute(quotaItems, 'SRVNAME').value == serviceName){&#xD;
+                quotaItem.push(quotaItems);&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return quotaItem;&#xD;
+}&#xD;
+&#xD;
+function getUniqueQuota(quotaItems){&#xD;
+    var quotaItem;&#xD;
+    &#xD;
+    if(typeof(quotaItems) != 'undefined'){&#xD;
+        if(quotaItems instanceof Array){&#xD;
+            for(var i = 0; i &lt; quotaItems.length; i++){&#xD;
+                if(quotaBL.toUpperCase().indexOf(getAttribute(quotaItems[i], 'QTANAME').value.toUpperCase()) &lt; 0){&#xD;
+                    quotaItem = quotaItems[i];&#xD;
+                    &#xD;
+                    break;&#xD;
+                }&#xD;
+            }&#xD;
+        } else {&#xD;
+            if(quotaBL.toUpperCase().indexOf(getAttribute(quotaItems, 'QTANAME').value.toUpperCase()) &lt; 0){&#xD;
+                quotaItem = quotaItems;&#xD;
+            }&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return quotaItem;&#xD;
+}&#xD;
+&#xD;
+function joinInfo(serviceItem, quotaItem, subscriberItem){&#xD;
+    var tmpObj = new Object();&#xD;
+    var itemTmp;&#xD;
+    var quotaArray = new Array();&#xD;
+    var tmpQuotaArray = new Array();&#xD;
+    var quotaObj;&#xD;
+    var tmpQuota = new Object();&#xD;
+    &#xD;
+    tmpObj.ServiceName = getAttribute(serviceItem, 'SRVNAME').value;&#xD;
+    tmpObj.ProductName = getAttribute(serviceItem, 'SRVPRODUCTNAME').value;&#xD;
+    &#xD;
+    quotaArray = getQuota(quotaItem, tmpObj.ServiceName);&#xD;
+    &#xD;
+    itemTmp = getAttribute(serviceItem, 'SRVPRODUCTTYPE');&#xD;
+    tmpObj.ServiceType = tmpObj.ServiceName == 'Default_Service_Local' ? 'DEF' : itemTmp.value;&#xD;
+    &#xD;
+    itemTmp = getAttribute(serviceItem, 'SRVPRODUCTTYPEID');&#xD;
+    tmpObj.ServiceTypeId = itemTmp.value;&#xD;
+    tmpObj.ServiceExpired = getAttribute(serviceItem, 'SRVISEXPIRED').value;&#xD;
+    tmpObj.ServiceStartDate = getAttribute(serviceItem, 'SRVSTARTDATETIME').value;&#xD;
+    tmpObj.ServiceEndDate = getAttribute(serviceItem, 'SRVENDDATETIME').value;&#xD;
+    &#xD;
+    if(!plMultiQuota){&#xD;
+        if(quotaArray.length > 0){&#xD;
+            quotaObj = getUniqueQuota(quotaArray);&#xD;
+        }&#xD;
+        &#xD;
+        tmpObj.QuotaName = getAttribute(quotaObj, 'QTANAME').value;&#xD;
+        tmpObj.QuotaValue = getAttribute(quotaObj, 'QTAVALUE').value;&#xD;
+        tmpObj.QuotaBalance = getAttribute(quotaObj, 'QTABALANCE').value;&#xD;
+        tmpObj.QuotaConsumption = getAttribute(quotaObj, 'QTACONSUMPTION').value;&#xD;
+        tmpObj.QuotaValueMb = getAttribute(quotaObj, 'QTAVALUE_MB').value;&#xD;
+        tmpObj.QuotaBalanceMb = getAttribute(quotaObj, 'QTABALANCE_MB').value;&#xD;
+        tmpObj.QuotaConsumptionMb = getAttribute(quotaObj, 'QTACONSUMPTION_MB').value;&#xD;
+        tmpObj.QuotaPercentage = getAttribute(quotaObj, 'QTAPERCENTAGE').value;&#xD;
+        tmpObj.QuotaStatus = getAttribute(quotaObj, 'QTASTATUS').value;&#xD;
+        tmpObj.SubscriberBillCycle = getAttribute(subscriberItem, 'USRBILLCYCLEDATE').value;&#xD;
+    } else {&#xD;
+        &#xD;
+        if(tmpObj.ServiceType == 'PL'){&#xD;
+            &#xD;
+            for(var i = 0; i &lt; quotaArray.length; i++){&#xD;
+                tmpQuota.QuotaName = getAttribute(quotaArray[i], 'QTANAME').value;&#xD;
+                tmpQuota.QuotaValue = getAttribute(quotaArray[i], 'QTAVALUE').value;&#xD;
+                tmpQuota.QuotaBalance = getAttribute(quotaArray[i], 'QTABALANCE').value;&#xD;
+                tmpQuota.QuotaConsumption = getAttribute(quotaArray[i], 'QTACONSUMPTION').value;&#xD;
+                tmpQuota.QuotaValueMb = getAttribute(quotaArray[i], 'QTAVALUE_MB').value;&#xD;
+                tmpQuota.QuotaBalanceMb = getAttribute(quotaArray[i], 'QTABALANCE_MB').value;&#xD;
+                tmpQuota.QuotaConsumptionMb = getAttribute(quotaArray[i], 'QTACONSUMPTION_MB').value;&#xD;
+                tmpQuota.QuotaPercentage = getAttribute(quotaArray[i], 'QTAPERCENTAGE').value;&#xD;
+                tmpQuota.QuotaStatus = getAttribute(quotaArray[i], 'QTASTATUS').value;&#xD;
+                &#xD;
+                tmpQuotaArray.push(tmpQuota);&#xD;
+                tmpQuota = new Object();&#xD;
+            }&#xD;
+            &#xD;
+            tmpObj.Quotas = tmpQuotaArray;&#xD;
+        } else {&#xD;
+            if(quotaArray.length > 0){&#xD;
+                quotaObj = getUniqueQuota(quotaArray);&#xD;
+            }&#xD;
+            &#xD;
+            tmpObj.QuotaName = getAttribute(quotaObj, 'QTANAME').value;&#xD;
+            tmpObj.QuotaValue = getAttribute(quotaObj, 'QTAVALUE').value;&#xD;
+            tmpObj.QuotaBalance = getAttribute(quotaObj, 'QTABALANCE').value;&#xD;
+            tmpObj.QuotaConsumption = getAttribute(quotaObj, 'QTACONSUMPTION').value;&#xD;
+            tmpObj.QuotaValueMb = getAttribute(quotaObj, 'QTAVALUE_MB').value;&#xD;
+            tmpObj.QuotaBalanceMb = getAttribute(quotaObj, 'QTABALANCE_MB').value;&#xD;
+            tmpObj.QuotaConsumptionMb = getAttribute(quotaObj, 'QTACONSUMPTION_MB').value;&#xD;
+            tmpObj.QuotaPercentage = getAttribute(quotaObj, 'QTAPERCENTAGE').value;&#xD;
+            tmpObj.QuotaStatus = getAttribute(quotaObj, 'QTASTATUS').value;&#xD;
+            tmpObj.SubscriberBillCycle = getAttribute(subscriberItem, 'USRBILLCYCLEDATE').value;&#xD;
+        }&#xD;
+    }&#xD;
+    &#xD;
+    return tmpObj;&#xD;
+}&#xD;
+&#xD;
+function setDataProperties(objItem, dataItem){&#xD;
+    switch(objItem.ServiceType){&#xD;
+        case 'PAQ':&#xD;
+            dataItem.Packages = objItem;&#xD;
+            break;&#xD;
+        case 'SUS':&#xD;
+            dataItem.Subscriptions = objItem;&#xD;
+            break;&#xD;
+        case 'PL':&#xD;
+            dataItem.Plans = objItem;&#xD;
+            break;&#xD;
+        case 'APP':&#xD;
+            if(typeof dataItem.Applications == 'undefined'){&#xD;
+                dataItem.Applications = new Array();&#xD;
+            }&#xD;
+            dataItem.Applications.push(objItem);&#xD;
+            break;&#xD;
+        case 'ADD':&#xD;
+            if(typeof dataItem.Addons == 'undefined'){&#xD;
+                dataItem.Addons = new Array();&#xD;
+            }&#xD;
+            dataItem.Addons.push(objItem);&#xD;
+            break;&#xD;
+        case 'DEF':&#xD;
+            dataItem.DefaultService = objItem;&#xD;
+            break;&#xD;
+        case 'SUB':&#xD;
+            dataItem.User = objItem;&#xD;
+            break;&#xD;
+        default:&#xD;
+            if(typeof dataItem.Unbound == 'undefined'){&#xD;
+                dataItem.Unbound = new Array();&#xD;
+            }&#xD;
+            dataItem.Unbound.push(objItem);&#xD;
+    }&#xD;
+    &#xD;
+    return dataItem;&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_8" name="MasterStatusGetSubscriberProfileTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_27</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_8">
+        <bpmn2:dataInput id="DataInput_17" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_18" name="PROFILE"/>
+        <bpmn2:dataInput id="DataInput_2" name="MasterStatusGetSubscriberProfileTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_82" name="ESTADO"/>
+        <bpmn2:dataOutput id="DataOutput_12" name="OFFERING_ID"/>
+        <bpmn2:dataOutput id="DataOutput_13" name="PURCHASESEQ"/>
+        <bpmn2:inputSet id="InputSet_12" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_18</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_17</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_12" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_82</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_12</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_13</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_17">
+        <bpmn2:targetRef>DataInput_17</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_98">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_195">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_196">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_18">
+        <bpmn2:targetRef>DataInput_18</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_99">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_197">actProfileId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_198">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn2:targetRef>DataInput_2</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_3">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_82">
+        <bpmn2:sourceRef>DataOutput_82</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_100">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_199">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_200">susActive</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_12">
+        <bpmn2:sourceRef>DataOutput_12</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_19">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_53">DataOutput_12</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_55">vSusActiveOffer</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_13">
+        <bpmn2:sourceRef>DataOutput_13</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_20">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_56">DataOutput_13</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_58">vSusActivePurchaseSeq</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:serviceTask id="ServiceTask_10" name="QueryFreeUnitTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_10">
+        <bpmn2:dataInput id="DataInput_20" name="SUBPRIMARY_IDENTITY"/>
+        <bpmn2:dataInput id="DataInput_11" name="QueryFreeUnitTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_88" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_15" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_20</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_11</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_15" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_88</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_20">
+        <bpmn2:targetRef>DataInput_20</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_107">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_213">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_214">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_11">
+        <bpmn2:targetRef>DataInput_11</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_6">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_12">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">DataInput_11</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_88">
+        <bpmn2:sourceRef>DataOutput_88</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_108">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_215">DataOutput_17</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_216">vFreeUnitWallets</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_8" name="initValues">
+      <bpmn2:incoming>SequenceFlow_20</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+      <bpmn2:script>var STR_PAD_LEFT = 1;
+var STR_PAD_RIGHT = 2;
+var STR_PAD_BOTH = 3;
+var BPMN_RESPONSE_CODE = '100';
+var BPMN_RESPONSE_MESSAGE = 'Error durante el proceso.';
+var vSysDate = new Date();
+var strPackBalance = 'C_Internet_Pack';
+var strPlanBalance = 'C_Data_Include';
+var strSusBalance = 'C_Internet_Suscripcion';
+var strAddonBalance = 'C_Data_Add';
+var forCounter = 0;
+var doLoop = false;
+var vAddonProfile = '110';
+var plMultiQuota = false;
+var multiQuotasLst = 'NXS';
+var quotaBL = 'TEST_FUP_APP_FACEBOOK Quota';
+var vSkipBundle = false;
+var vSkipChannels = '30';
+var vUnifyAppsChannels = '30';
+var vUnifyApps = false;
+var vChannelPC = '30';
+var tSaltoL = '\n';
+var tLinea = tSaltoL + '************************************************************************' + tSaltoL;
+
+if (typeof (CHANNELS) != 'undefined') {
+    vSkipChannels = CHANNELS;
+}
+if (typeof (CHANNEL_PC) != 'undefined') {
+    vChannelPC = CHANNEL_PC;
+}
+if (typeof (CHANNELS_APP) != 'undefined') {
+    vUnifyAppsChannels = CHANNELS_APP;
+}
+if (typeof (QUOTA_BL) != 'undefined') {
+    quotaBL = QUOTA_BL;
+}
+if (typeof (MULTI_LST) != 'undefined') {
+    multiQuotasLst = MULTI_LST;
+}
+if (typeof (ORIGEN) != 'undefined') {
+    plMultiQuota = multiQuotasLst.toUpperCase().indexOf(ORIGEN.toUpperCase()) >= 0;
+}
+vSkipBundle = checkChannels(vSkipChannels);
+vUnifyApps = checkChannels(vUnifyAppsChannels);
+
+function checkChannels(channelLst) {
+    var chnnlArray = channelLst.split(',');
+    var flag = false;
+    for (var i = 0; i &lt; chnnlArray.length; i++) {
+        if (chnnlArray[i] == channelId) {
+            flag = true;
+            break;
+        }
+    }
+    return flag;
+}
+//Funcion a la cual se le manda un valor y le hace lpad o rpad con el caracter indicado y la longitud indicada
+function padStr(str, len, pad, dir) {
+    if (typeof (len) == 'undefined') {
+        var len = 0;
+    };
+    if (typeof (pad) == 'undefined') {
+        var pad = ' ';
+    };
+    if (typeof (dir) == 'undefined') {
+        var dir = STR_PAD_RIGHT;
+    };
+    if (len + 1 >= str.length) {
+        switch (dir) {
+            case STR_PAD_LEFT:
+                str = Array(len + 1 - str.length).join(pad) + str;
+                break;
+            case STR_PAD_BOTH:
+                var right = Math.ceil((padlen = len - str.length) / 2);
+                var left = padlen - right;
+                str = Array(left + 1).join(pad) + str + Array(right + 1).join(pad);
+                break;
+            default:
+                str = str + Array(len + 1 - str.length).join(pad);
+                break;
+        } // switch
+    }
+    return str;
+}
+//Convierte un valor texto a al formato yyyyMMddhhmiss
+function parseDateToStringCBS(date) {
+    var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    month = padStr(String(month), 2, '0', STR_PAD_LEFT);
+    var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
+    var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
+    var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
+    var format = year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds;
+    return format;
+}
+//Convierte un Time a un string de Date en formato yyyy-MM-ddThh:mm:ss.000-06:00
+function parseTimeToDate(date, timeZone) {
+    var strDate = parseDateToString(date);
+    strDate = timeZone ? strDate.replace(' ', 'T') + '.000-06:00' : strDate.replace(' ', 'T');
+    return strDate;
+}
+//Transforma un string con formato de fecha a un objeto Date
+function parseStringToDate(strDate) {
+    strDate = strDate.replace(/\D/g, ' ');
+    var dateArray = strDate.split(' ');
+    var year = dateArray[0];
+    var month = dateArray[1] - 1;
+    var day = dateArray[2];
+    var hours = dateArray[3];
+    var minutes = dateArray[4];
+    var seconds = dateArray[5];
+    return new Date(year, month, day, hours, minutes, seconds);
+}
+//Convierte un valor texto a al formato yyyy-MM-dd hh:mm:ss
+function parseDateToString(date) {
+    var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    month = padStr(String(month), 2, '0', STR_PAD_LEFT);
+    var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
+    var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
+    var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
+    var format = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    return format;
+}
+
+function getCbsDate(cbsDate) {
+    var vYear = cbsDate.substring(0, 4);
+    var vMonth = new Number(cbsDate.substring(4, 6)) - 1;
+    var vDay = cbsDate.substring(6, 8);
+    var vHours = cbsDate.substring(8, 10);
+    var vMinutes = cbsDate.substring(10, 12);
+    var vSeconds = cbsDate.substring(12, 14);
+    return new Date(vYear, vMonth, vDay, vHours, vMinutes, vSeconds);
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="ScriptTask_8" targetRef="ScriptTask_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="ScriptTask_2" targetRef="ScriptTask_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ScriptTask_4" targetRef="ServiceTask_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ServiceTask_4" targetRef="ServiceTask_10"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ServiceTask_10" targetRef="ServiceTask_2"/>
+    <bpmn2:scriptTask id="ScriptTask_10" name="setPackages">
+      <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_23</bpmn2:outgoing>
+      <bpmn2:script>var packages = new Object();&#xD;
+&#xD;
+if(typeof(packageWallet) != 'undefined'){&#xD;
+    packInstances = getSortedItems(snatchInstances(packageWallet.FreeUnitItemDetail, bundlePackChildOffers, false, true, true));&#xD;
+    tmpInstances = splitInstances(packInstances, activePackSeq);&#xD;
+    &#xD;
+    packages = setPackage(tmpInstances);&#xD;
+} else {&#xD;
+    packages.active = new Object();&#xD;
+    packages.queued = new Array();&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:scriptTask id="ScriptTask_11" name="processOfferings">
+      <bpmn2:incoming>SequenceFlow_35</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_36</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+      <bpmn2:script>var actOfferItem = new Object();&#xD;
+var actOfferId = '0';&#xD;
+&#xD;
+if(navObject.offeringJson.filled){&#xD;
+    doLoop = forCounter &lt; supplementaryOffers.length;&#xD;
+    //LOGGER.info('offerings: ' +supplementaryOffers.length);&#xD;
+    //LOGGER.info('loop: ' +forCounter);&#xD;
+&#xD;
+    if(doLoop){&#xD;
+        actOfferItem = supplementaryOffers[forCounter];&#xD;
+        &#xD;
+        if(typeof(actOfferItem.OfferingKey) != 'undefined'){&#xD;
+            actOfferId = actOfferItem.OfferingKey.OfferingID;&#xD;
+        }&#xD;
+    } else {&#xD;
+        forCounter = 0;&#xD;
+        &#xD;
+        enrichedOfferings.appOfferings = getSortedItems(enrichedOfferings.appOfferings);&#xD;
+        enrichedOfferings.susOfferings = getSortedItems(enrichedOfferings.susOfferings);&#xD;
+        enrichedOfferings.cmbOfferings = getSortedItems(enrichedOfferings.cmbOfferings);&#xD;
+    }&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="ScriptTask_11" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="loop">
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_18" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_13">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_233">!doLoop</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_5">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_232">doLoop</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:scriptTask id="ScriptTask_13" name="setBundles">
+      <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_22</bpmn2:outgoing>
+      <bpmn2:script>var bundlePackOffers = new Array();
+
+
+
+var bundleAppOffers = new Array();
+
+
+
+var bundlePackChildOffers = new Array();
+
+
+
+var bundleAppChildOffers = new Array();
+
+
+
+var bundles = new Array();
+
+
+
+var bundle;
+
+
+
+var bndlIdntfr = 'cmb';
+
+
+
+var bndlPropName = 'C_REMARKS2';
+
+
+
+var cmbOffers;
+
+
+
+if(enrichedOfferings.cmbOfferings.length > 0 &amp;&amp; !vSkipBundle){
+
+
+
+    cmbOffers = enrichedOfferings.cmbOfferings;
+
+
+
+    
+
+
+
+    for(var i = 0; i &lt; cmbOffers.length; i++){
+
+        bundle = setItem(cmbOffers[i].OfferingKey.OfferingID, cmbOffers[i].productId, cmbOffers[i].OfferingKey.PurchaseSeq, 
+
+
+
+                cmbOffers[i].offerName, cmbOffers[i].offerType, 'Cmb', '-', 
+
+
+
+                '-', '-', '-', '-', '-', 'Vigente');
+
+
+
+        bundlePackOffers = findChildren(cmbOffers[i].OfferingKey.PurchaseSeq, bndlIdntfr, enrichedOfferings.packOfferings);
+
+        bundlePackOffers = bundlePackOffers.
+
+            concat(findChildren(cmbOffers[i].OfferingKey.PurchaseSeq, bndlIdntfr, enrichedOfferings.undefOfferings));
+
+
+
+        bundleAppOffers = findChildren(cmbOffers[i].OfferingKey.PurchaseSeq, bndlIdntfr, enrichedOfferings.appOfferings);
+
+        LOGGER.info('paquetes:' + bundlePackOffers.join());
+
+
+
+        if(cmbOffers[i].isPackage){
+
+            bundlePackOffers.push(cmbOffers[i].OfferingKey.PurchaseSeq);  
+
+        }
+
+
+
+        bundlePackChildOffers = bundlePackChildOffers.concat(bundlePackOffers);
+
+        bundleAppChildOffers = bundleAppChildOffers.concat(bundleAppOffers);
+
+
+
+        if(typeof(packageWallet) != 'undefined' &amp;&amp; bundlePackOffers.length > 0){
+
+            packInstances = getSortedItems(snatchInstances(packageWallet.FreeUnitItemDetail, bundlePackOffers, true, true, true));
+
+            tmpInstances = splitInstances(packInstances, activePackSeq);
+
+            bundle.packages = setPackage(tmpInstances);
+
+        } else {
+
+            bundle.packages = new Object();
+
+        }
+
+
+
+        if(enrichedOfferings.appOfferings.length > 0 &amp;&amp; bundleAppOffers.length > 0){
+
+            activeAppsSeq = getActiveApps(splitApps(enrichedOfferings.appOfferings));
+
+            packInstances = snatchInstances(enrichedOfferings.appOfferings, bundleAppOffers, true, false, true);
+
+            bundle.applications = setApplications(splitOffers(splitApps(packInstances), activeAppsSeq));
+
+        } else{
+
+            bundle.applications = new Object();
+
+        }
+
+
+
+        //if(bundlePackOffers.length > 0 || bundleAppOffers.length > 0){
+
+            //bundles.push(bundle);
+
+        //}
+
+        
+
+        var  vPushBundle = false;
+
+        if (typeof bundle.packages.active != 'undefined' &amp;&amp; typeof bundle.packages.active.offering != 'undefined') {
+
+            vPushBundle = true;
+
+        }
+
+        
+
+        if (typeof bundle.packages.queued != 'undefined') {
+
+            if (bundle.packages.queued instanceof Array &amp;&amp; typeof bundle.packages.queued[0] != 'undefined'){
+
+                vPushBundle = true;
+
+            }
+
+            else {
+
+                if (typeof bundle.packages.queued.offering != 'undefined') {
+
+                    vPushBundle = true;
+
+                }
+
+            }
+
+        } 
+
+        
+
+        if (typeof bundle.applications.active != 'undefined') {
+
+            if (bundle.applications.active instanceof Array &amp;&amp; typeof bundle.applications.active[0] != 'undefined'){
+
+                vPushBundle = true;
+
+            }
+
+            else {
+
+                if (typeof bundle.applications.active.offering != 'undefined') {
+
+                    vPushBundle = true;
+
+                }
+
+            }
+
+        }
+
+        
+
+        if (typeof bundle.applications.queued != 'undefined') {
+
+            if (bundle.applications.queued instanceof Array &amp;&amp; typeof bundle.applications.queued[0] != 'undefined'){
+
+                vPushBundle = true;
+
+            }
+
+            else {
+
+                if (typeof bundle.applications.queued.offering != 'undefined') {
+
+                    vPushBundle = true;
+
+                }
+
+            }
+
+        }        
+
+        
+
+        if (vPushBundle) {
+
+            bundles.push(bundle);
+
+        }
+
+    }
+
+}
+
+
+
+function findChildren(parentOffer, idntfr, offerItem){
+
+
+
+    var children = new Array();
+
+
+
+    var remarkProp;
+
+
+
+    
+
+
+
+    LOGGER.info('JSON: ' + JSON.stringify(offerItem));
+
+
+
+    
+
+
+
+    for(var i = 0; i &lt; offerItem.length; i++){
+
+
+
+        if(typeof(offerItem[i].OInstProperty) != 'undefined' &amp;&amp; typeof(offerItem[i].OfferingKey) != 'undefined'){
+
+
+
+            remarkProp = getProperty(offerItem[i].OInstProperty, bndlPropName);
+
+
+
+            LOGGER.info('remarkProp: ' + JSON.stringify(remarkProp));
+
+
+
+            if(typeof(remarkProp) != 'undefined'){
+
+
+
+                LOGGER.info('parentOffer: ' + parentOffer);
+
+
+
+                if(isParent(parentOffer, idntfr, remarkProp)){
+
+
+
+                    children.push(offerItem[i].OfferingKey.PurchaseSeq)
+
+
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+
+    }
+
+
+
+    
+
+
+
+    return children;
+
+
+
+}
+
+
+
+
+
+
+
+function isParent(parentId, transIdntfr, childRemark){
+
+
+
+    var remarkArray = childRemark.Value.split(';');
+
+
+
+    var identifier = remarkArray[0];
+
+
+
+    var flag = false;
+
+
+
+    
+
+
+
+    if(identifier.toLowerCase() == transIdntfr &amp;&amp; remarkArray.length > 1){
+
+
+
+        flag = parentId == remarkArray[1];
+
+
+
+    }
+
+
+
+    
+
+
+
+    return flag;
+
+
+
+}
+
+
+
+
+
+
+
+function getProperty(propArray, propName){
+
+
+
+    var propItem;
+
+
+
+    if(propArray instanceof Array){
+
+
+
+        for(var i = 0; i &lt; propArray.length; i++){
+
+
+
+            if(propArray[i].PropCode == propName){
+
+
+
+                propItem = propArray[i];
+
+
+
+                
+
+
+
+                break;
+
+
+
+            }
+
+
+
+        }
+
+
+
+    } else {
+
+
+
+        if(propArray.PropCode == propName){
+
+
+
+            propItem = propArray;
+
+
+
+        }
+
+
+
+    }
+
+
+
+    
+
+
+
+    return propItem;
+
+
+
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:scriptTask id="ScriptTask_15" name="setApplications">
+      <bpmn2:incoming>SequenceFlow_23</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_24</bpmn2:outgoing>
+      <bpmn2:script>var applications = {active: [], queued: []};&#xD;
+var appOffers;&#xD;
+var tmpApp = {active: [], queued: []};&#xD;
+var tmpItem;&#xD;
+&#xD;
+if(enrichedOfferings.appOfferings.length > 0){&#xD;
+    if(vUnifyApps){&#xD;
+        if(navObject.pccJson.filled){&#xD;
+            if(typeof(navObject.pccJson.obj.Applications) != 'undefined'){&#xD;
+                for(var i = 0; i &lt; navObject.pccJson.obj.Applications.length; i++){&#xD;
+                    tmpItem = new Object();&#xD;
+                    tmpItem.EffectiveTime = String(navObject.pccJson.obj.Applications[i].ServiceStartDate);&#xD;
+                    tmpItem.ExpirationTime = String(navObject.pccJson.obj.Applications[i].ServiceEndDate);&#xD;
+                    tmpItem.offerName = navObject.pccJson.obj.Applications[i].ProductName;&#xD;
+                    &#xD;
+                    tmpApp.active.push(tmpItem);&#xD;
+                }&#xD;
+                &#xD;
+                applications = setApplications(tmpApp);&#xD;
+            }&#xD;
+        }&#xD;
+    } else {&#xD;
+        activeAppsSeq = getActiveApps(splitApps(enrichedOfferings.appOfferings));&#xD;
+        LOGGER.info('active apps: ' + activeAppsSeq.join());&#xD;
+        appOffers = snatchInstances(enrichedOfferings.appOfferings, bundleAppChildOffers, false, false, true);&#xD;
+        LOGGER.info('appOffers: ' + JSON.stringify(appOffers));&#xD;
+        applications = setApplications(splitOffers(splitApps(appOffers), activeAppsSeq));&#xD;
+    }&#xD;
+}&#xD;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_22" sourceRef="ScriptTask_13" targetRef="ScriptTask_10"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_23" sourceRef="ScriptTask_10" targetRef="ScriptTask_15"/>
+    <bpmn2:scriptTask id="ScriptTask_16" name="processSubscriptions">
+      <bpmn2:incoming>SequenceFlow_24</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_28</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_25</bpmn2:outgoing>
+      <bpmn2:script>var actOfferItem = new Object();
+var actProfileId = '0';
+var subscriptions = new Array();
+
+if(enrichedOfferings.susOfferings.length > 0){
+    doLoop = forCounter &lt; enrichedOfferings.susOfferings.length;
+
+    if(doLoop){
+        actOfferItem = enrichedOfferings.susOfferings[forCounter];
+
+        if(typeof(actOfferItem.productProfile) != 'undefined'){
+            actProfileId = actOfferItem.productProfile;
+        }
+
+        forCounter++;
+    } else {
+        forCounter = 0;
+    }
+}
+
+function setSubscription(pSubsItem){
+    var subsItem = new Object();
+    var susWallet = new Object();
+    var flag = false;
+
+    if(pSubsItem.offerType == 'SUS'){
+        susWallet = getWalletObj(strSusBalance, navObject.walletJson);
+        flag = typeof(susWallet) != 'undefined';
+        if (flag) 
+            subsItem = setSubsItems(pSubsItem, susWallet.FreeUnitItemDetail, false, flag, pSubsItem.offerType);
+        else 
+            subsItem = setSubsItems(pSubsItem, null, false, flag, pSubsItem.offerType);
+
+    } else {
+        subsItem = setSubsItems(pSubsItem, null, false, false, pSubsItem.offerType);
+    }
+
+    return subsItem;
+}
+
+function setSubsItems(susOffer, instances, queue, hasWallet, offerType){
+    var packItem;
+    var tmpItem;
+    var currentAmtBts = 0;
+    var initialAmtBts = 0;
+    var consumptionAmtBts = 0;
+    var reservedAmount = 0;
+    var itmClass = !queue ? 'Vigente' : 'Encolado';
+    var itmOffer = '';
+    var itmProduct = '';
+    var itmPurchaseSeq = '';
+    var itmName = '';
+    var itmType = 'Suscripcion';
+    var itmMeasure = 'MB';
+    var itmServiceStart = '';
+    var itmServiceEnd = '';
+    var itmQtaPrcntg = '';
+    var itmQtaValue = '';
+    var itmQtaConsumption = '';
+    var itmQtaBalance = '';
+    var itmActive = false;
+    
+    packItem = new Object();
+    itmOffer = susOffer.OfferingKey.OfferingID;
+    itmProduct = susOffer.productId;
+    itmPurchaseSeq = susOffer.OfferingKey.PurchaseSeq;
+    itmName = susOffer.offerName;
+    itmServiceStart = susOffer.EffectiveTime;
+    itmServiceEnd = susOffer.ExpirationTime;
+    itmActive = susOffer.susActive;
+    
+    var tproductQta = new Number(susOffer.productQta);
+    
+    if(offerType == 'SUS'){
+        if (hasWallet &amp;&amp; tproductQta > 0) {
+            if(typeof(instances.CurrentAmount) != 'undefined'){
+                currentAmtBts = new Number(instances.CurrentAmount);
+                initialAmtBts = new Number(susOffer.productQta);
+                reservedAmount = new Number(instances.ReservationAmount);
+                
+                if(initialAmtBts > reservedAmount &amp;&amp; currentAmtBts > reservedAmount){
+                    currentAmtBts = (currentAmtBts > initialAmtBts) ? initialAmtBts : currentAmtBts - reservedAmount;
+                }
+
+            }
+
+            consumptionAmtBts = initialAmtBts - currentAmtBts;
+            if (currentAmtBts > 0 &amp; initialAmtBts > 0)
+                itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+            else 
+                itmQtaPrcntg = '0.00';
+            
+            itmQtaValue = getUnit(initialAmtBts, 'KB');
+            itmQtaConsumption = getUnit(consumptionAmtBts, 'KB');
+            itmQtaBalance = getUnit(currentAmtBts, 'KB');
+            itmMeasure = 'MB';
+        } else {
+            itmQtaPrcntg = '100.00';
+            itmQtaValue = getUnit(0, 'KB');
+            itmQtaConsumption = getUnit(0, 'KB');
+            itmQtaBalance = getUnit(0, 'KB');
+            itmMeasure = 'MB';
+        }
+
+        packItem = setItemSubs(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+        itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, false, true, itmActive);
+    } else {   
+        currentAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, true);
+        initialAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, false);
+        consumptionAmtBts = initialAmtBts - currentAmtBts;
+        itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+        itmQtaValue = getUnit(initialAmtBts, 'HRS');
+        itmQtaConsumption = getUnit(consumptionAmtBts, 'HRS');
+        itmQtaBalance = getUnit(currentAmtBts, 'HRS');
+        itmMeasure = 'Hrs';
+        
+        packItem = setItemSubs(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+        itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, true, true, itmActive);
+    }
+    
+    return packItem;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_24" sourceRef="ScriptTask_15" targetRef="ScriptTask_16"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" name="loop">
+      <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_26</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_29</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_25" sourceRef="ScriptTask_16" targetRef="ExclusiveGateway_2"/>
+    <bpmn2:scriptTask id="ScriptTask_17" name="enrichSubscriptions">
+      <bpmn2:incoming>SequenceFlow_27</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_28</bpmn2:outgoing>
+      <bpmn2:script>if(typeof(vSusActiveOffer) != 'undefined' &amp;&amp; typeof(vSusActivePurchaseSeq) != 'undefined'){    
+    if(vSusActiveOffer == actOfferItem.OfferingKey.OfferingID &amp;&amp; vSusActivePurchaseSeq == actOfferItem.OfferingKey.PurchaseSeq){
+        if(typeof(susActive) != 'undefined'){
+            actOfferItem.susActive = susActive == '1';
+        } else {
+            actOfferItem.susActive = false;
+        }
+
+        subscriptionItems.push(setSubscription(actOfferItem));
+    }
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_26" sourceRef="ExclusiveGateway_2" targetRef="ServiceTask_8">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_235">doLoop</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_27" sourceRef="ServiceTask_8" targetRef="ScriptTask_17"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_28" sourceRef="ScriptTask_17" targetRef="ScriptTask_16"/>
+    <bpmn2:scriptTask id="ScriptTask_18" name="setAddons">
+      <bpmn2:incoming>SequenceFlow_30</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      <bpmn2:script>var addons = new Object();
+
+var addonsT2 = new Object();
+
+
+
+if(navObject.pccJson.filled){
+
+    if(typeof(navObject.pccJson.obj.Addons) != 'undefined'){
+
+        if(navObject.pccJson.obj.Addons.length > 0){
+
+            addons = unifyAddons(navObject.pccJson.obj.Addons);
+
+            addonsT2 = setRetAddon(navObject.pccJson.obj.Addons);
+
+        }
+
+    }
+
+}
+
+
+
+function setRetAddon(addArray){
+
+    var addonItm = new Object();
+
+    var tmpAddon = new Object();
+
+    
+
+    if(typeof vAddonRetEntitlement != 'undefined' &amp;&amp; typeof vAddonRetExpire != 'undefined'){
+
+        tmpAddon = getAddRet(addArray, vAddonRetEntitlement);
+
+        
+
+        if(typeof tmpAddon != 'undefined'){
+
+            addonItm.product_name = tmpAddon.ProductName;
+
+            addonItm.type_name = 'Addon';
+
+            addonItm.service_start = tmpAddon.itmServiceStart;
+
+            addonItm.service_end = getRetEndDate(vAddonRetExpire);
+
+        }
+
+    }
+
+    
+
+    return addonItm;
+
+}
+
+
+
+function getRetEndDate(val){
+
+    //04/12/2017 23:59:13 
+
+    var strDate = val.replace(/\D/g,' ');
+
+    var dateArray = strDate.split(' ');
+
+    
+
+    var day = padStr(dateArray[0], 2, '0', STR_PAD_LEFT);
+
+    var year = dateArray[2];
+
+    var month = padStr(dateArray[1], 2, '0', STR_PAD_LEFT);
+
+    var hours = padStr(dateArray[3], 2, '0', STR_PAD_LEFT);
+
+    var minutes = padStr(dateArray[4], 2, '0', STR_PAD_LEFT);
+
+    var seconds = padStr(dateArray[5], 2, '0', STR_PAD_LEFT);
+
+    var format = year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds;
+
+
+
+    return format;
+
+}
+
+
+
+function getAddRet(addArray, addName){
+
+    var addItem;
+
+    
+
+    for(var i = 0; i &lt; addArray.length; i++){
+
+        if(addArray[i].ServiceName.indexOf(vAddonRetEntitlement) >= 0){
+
+            addItem = addArray[i];
+
+            
+
+            break;
+
+        }
+
+    }
+
+    
+
+    return addItem;
+
+}
+
+
+
+function unifyAddons(addArray){
+
+    var addonItm = new Object();
+
+    var currentAmtBts = 0;
+
+    var initialAmtBts = 0;
+
+    var consumptionAmtBts = 0;
+
+    var itmClass = 'Vigente';
+
+    var itmName = '';
+
+    var itmType = 'Addon';
+
+    var itmMeasure = 'MB';
+
+    var itmServiceStart = '';
+
+    var itmServiceEnd = '';
+
+    var itmQtaPrcntg = '';
+
+    var itmQtaValue = '';
+
+    var itmQtaConsumption = '';
+
+    var itmQtaBalance = '';
+
+    
+
+    if(addArray.length > 0){
+
+        itmServiceStart = addArray[addArray.length - 1].ServiceStartDate;
+
+        itmServiceEnd = addArray[0].ServiceEndDate;
+
+        
+
+        for(var i = 0; i &lt; addArray.length; i++){
+
+            currentAmtBts += new Number(addArray[i].QuotaBalanceMb);
+
+            initialAmtBts += new Number(addArray[i].QuotaValueMb);
+
+            consumptionAmtBts += new Number(addArray[i].QuotaConsumptionMb);
+
+            
+
+            if(typeof vAddonRetEntitlement != 'undefined'){
+
+                if(addArray[i].ServiceName.indexOf(vAddonRetEntitlement) &lt; 0){
+
+                    itmName += itmName == '' ? addArray[i].ProductName : ',' + addArray[i].ProductName;
+
+                }
+
+            } else {
+
+                itmName += itmName == '' ? addArray[i].ProductName : ',' + addArray[i].ProductName;
+
+            }
+
+        }
+
+        
+
+        itmQtaBalance = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+
+        
+
+        addonItm.product_name = itmName;
+
+        addonItm.type_name = itmType;
+
+        addonItm.measure = itmMeasure;
+
+        addonItm.service_start = itmServiceStart;
+
+        addonItm.service_end = itmServiceEnd;
+
+        addonItm.qta_balance = getUnit(currentAmtBts, 'MB');
+
+        addonItm.qta_consumption = getUnit(consumptionAmtBts, 'MB');
+
+        addonItm.qta_value = getUnit(initialAmtBts, 'MB');
+        
+        if (vChannelPC == channelId) {     
+            addonItm.qta_percentage = String(new Number(itmQtaBalance) - 100);
+            if (addonItm.qta_percentage &lt; 0)
+                addonItm.qta_percentage = String(new Number(addonItm.qta_percentage) * (-1));
+        }
+        else 
+            addonItm.qta_percentage = itmQtaBalance;
+
+    }
+
+    
+
+    return addonItm;
+
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_29" sourceRef="ExclusiveGateway_2" targetRef="ServiceTask_12">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_234">!doLoop</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:serviceTask id="ServiceTask_12" name="MasterStatusGetSubscriberProfileTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_29</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_30</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_84">
+        <bpmn2:dataInput id="DataInput_23" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_24" name="PROFILE"/>
+        <bpmn2:dataInput id="DataInput_1" name="MasterStatusGetSubscriberProfileTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_95" name="EXPIRACION_OFERTA"/>
+        <bpmn2:dataOutput id="DataOutput_1" name="ENTITLEMENT"/>
+        <bpmn2:inputSet id="InputSet_18" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_24</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_23</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_18" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_95</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_23">
+        <bpmn2:targetRef>DataInput_23</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_117">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_242">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_243">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_24">
+        <bpmn2:targetRef>DataInput_24</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_118">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_244">vAddonProfile</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_245">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn2:targetRef>DataInput_1</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_2">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_95">
+        <bpmn2:sourceRef>DataOutput_95</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_119">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_246">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_247">vAddonRetExpire</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_1">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">DataOutput_1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">vAddonRetEntitlement</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_30" sourceRef="ServiceTask_12" targetRef="ScriptTask_18"/>
+    <bpmn2:scriptTask id="ScriptTask_1" name="setPlan">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:script>var plan = new Object();&#xD;
+var user = new Object();&#xD;
+&#xD;
+if(navObject.pccJson.filled){&#xD;
+    if(typeof(navObject.pccJson.obj.Plans) != 'undefined'){&#xD;
+        plan = setPlan(navObject.pccJson.obj.Plans);&#xD;
+    }&#xD;
+    &#xD;
+    if(typeof(navObject.pccJson.obj.User) != 'undefined'){&#xD;
+        user.subscriberId = subscriberId.toString();&#xD;
+        user.billCycle = navObject.pccJson.obj.User.SubscriberBillCycle.toString();&#xD;
+    }&#xD;
+}&#xD;
+&#xD;
+function setPlan(pItem){&#xD;
+    var plItem = new Object();&#xD;
+    var tmpQuotaItem = new Object();&#xD;
+    var tmpQuotasArray = new Array();&#xD;
+    var currentAmtBts = 0;&#xD;
+    var initialAmtBts = 0;&#xD;
+    var consumptionAmtBts = 0;&#xD;
+    var itmClass = 'Vigente';&#xD;
+    var itmName = '';&#xD;
+    var itmType = 'Plan';&#xD;
+    var itmMeasure = 'MB';&#xD;
+    var itmServiceStart = '';&#xD;
+    var itmServiceEnd = '';&#xD;
+    var itmQtaPrcntg = '';&#xD;
+    var itmQtaValue = '';&#xD;
+    var itmQtaConsumption = '';&#xD;
+    var itmQtaBalance = '';&#xD;
+    var billCycle = typeof(navObject.pccJson.obj.User.SubscriberBillCycle) != 'undefined' ? navObject.pccJson.obj.User.SubscriberBillCycle : &quot;-&quot;;&#xD;
+    &#xD;
+    itmServiceStart = pItem.ServiceStartDate;&#xD;
+    itmServiceEnd = pItem.ServiceEndDate;&#xD;
+    itmName = pItem.ProductName;&#xD;
+    &#xD;
+    plItem.product_name = itmName;&#xD;
+    plItem.type_name = itmType;&#xD;
+    plItem.service_start = billCycle != &quot;-&quot; ? getCycleDate(new Number(billCycle)) : billCycle;&#xD;
+    plItem.service_end = &quot;-&quot;;&#xD;
+    &#xD;
+    if(typeof pItem.Quotas == 'undefined'){&#xD;
+        currentAmtBts = new Number(pItem.QuotaBalanceMb);&#xD;
+        initialAmtBts = new Number(pItem.QuotaValueMb);&#xD;
+        consumptionAmtBts = new Number(pItem.QuotaConsumptionMb);&#xD;
+        itmQtaBalance = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));&#xD;
+        &#xD;
+        plItem.measure = itmMeasure;&#xD;
+        plItem.qta_balance = getUnit(currentAmtBts, 'MB');&#xD;
+        plItem.qta_consumption = getUnit(consumptionAmtBts, 'MB');&#xD;
+        plItem.qta_value = getUnit(initialAmtBts, 'MB');&#xD;
+        plItem.qta_percentage = itmQtaBalance;&#xD;
+    } else {&#xD;
+        for(var i = 0; i &lt; pItem.Quotas.length; i++){&#xD;
+            currentAmtBts = new Number(pItem.Quotas[i].QuotaBalanceMb);&#xD;
+            initialAmtBts = new Number(pItem.Quotas[i].QuotaValueMb);&#xD;
+            consumptionAmtBts = new Number(pItem.Quotas[i].QuotaConsumptionMb);&#xD;
+            &#xD;
+            itmQtaBalance = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));&#xD;
+            &#xD;
+            tmpQuotaItem.measure = itmMeasure;&#xD;
+&#xD;
+            tmpQuotaItem.qta_balance = getUnit(currentAmtBts, 'MB');&#xD;
+            tmpQuotaItem.qta_consumption = getUnit(consumptionAmtBts, 'MB');&#xD;
+            tmpQuotaItem.qta_value = getUnit(initialAmtBts, 'MB');&#xD;
+            tmpQuotaItem.qta_percentage = itmQtaBalance;&#xD;
+            &#xD;
+            tmpQuotasArray.push(tmpQuotaItem);&#xD;
+            tmpQuotaItem = new Object();&#xD;
+        }&#xD;
+        &#xD;
+        plItem.quotas = tmpQuotasArray;&#xD;
+    }&#xD;
+        &#xD;
+    return plItem;&#xD;
+}&#xD;
+&#xD;
+function getCycleDate(billingDay){&#xD;
+    var vNow = new Date(vSysDate.getTime());&#xD;
+    var addMonth = true;&#xD;
+    var vMonth = '0';&#xD;
+    var vAdd = billingDay > 1 ? 2 : 1;&#xD;
+    &#xD;
+    if(vNow.getDate() > billingDay){&#xD;
+        vNow.setMonth(vNow.getMonth() + vAdd);&#xD;
+        addMonth = false;&#xD;
+    }&#xD;
+    &#xD;
+    vMonth = addMonth ? String((vNow.getMonth() + 1)) : String(vNow.getMonth());&#xD;
+    &#xD;
+    vNow.setDate(billingDay - 1);&#xD;
+    &#xD;
+    return padStr(vNow.getFullYear(), 4, '0', STR_PAD_LEFT) + '' + padStr(vMonth, 2, '0', STR_PAD_LEFT) + '' + padStr(String(vNow.getDate()), 2, '0', STR_PAD_LEFT) + '' + padStr(String(23), 2, '0', STR_PAD_LEFT) + '' + padStr(String(59), 2, '0', STR_PAD_LEFT) + '' + padStr(String(59), 2, '0', STR_PAD_LEFT);&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="ScriptTask_18" targetRef="ScriptTask_1"/>
+    <bpmn2:scriptTask id="ScriptTask_3" name="mashInfo">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+var BPMN_RESPONSE_MESSAGE = 'Operation Successful';&#xD;
+var servicesObj = {services: new Object()};&#xD;
+var JSON_RESPONSE = '';&#xD;
+&#xD;
+servicesObj.services.bundles = bundles;&#xD;
+servicesObj.services.packages = packages;&#xD;
+servicesObj.services.subscriptions = subscriptionItems;&#xD;
+servicesObj.services.applications = applications ;&#xD;
+servicesObj.services.addons = addons;&#xD;
+servicesObj.services.addons_t2 = addonsT2;&#xD;
+servicesObj.services.plan = plan;&#xD;
+servicesObj.services.user = user;&#xD;
+&#xD;
+JSON_RESPONSE = JSON.stringify(servicesObj);</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ScriptTask_1" targetRef="ScriptTask_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_3" targetRef="EndEvent_1"/>
+    <bpmn2:serviceTask id="ServiceTask_3" name="MasterStatusGetSubscriberProfileTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_47">
+        <bpmn2:dataInput id="DataInput_3" name="SUBSCRIBER"/>
+        <bpmn2:dataInput id="DataInput_7" name="PROFILE"/>
+        <bpmn2:dataOutput id="DataOutput_6" name="FECHA_ACTIVACION"/>
+        <bpmn2:dataOutput id="DataOutput_7" name="FECHA_ALTA_ANEXO"/>
+        <bpmn2:dataOutput id="DataOutput_8" name="TIPO_SUSCRIPTOR"/>
+        <bpmn2:dataOutput id="DataOutput_9" name="FECHA_ACTIVACION_DATE"/>
+        <bpmn2:dataOutput id="DataOutput_10" name="PLAN_VOZ"/>
+        <bpmn2:inputSet id="InputSet_4" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_7</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_3</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_4" name="Output Set 10">
+          <bpmn2:dataOutputRefs>DataOutput_6</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_7</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_8</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_9</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_10</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn2:targetRef>DataInput_3</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_11">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_22">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_7">
+        <bpmn2:targetRef>DataInput_7</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_12">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">'24'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_24">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_6">
+        <bpmn2:sourceRef>DataOutput_6</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_17">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_33">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_34">vAltaNumero</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_7">
+        <bpmn2:sourceRef>DataOutput_7</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_13">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_25">DataOutput_3</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_26">vAltaAnexo</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_8">
+        <bpmn2:sourceRef>DataOutput_8</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_14">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_27">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_28">vSubscriberType</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_9">
+        <bpmn2:sourceRef>DataOutput_9</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_15">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">DataOutput_14</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_30">vMSAltaDate</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_10">
+        <bpmn2:sourceRef>DataOutput_10</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_16">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_31">DataOutput_1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_32">vPlanVoz</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_6" name="Subscriber">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+      <bpmn2:script>var typeSubscriber = 'PRE,HIC,CIN,HIB,HIB20,POS';&#xD;
+var vSubscriberFound = false;&#xD;
+&#xD;
+if(typeof vSubscriberType != 'undefined'){&#xD;
+    if(typeSubscriber.indexOf(vSubscriberType) &lt; 0){&#xD;
+        vSubscriberType = 'POS';&#xD;
+    }&#xD;
+    if(vSubscriberType == 'CIN'){&#xD;
+        vSubscriberType = 'HIC';&#xD;
+    }&#xD;
+    &#xD;
+    vSubscriberFound = true;&#xD;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ServiceTask_3" targetRef="ScriptTask_6"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="Subscriber">
+      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_31</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_15" sourceRef="ScriptTask_6" targetRef="ExclusiveGateway_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_16" sourceRef="ExclusiveGateway_3" targetRef="ServiceTask_4">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_36">vSubscriberFound &amp;&amp; vSubscriberType != 'POS'</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_17" sourceRef="ExclusiveGateway_3" targetRef="ServiceTask_2">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_37">vSubscriberFound &amp;&amp; vSubscriberType == 'POS'</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_31" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_12">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_35">!vSubscriberFound</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:scriptTask id="ScriptTask_5" name="erichOfferingOptimized">
+      <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_36</bpmn2:outgoing>
+      <bpmn2:script>//actOfferId: offering de cbs
+//var vQueryOffering
+var vOfferingItem = '';
+
+actOfferItem.productId = &quot;0&quot;;
+actOfferItem.offerType = &quot;NA&quot;;
+actOfferItem.offerName = &quot;NA&quot;;
+actOfferItem.productProfile = &quot;0&quot;;
+actOfferItem.productQta = &quot;0&quot;;
+actOfferItem.isPackage = false;
+
+if (typeof vQueryOfferingObjects != 'undefined') {
+    vOfferingItem = vQueryOfferingObjects[actOfferId];
+    if (typeof vOfferingItem != 'undefined') {
+        actOfferItem.productId = vOfferingItem.PRODUCT_ID;
+        actOfferItem.offerType = vOfferingItem.TYPE;
+        actOfferItem.offerName = vOfferingItem.PRODUCT_NAME;
+        actOfferItem.productProfile = vOfferingItem.PROFILE;
+        actOfferItem.productQta = vOfferingItem.QTA;
+        actOfferItem.isPackage = vOfferingItem.PACKAGE == 'TRUE' ? true : false;
+    }
+} 
+
+// else {
+//     actOfferItem.productId = &quot;0&quot;;
+//     actOfferItem.offerType = &quot;NA&quot;;
+//     actOfferItem.offerName = &quot;NA&quot;;
+//     actOfferItem.productProfile = &quot;0&quot;;
+//     actOfferItem.productQta = &quot;0&quot;;
+//     actOfferItem.isPackage = false;
+// }
+
+
+var cnfProductId = &quot;0&quot;;
+var cnfType = &quot;NA&quot;;
+var cnfProductName = &quot;NA&quot;;
+var cnfProfile = &quot;0&quot;;
+var cnfQta = &quot;0&quot;;
+var cnfPck = &quot;FALSE&quot;;
+
+
+enrichedOfferings = setEnrichment(enrichedOfferings, actOfferItem);
+forCounter++;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:serviceTask id="ServiceTask_1" name="RuleEngineTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_38</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_34</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_23">
+        <bpmn2:dataInput id="DataInput_14" name="SESSION"/>
+        <bpmn2:dataInput id="DataInput_15" name="OFFERING"/>
+        <bpmn2:dataInput id="DataInput_16" name="RuleEngineTask__failOverPolicy"/>
+        <bpmn2:dataOutput id="DataOutput_3" name="RESULT"/>
+        <bpmn2:inputSet id="InputSet_25" name="Input Set 35">
+          <bpmn2:dataInputRefs>DataInput_14</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_15</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_16</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_25" name="Output Set 14">
+          <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_14">
+        <bpmn2:targetRef>DataInput_14</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_27">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_11">'QueryOfferingInfoOptimizedKS'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_54">DataInput_18</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_15">
+        <bpmn2:targetRef>DataInput_15</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_28">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_57">'1'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_59">DataInput_19</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_16">
+        <bpmn2:targetRef>DataInput_16</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_29">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_60">false</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_61">DataInput_10</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn2:sourceRef>DataOutput_3</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_30">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_62">DataOutput_89</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_63">vQueryOffering</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_7" name="JSON.parse">
+      <bpmn2:incoming>SequenceFlow_34</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_35</bpmn2:outgoing>
+      <bpmn2:script>var doubleQuote = '&quot;';
+var regExpQuotes = /'/g;
+var vJson = '';
+var vQueryOfferingObjects = '';
+
+if (typeof vQueryOffering != 'undefined') {
+	vJson = &quot;{&quot; + vQueryOffering.replace(regExpQuotes, doubleQuote) + &quot;}&quot;;
+	vQueryOfferingObjects = JSON.parse(vJson);
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_34" sourceRef="ServiceTask_1" targetRef="ScriptTask_7"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_35" sourceRef="ScriptTask_7" targetRef="ScriptTask_11"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_36" sourceRef="ScriptTask_5" targetRef="ScriptTask_11"/>
+    <bpmn2:scriptTask id="ScriptTask_12" name="setObject1">
+      <bpmn2:incoming>SequenceFlow_31</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      <bpmn2:script>
+function setNavObjects(){
+    var navObject = {walletJson:{filled:false}, offeringJson:{filled:false}, pccJson:{filled: false}};
+    if(typeof(vFreeUnitWallets) != 'undefined'){
+        navObject.walletJson.obj = getJSON(vFreeUnitWallets);
+        navObject.walletJson.filled = true;
+    }
+    if(typeof(vStrOfferingInfo) != 'undefined'){
+        navObject.offeringJson.obj = getJSON(vStrOfferingInfo);
+        navObject.offeringJson.filled = true;
+    }
+    if(typeof(vStrPcc) != 'undefined'){
+        navObject.pccJson.obj = processJson(vStrPcc);
+        navObject.pccJson.filled = true;
+    }
+    return navObject;
+}
+
+function getWalletObj(walletName, walletObj){
+    var tmpItm;
+    if(walletObj.filled){
+        tmpItm = getWalletByType(walletName, walletObj.obj);
+    }
+    return tmpItm;
+}
+
+function setEnrichment(pEnriched, enrichedItem){
+    var enrichedObj = pEnriched;
+    switch(enrichedItem.offerType){
+        case 'APP':
+            enrichedObj.appOfferings.push(enrichedItem);
+            break;
+        case 'SUS':
+        case 'SUSAPP':
+            enrichedObj.susOfferings.push(enrichedItem);
+            break;
+        case 'PAQ':
+            enrichedObj.packOfferings.push(enrichedItem);
+            break;
+        case 'CMB':
+            enrichedObj.cmbOfferings.push(enrichedItem);
+            break;
+        default:
+            enrichedObj.undefOfferings.push(enrichedItem);
+            break;
+    }
+    return enrichedObj;
+}
+
+function splitInstances(itemArray, activeId){
+    var activeInstance = new Object();
+    var queuedInstances = new Array();
+    var splitObj = new Array();
+    var strtIdx = 0;
+    if(itemArray instanceof Array){
+        if(itemArray.length > 0){
+            if(activeId == itemArray[0].FreeUnitOrigin.OfferingKey.PurchaseSeq){
+                activeInstance = itemArray[0];
+                strtIdx = 1;
+            }
+            if(itemArray.length >= 1){
+                for(var i = strtIdx; i &lt; itemArray.length; i++){
+                    queuedInstances.push(itemArray[i]);
+                }
+            }
+        }
+    } else {
+        if(activeId == itemArray.FreeUnitOrigin.OfferingKey.PurchaseSeq){
+            activeInstance = itemArray;
+        } else{
+            queuedInstances.push(itemArray);
+        }
+    }
+    splitObj.active = activeInstance;
+    splitObj.queued = queuedInstances;
+    return splitObj;
+}
+function snatchInstances(itemArray, offeringLst, include, snatchIns, snatchSeq){
+    var snatchedInstances = new Array();
+    var snatchId = '';
+    if(itemArray instanceof Array){
+        for(var i = 0; i &lt; itemArray.length; i++){
+            if(snatchSeq){
+                if(snatchIns){
+                    snatchId = itemArray[i].FreeUnitOrigin.OfferingKey.PurchaseSeq;
+                } else {
+                    snatchId = itemArray[i].OfferingKey.PurchaseSeq;
+                }
+            } else{
+                if(snatchIns){
+                    snatchId = itemArray[i].FreeUnitOrigin.OfferingKey.OfferingID;
+                } else {
+                    snatchId = itemArray[i].OfferingKey.OfferingID;
+                }
+            }
+            if(include){
+                if(existsOffer(offeringLst, snatchId)){
+                    snatchedInstances.push(itemArray[i]);
+                }
+            } else {
+                if(!existsOffer(offeringLst, snatchId)){
+                    snatchedInstances.push(itemArray[i]);
+                }
+            }
+        }
+    } else {
+        if(snatchSeq){
+            if(snatchIns){
+                snatchId = itemArray.FreeUnitOrigin.OfferingKey.PurchaseSeq;
+            } else {
+                snatchId = itemArray.OfferingKey.PurchaseSeq;
+            }
+        } else{
+            if(snatchIns){
+                snatchId = itemArray.FreeUnitOrigin.OfferingKey.OfferingID;
+            } else {
+                snatchId = itemArray.OfferingKey.OfferingID;
+            }
+        }
+        if(include){
+            if(existsOffer(offeringLst, snatchId)){
+                snatchedInstances.push(itemArray);
+            }
+        } else {
+            if(!existsOffer(offeringLst, snatchId)){
+                snatchedInstances.push(itemArray);
+            }
+        }
+    }
+    return snatchedInstances;
+}
+
+function existsOffer(offerLst, offerSeq){
+    var flag = false;
+    if(offerLst instanceof Array){
+        for(var i = 0; i &lt; offerLst.length; i++){
+            if(offerLst[i] == offerSeq){
+                flag = true;
+                break;
+            }
+        }
+    } else {
+        flag = offerLst == offerSeq;
+    }
+    return flag;
+}
+
+function setPackageItems(instances, queue){
+    var packItem;
+    var tmpItem;
+    var currentAmtBts = 0;
+    var initialAmtBts = 0;
+    var consumptionAmtBts = 0;
+    var itmClass = !queue ? 'Vigente' : 'Pendiente';
+    var itmOffer = '';
+    var itmProduct = '';
+    var itmPurchaseSeq = '';
+    var itmName = '';
+    var itmType = 'Paquete';
+    var itmMeasure = 'MB';
+    var itmServiceStart = '';
+    var itmServiceEnd = '';
+    var itmQtaPrcntg = '';
+    var itmQtaValue = '';
+    var itmQtaConsumption = '';
+    var itmQtaBalance = '';
+    if(instances instanceof Array){
+        packItem = new Array();
+        for(var i = 0; i &lt; instances.length; i++){
+            tmpItem = new Object();
+            currentAmtBts = new Number(instances[i].CurrentAmount);
+            initialAmtBts = new Number(instances[i].InitialAmount);
+            consumptionAmtBts = initialAmtBts - currentAmtBts;
+            itmOffer = instances[i].FreeUnitOrigin.OfferingKey.OfferingID;
+            itmProduct = &quot;0&quot;;
+            itmPurchaseSeq = instances[i].FreeUnitOrigin.OfferingKey.PurchaseSeq;
+            itmName = instances[i].FreeUnitOrigin.OfferingKey.OfferingName;
+            itmServiceStart = instances[i].EffectiveTime;
+            itmServiceEnd = instances[i].ExpireTime;
+            itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+            itmQtaValue = getUnit(initialAmtBts, 'KB');
+            itmQtaConsumption = getUnit(consumptionAmtBts, 'KB');
+            itmQtaBalance = getUnit(currentAmtBts, 'KB');
+            tmpItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+                itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, false, false, true);
+            packItem.push(tmpItem);
+        }
+    } else {
+        packItem = new Object();
+        if(typeof(instances.CurrentAmount) != 'undefined'){
+            currentAmtBts = new Number(instances.CurrentAmount);
+            initialAmtBts = new Number(instances.InitialAmount);
+            consumptionAmtBts = initialAmtBts - currentAmtBts;
+            itmOffer = instances.FreeUnitOrigin.OfferingKey.OfferingID;
+            itmProduct = &quot;0&quot;;
+            itmPurchaseSeq = instances.FreeUnitOrigin.OfferingKey.PurchaseSeq;
+            itmName = instances.FreeUnitOrigin.OfferingKey.OfferingName;
+            itmServiceStart = instances.EffectiveTime;
+            itmServiceEnd = instances.ExpireTime;
+            itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+            itmQtaValue = getUnit(initialAmtBts, 'KB');
+            itmQtaConsumption = getUnit(consumptionAmtBts, 'KB');
+            itmQtaBalance = getUnit(currentAmtBts, 'KB');
+            packItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+                itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, false, false, true);
+        }
+    }
+    return packItem;
+}
+function setItem(pOffering, pProduct, pPurchaseSeq, pName, pType, pMeasure, pServiceStart, 
+    pServiceEnd, pQtaPcntg, pQtaValue, pQtaConsumption, pQtaBalance, pClass, isApp, addActive, pActive){
+    var objItem = new Object();
+    objItem.offering = pOffering;
+    objItem.productId = pProduct;
+    objItem.purchase_seq = pPurchaseSeq;
+    objItem.product_name = pName;
+    objItem.type_name = pType;
+    objItem.measure = pMeasure;
+    objItem.service_start = pServiceStart;
+    objItem.service_end = pServiceEnd;
+    if(!isApp){
+        objItem.qta_percentage = pQtaPcntg;
+        objItem.qta_value = pQtaValue;
+        objItem.qta_consumption = pQtaConsumption;
+        objItem.qta_balance = pQtaBalance;
+    } else{
+        objItem.hour_percentage = pQtaPcntg;
+        objItem.total_hours = pQtaValue;
+        objItem.hours_consumed = pQtaConsumption;
+        objItem.hours_remaining = pQtaBalance;
+    }
+    if(addActive){
+        objItem.active = pActive;
+    }
+    objItem[&quot;class&quot;] = pClass;
+    return objItem;
+}
+
+function setItemSubs(pOffering, pProduct, pPurchaseSeq, pName, pType, pMeasure, pServiceStart, 
+    pServiceEnd, pQtaPcntg, pQtaValue, pQtaConsumption, pQtaBalance, pClass, isApp, addActive, pActive){
+    var objItem = new Object();
+    objItem.offering = pOffering;
+    objItem.productId = pProduct;
+    objItem.purchase_seq = pPurchaseSeq;
+    objItem.product_name = pName;
+    objItem.type_name = pType;
+    objItem.measure = pMeasure;
+    objItem.service_start = pServiceStart;
+    objItem.next_renewal = pServiceEnd;
+    if(!isApp){
+        objItem.qta_percentage = pQtaPcntg;
+        objItem.qta_value = pQtaValue;
+        objItem.qta_consumption = pQtaConsumption;
+        objItem.qta_balance = pQtaBalance;
+    } else{
+        objItem.hour_percentage = pQtaPcntg;
+        objItem.total_hours = pQtaValue;
+        objItem.hours_consumed = pQtaConsumption;
+        objItem.hours_remaining = pQtaBalance;
+    }
+    if(addActive){
+        objItem.active = pActive;
+    }
+    objItem[&quot;class&quot;] = pClass;
+    return objItem;
+}
+function getUnit(val, unit){
+    var btKb = 1024;
+    var kbMb = 1024;
+    var valMB = '0';
+    switch(unit){
+        case &quot;BT&quot;:
+            valMB = String(new Number(Math.ceil((val / 1024) / 1024)).toFixed(2));
+            break;
+        case &quot;KB&quot;:
+            valMB = String(new Number(Math.ceil(val / 1024).toFixed(2)));
+            break;
+        default:
+            valMB = String(val);
+            break;
+    }
+    return valMB;
+}
+function setPackage(pInstances){
+    var packItem = new Object();
+    packItem.active = setPackageItems(pInstances.active, false);
+    packItem.queued = setPackageItems(pInstances.queued, true);
+    return packItem;
+}
+function setApplications(pInstances){
+    var appItem = new Object();
+    appItem.active = setAppItems(pInstances.active, false);
+    appItem.queued = setAppItems(getSortedItems(pInstances.queued), true);
+    return appItem;
+}
+function splitApps(itemArray){
+    var appArray = new Array();
+    var tmpArray;
+    var bustedOffers = new Array();
+    var tmpId;
+    for(var i = 0; i &lt; itemArray.length; i++){
+        tmpId = itemArray[i].OfferingKey.OfferingID;
+        if(!existsOffer(bustedOffers, tmpId)){
+            bustedOffers.push(tmpId);
+            LOGGER.info('tmpId:' + tmpId);
+            tmpArray = getSortedItems(snatchInstances(itemArray, tmpId, true, false, false));
+            LOGGER.info('tmpArray:' + tmpArray.length);
+            if(tmpArray.length > 0){
+                appArray.push(tmpArray);
+            }
+        }
+    }
+    LOGGER.info('appArray:' + JSON.stringify(appArray));
+    return appArray;
+}
+function splitOffers(pApps, pActiveIds){
+    var appItem = new Object();
+    var activeOffers = new Array();
+    var queuedOffers = new Array();
+    var tmpArray;
+    for(var i = 0; i &lt; pApps.length; i++){
+        tmpArray = pApps[i];
+        for(var j = 0; j &lt; tmpArray.length; j++){
+            if(existsOffer(pActiveIds, tmpArray[j].OfferingKey.PurchaseSeq)){
+                activeOffers.push(tmpArray[j]);
+            } else {
+                queuedOffers.push(tmpArray[j]);
+            }
+        }
+    }
+    appItem.active = activeOffers;
+    appItem.queued = queuedOffers;
+    return appItem;
+}
+function setAppItems(instances, queue){
+    var packItem;
+    var tmpItem;
+    var currentAmtBts = 0;
+    var initialAmtBts = 0;
+    var consumptionAmtBts = 0;
+    var itmClass = !queue ? 'Vigente' : 'Pendiente';
+    var itmOffer = '';
+    var itmProduct = '';
+    var itmPurchaseSeq = '';
+    var itmName = '';
+    var itmType = 'Aplicacion';
+    var itmMeasure = 'Hrs';
+    var itmServiceStart = '';
+    var itmServiceEnd = '';
+    var itmQtaPrcntg = '';
+    var itmQtaValue = '';
+    var itmQtaConsumption = '';
+    var itmQtaBalance = '';
+    if(instances instanceof Array){
+        packItem = new Array();
+        for(var i = 0; i &lt; instances.length; i++){
+            tmpItem = new Object();
+            itmServiceStart = instances[i].EffectiveTime;
+            itmServiceEnd = instances[i].ExpirationTime;
+            currentAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, true);
+            initialAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, false);
+            consumptionAmtBts = initialAmtBts - currentAmtBts;
+            itmOffer = typeof(instances[i].OfferingKey) != 'undefined' ? instances[i].OfferingKey.OfferingID : '0';
+            itmProduct = typeof(instances[i].productId) != 'undefined' ? instances[i].productId : '0';
+            itmPurchaseSeq = typeof(instances[i].OfferingKey) != 'undefined' ? instances[i].OfferingKey.PurchaseSeq : '0';
+            itmName = instances[i].offerName;
+            itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+            itmQtaValue = getUnit(initialAmtBts, 'HR');
+            itmQtaConsumption = getUnit(consumptionAmtBts, 'HR');
+            itmQtaBalance = getUnit(currentAmtBts, 'HR');
+            tmpItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+                itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, true, false, true);
+            packItem.push(tmpItem);
+        }
+    } else {
+        packItem = new Object();
+        if(typeof(instances.CurrentAmount) != 'undefined'){
+            itmServiceStart = instances.EffectiveTime;
+            itmServiceEnd = instances.ExpirationTime;
+            currentAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, true);
+            initialAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, false);
+            consumptionAmtBts = initialAmtBts - currentAmtBts;
+            itmOffer = typeof(instances.OfferingKey) != 'undefined' ? instances.OfferingKey.OfferingID : '0';
+            itmProduct = typeof(instances.productId) != 'undefined' ? instances.productId : '0';
+            itmPurchaseSeq = typeof(instances.OfferingKey) != 'undefined' ? instances.OfferingKey.PurchaseSeq : '0';
+            itmName = instances.offerName;
+            itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+            itmQtaValue = getUnit(initialAmtBts, 'HR');
+            itmQtaConsumption = getUnit(consumptionAmtBts, 'HR');
+            itmQtaBalance = getUnit(currentAmtBts, 'HR');
+            packItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+                itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, true, false, true);
+        }
+    }
+    return packItem;
+}
+function getHoursDiff(pIni, pFin, sysdate){
+    var initialDate = !sysdate ? getCbsDate(pIni) : new Date();
+    var endDate = getCbsDate(pFin);
+    var vDiffMillis = Math.abs(endDate.getTime() - initialDate.getTime());
+    var vHourDiff = Math.ceil(vDiffMillis / (60*60*1000))
+    return vHourDiff;
+}
+function getActiveApps(pArray){
+    var activeArray = new Array();
+    for(var i = 0; i &lt; pArray.length; i++){
+        if(pArray[i] instanceof Array){
+            activeArray.push(pArray[i][0].OfferingKey.PurchaseSeq);
+        } else {
+            activeArray.push(pArray[i].OfferingKey.PurchaseSeq);
+        }
+    }
+    return activeArray;
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ServiceTask_2" targetRef="ScriptTask_12"/>
+    <bpmn2:serviceTask id="ServiceTask_5" name="SubscriberACLManagerTask">
+      <bpmn2:incoming>SequenceFlow_37</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_3">
+        <bpmn2:dataInput id="DataInput_12" name="ACTION"/>
+        <bpmn2:dataInput id="DataInput_13" name="SUBSCRIBER_ID"/>
+        <bpmn2:dataInput id="DataInput_19" name="SUBSCRIBER_ACL_ID"/>
+        <bpmn2:dataOutput id="DataOutput_5" name="EXISTS"/>
+        <bpmn2:inputSet id="InputSet_5" name="Input Set 5">
+          <bpmn2:dataInputRefs>DataInput_12</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_13</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_19</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_2" name="Output Set 2">
+          <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_12">
+        <bpmn2:targetRef>DataInput_12</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_7">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_39">'GET'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">DataInput_12</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_13">
+        <bpmn2:targetRef>DataInput_13</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_18">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_65">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_40">DataInput_13</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_19">
+        <bpmn2:targetRef>DataInput_19</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_31">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_68">'118'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_66">DataInput_19</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_5">
+        <bpmn2:sourceRef>DataOutput_5</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_39">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_38">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_82">vExists</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_5" name="WL" default="SequenceFlow_20">
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_20</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ServiceTask_5" targetRef="ExclusiveGateway_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_20" name="No" sourceRef="ExclusiveGateway_5" targetRef="ScriptTask_8"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_21" name="Yes" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_7">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_110">vExists=='true'</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:serviceTask id="ServiceTask_7" name="ExecuteOrderTask">
+      <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_33</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_1">
+        <bpmn2:dataInput id="DataInput_21" name="CHANNEL_ID"/>
+        <bpmn2:dataInput id="DataInput_22" name="EXTERNAL_TRANSACTION_ID"/>
+        <bpmn2:dataInput id="DataInput_25" name="COMMENT"/>
+        <bpmn2:dataInput id="DataInput_26" name="SUBSCRIBER_ID"/>
+        <bpmn2:dataInput id="DataInput_27" name="PRODUCT_ID"/>
+        <bpmn2:dataInput id="DataInput_28" name="ORDER_TYPE"/>
+        <bpmn2:dataInput id="DataInput_41" name="ORIGEN"/>
+        <bpmn2:dataInput id="DataInput_29" name="ExecuteOrderTask__retryPolicyNumber"/>
+        <bpmn2:dataOutput id="DataOutput_2" name="BPMN_RESPONSE_CODE"/>
+        <bpmn2:dataOutput id="DataOutput_4" name="BPMN_RESPONSE_MESSAGE"/>
+        <bpmn2:dataOutput id="DataOutput_11" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_2" name="Input Set 107">
+          <bpmn2:dataInputRefs>DataInput_21</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_22</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_25</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_26</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_27</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_28</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_29</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_41</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_1" name="Output Set 4">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_11</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_21">
+        <bpmn2:targetRef>DataInput_21</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_32">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_64">channelId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_67">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_22">
+        <bpmn2:targetRef>DataInput_22</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_33">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_69">transactionId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_70">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_25">
+        <bpmn2:targetRef>DataInput_25</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_34">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_71">'Consulta Piloto CBS'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_72">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_26">
+        <bpmn2:targetRef>DataInput_26</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_35">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_73">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_74">DataInput_6</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_27">
+        <bpmn2:targetRef>DataInput_27</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_36">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_75">'734'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_76">DataInput_8</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_28">
+        <bpmn2:targetRef>DataInput_28</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_37">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_77">'TRANSFER'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_78">DataInput_11</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_29">
+        <bpmn2:targetRef>DataInput_29</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_38">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_79">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_80">DataInput_31</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_41">
+        <bpmn2:targetRef>DataInput_41</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_52">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_109">vOrigen</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_107">DataInput_41</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_50">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_103">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_104">vBpmnResponseCode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_4">
+        <bpmn2:sourceRef>DataOutput_4</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_51">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105">DataOutput_6</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_106">vBpmnResponseMessage</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_11">
+        <bpmn2:sourceRef>DataOutput_11</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_40">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_83">DataOutput_11</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_85">JSON_RESPONSE</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
+      <bpmn2:incoming>SequenceFlow_33</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_33" sourceRef="ServiceTask_7" targetRef="EndEvent_2"/>
+    <bpmn2:scriptTask id="ScriptTask_9" name="ORIGEN">
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_37</bpmn2:outgoing>
+      <bpmn2:script>var vOrigen='NORMAL';
+
+if(typeof ORIGEN!='undefined'){
+	if(ORIGEN=='NXS'){
+		vOrigen=ORIGEN;
+	}
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="StartEvent_1" targetRef="ScriptTask_9"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_37" sourceRef="ScriptTask_9" targetRef="ServiceTask_5"/>
+    <bpmn2:scriptTask id="ScriptTask_14" name="setObject2">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_38</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ScriptTask_12" targetRef="ScriptTask_14"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_38" sourceRef="ScriptTask_14" targetRef="ServiceTask_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ConsultaDatos2">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="7.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="68.0" x="-16.0" y="43.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="2166.0" y="1258.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="2152.0" y="1294.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="95.0" x="553.0" y="713.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="ScriptTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="121.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="77.0" x="562.0" y="138.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_2" bpmnElement="ServiceTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="358.0" y="492.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="158.0" x="334.0" y="502.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="209.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="74.0" x="564.0" y="226.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_4" bpmnElement="ServiceTask_8">
+        <dc:Bounds height="50.0" width="110.0" x="1235.0" y="1042.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="101.0" x="1239.0" y="1044.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_5" bpmnElement="ServiceTask_10">
+        <dc:Bounds height="50.0" width="110.0" x="358.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_9" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="106.0" x="360.0" y="728.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_8">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_10" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="54.0" x="574.0" y="17.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_6" bpmnElement="ScriptTask_10">
+        <dc:Bounds height="50.0" width="110.0" x="1456.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="72.0" x="1475.0" y="728.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_7" bpmnElement="ScriptTask_11">
+        <dc:Bounds height="50.0" width="110.0" x="913.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="95.0" x="920.0" y="728.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="1156.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_24" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="24.0" x="1169.0" y="761.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_9" bpmnElement="ScriptTask_13">
+        <dc:Bounds height="50.0" width="110.0" x="1276.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_29" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="63.0" x="1299.0" y="728.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_11" bpmnElement="ScriptTask_15">
+        <dc:Bounds height="50.0" width="110.0" x="1456.0" y="821.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_30" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="84.0" x="1469.0" y="838.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_12" bpmnElement="ScriptTask_16">
+        <dc:Bounds height="50.0" width="131.0" x="1446.0" y="933.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_33" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="121.0" x="1451.0" y="943.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="1486.0" y="1042.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_35" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="24.0" x="1499.0" y="1092.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_13" bpmnElement="ScriptTask_17">
+        <dc:Bounds height="50.0" width="126.0" x="1227.0" y="933.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_37" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="110.0" x="1235.0" y="950.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_14" bpmnElement="ScriptTask_18">
+        <dc:Bounds height="50.0" width="110.0" x="1456.0" y="1251.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_41" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="59.0" x="1481.0" y="1268.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_6" bpmnElement="ServiceTask_12">
+        <dc:Bounds height="50.0" width="110.0" x="1456.0" y="1150.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_43" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="101.0" x="1460.0" y="1152.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="1706.0" y="1251.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_45" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="42.0" x="1740.0" y="1268.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_10" bpmnElement="ScriptTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="1956.0" y="1251.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_47" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="52.0" x="1985.0" y="1268.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_7" bpmnElement="ServiceTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="293.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_50" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="101.0" x="550.0" y="295.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_15" bpmnElement="ScriptTask_6">
+        <dc:Bounds height="50.0" width="110.0" x="546.0" y="389.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_51" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="60.0" x="571.0" y="406.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="576.0" y="492.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_53" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="60.0" x="571.0" y="542.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_16" bpmnElement="ScriptTask_5" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="1126.0" y="559.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_58" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="77.0" x="1142.0" y="569.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_8" bpmnElement="ServiceTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="913.0" y="915.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_59" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="92.0" x="922.0" y="932.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_17" bpmnElement="ScriptTask_7" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="913.0" y="803.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_61" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="67.0" x="934.0" y="820.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_8" bpmnElement="ScriptTask_12" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="718.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="59.0" x="743.0" y="728.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_3" bpmnElement="ServiceTask_5" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="249.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="86.0" x="261.0" y="10.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_5" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="416.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_23" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="18.0" x="432.0" y="50.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_10" bpmnElement="ServiceTask_7">
+        <dc:Bounds height="50.0" width="110.0" x="386.0" y="138.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_68" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="101.0" x="390.0" y="155.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="286.0" y="145.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_69" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="272.0" y="181.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_9" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="84.0" y="0.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="47.0" x="115.0" y="17.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_18" bpmnElement="ScriptTask_14" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="718.0" y="810.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="59.0" x="743.0" y="827.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ScriptTask_1">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="85.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="121.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_2">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="171.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="209.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ServiceTask_7">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="293.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ServiceTask_5">
+        <di:waypoint xsi:type="dc:Point" x="413.0" y="542.0"/>
+        <di:waypoint xsi:type="dc:Point" x="413.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ServiceTask_5" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="468.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="546.0" y="736.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ScriptTask_7" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="1023.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1156.0" y="736.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_22" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_9">
+        <di:waypoint xsi:type="dc:Point" x="1206.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1276.0" y="736.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_25" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_16">
+        <di:waypoint xsi:type="dc:Point" x="1181.0" y="711.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1181.0" y="660.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1181.0" y="609.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_26" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_20" bpmnElement="SequenceFlow_22" sourceElement="BPMNShape_ScriptTask_9" targetElement="BPMNShape_ScriptTask_6">
+        <di:waypoint xsi:type="dc:Point" x="1386.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1456.0" y="736.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_31" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_23" sourceElement="BPMNShape_ScriptTask_6" targetElement="BPMNShape_ScriptTask_11">
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="761.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="821.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_32" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_22" bpmnElement="SequenceFlow_24" sourceElement="BPMNShape_ScriptTask_11" targetElement="BPMNShape_ScriptTask_12">
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="871.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="933.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_34" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_23" bpmnElement="SequenceFlow_25" sourceElement="BPMNShape_ScriptTask_12" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="983.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="1042.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_36" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_24" bpmnElement="SequenceFlow_26" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ServiceTask_4">
+        <di:waypoint xsi:type="dc:Point" x="1486.0" y="1067.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1345.0" y="1067.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_38" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_25" bpmnElement="SequenceFlow_27" sourceElement="BPMNShape_ServiceTask_4" targetElement="BPMNShape_ScriptTask_13">
+        <di:waypoint xsi:type="dc:Point" x="1290.0" y="1042.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1290.0" y="983.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_39" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_26" bpmnElement="SequenceFlow_28" sourceElement="BPMNShape_ScriptTask_13" targetElement="BPMNShape_ScriptTask_12">
+        <di:waypoint xsi:type="dc:Point" x="1353.0" y="958.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1446.0" y="958.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_40" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_27" bpmnElement="SequenceFlow_29" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ServiceTask_6">
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="1092.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="1150.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_42" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_28" bpmnElement="SequenceFlow_30" sourceElement="BPMNShape_ServiceTask_6" targetElement="BPMNShape_ScriptTask_14">
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="1200.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1511.0" y="1251.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_44" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_ScriptTask_14" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="1566.0" y="1276.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1706.0" y="1276.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_46" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_ScriptTask_10">
+        <di:waypoint xsi:type="dc:Point" x="1816.0" y="1276.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1956.0" y="1276.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_48" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ScriptTask_10" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="2066.0" y="1276.0"/>
+        <di:waypoint xsi:type="dc:Point" x="2166.0" y="1276.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_49" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ServiceTask_7" targetElement="BPMNShape_ScriptTask_15">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="343.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="389.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_52" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ScriptTask_15" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="439.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="492.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_54" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ServiceTask_2">
+        <di:waypoint xsi:type="dc:Point" x="576.0" y="517.0"/>
+        <di:waypoint xsi:type="dc:Point" x="468.0" y="517.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_55" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_29" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="542.0"/>
+        <di:waypoint xsi:type="dc:Point" x="601.0" y="590.0"/>
+        <di:waypoint xsi:type="dc:Point" x="536.0" y="590.0"/>
+        <di:waypoint xsi:type="dc:Point" x="536.0" y="727.0"/>
+        <di:waypoint xsi:type="dc:Point" x="546.0" y="727.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_56" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_30" bpmnElement="SequenceFlow_31" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_8">
+        <di:waypoint xsi:type="dc:Point" x="626.0" y="517.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="517.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_57" labelStyle="BPMNLabelStyle_1"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_34" bpmnElement="SequenceFlow_34" sourceElement="BPMNShape_ServiceTask_8" targetElement="BPMNShape_ScriptTask_17">
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="915.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="884.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="853.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_62"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_35" bpmnElement="SequenceFlow_35" sourceElement="BPMNShape_ScriptTask_17" targetElement="BPMNShape_ScriptTask_7">
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="803.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="782.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="761.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_63"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_36" bpmnElement="SequenceFlow_36" sourceElement="BPMNShape_ScriptTask_16" targetElement="BPMNShape_ScriptTask_7">
+        <di:waypoint xsi:type="dc:Point" x="1126.0" y="584.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="584.0"/>
+        <di:waypoint xsi:type="dc:Point" x="968.0" y="711.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_64"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_8">
+        <di:waypoint xsi:type="dc:Point" x="656.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="687.0" y="736.0"/>
+        <di:waypoint xsi:type="dc:Point" x="718.0" y="736.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_27"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ServiceTask_3" targetElement="BPMNShape_ExclusiveGateway_5">
+        <di:waypoint xsi:type="dc:Point" x="359.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="387.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="416.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_28"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_20" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ScriptTask_4">
+        <di:waypoint xsi:type="dc:Point" x="466.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="506.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="546.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_60">
+          <dc:Bounds height="15.0" width="16.0" x="499.0" y="26.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_31" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ServiceTask_10">
+        <di:waypoint xsi:type="dc:Point" x="441.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="441.0" y="94.0"/>
+        <di:waypoint xsi:type="dc:Point" x="441.0" y="138.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_66">
+          <dc:Bounds height="15.0" width="21.0" x="431.0" y="95.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_33" bpmnElement="SequenceFlow_33" sourceElement="BPMNShape_ServiceTask_10" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="386.0" y="163.0"/>
+        <di:waypoint xsi:type="dc:Point" x="354.0" y="163.0"/>
+        <di:waypoint xsi:type="dc:Point" x="322.0" y="163.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_70"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="36.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="60.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="84.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_37" bpmnElement="SequenceFlow_37" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_ServiceTask_3">
+        <di:waypoint xsi:type="dc:Point" x="194.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="221.0" y="25.0"/>
+        <di:waypoint xsi:type="dc:Point" x="249.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_65"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ScriptTask_8" targetElement="BPMNShape_ScriptTask_18">
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="761.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="785.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="810.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_71"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_38" bpmnElement="SequenceFlow_38" sourceElement="BPMNShape_ScriptTask_18" targetElement="BPMNShape_ServiceTask_8">
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="860.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="940.0"/>
+        <di:waypoint xsi:type="dc:Point" x="913.0" y="940.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_72"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
