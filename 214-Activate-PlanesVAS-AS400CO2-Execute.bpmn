@@ -573,14 +573,14 @@ var doLoop=false;
 var vPCCArray=new Array();
 
 
-if (vPCCService!= 'undefined' &amp;&amp; vPCCService != 'NA')
+if (typeof vPCCService!= 'undefined' &amp;&amp; vPCCService != 'NA')
 {
 	doPCC=true;
 	vPCCArray=vPCCService.split(',');
 	vSrvPcc=vPCCArray[vCounter2];
 }
 
-if(vOfferingPlanVAS != 'undefined' &amp;&amp; !vIsPrimary){
+if(typeof vOfferingPlanVAS != 'undefined' &amp;&amp; !vIsPrimary){
 	doCBS=true;
 	vOffCbs=vOfferingPlanVAS;
 }</bpmn2:script>
@@ -665,10 +665,11 @@ if(vOfferingPlanVAS != 'undefined' &amp;&amp; !vIsPrimary){
       <bpmn2:script>doLoop=false;
 vCounter2++;
 
-if(vCounter2&lt;vAppsArray.length){
+//if(vCounter2&lt;vAppsArray.length){
+	if(vCounter2&lt;vPCCArray.length){
 	doLoop=true;	
 	
-	vSrvPcc=vAppsArray[vCounter2];
+	vSrvPcc=vPCCArray[vCounter2];
 	
 }
 

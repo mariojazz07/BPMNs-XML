@@ -575,14 +575,14 @@ var vPCCArray=new Array();
 
 if (vPCCService!= 'undefined' &amp;&amp; vPCCService != 'NA')
 {
-    doPCC=true;
-    vPCCArray=vPCCService.split(',');
-    vSrvPcc=vPCCArray[vCounter2];
+	doPCC=true;
+	vPCCArray=vPCCService.split(',');
+	vSrvPcc=vPCCArray[vCounter2];
 }
 
 if(vOfferingPlanVAS != 'undefined' &amp;&amp; !vIsPrimary){
-    doCBS=true;
-    vOffCbs=vOfferingPlanVAS;
+	doCBS=true;
+	vOffCbs=vOfferingPlanVAS;
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_34" sourceRef="ServiceTask_13" targetRef="ScriptTask_9"/>
@@ -603,10 +603,10 @@ if(vOfferingPlanVAS != 'undefined' &amp;&amp; !vIsPrimary){
 vCounter2++;
 
 if(vCounter2&lt;vAppsArray.length){
-    doLoop=true;    
-    
-    vSrvPcc=vAppsArray[vCounter2];
-    
+	doLoop=true;	
+	
+	vSrvPcc=vAppsArray[vCounter2];
+	
 }
 
 LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
@@ -701,17 +701,23 @@ LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
       <bpmn2:script>var vMasterSequence=''; 
 
 if(vIsPrimary){
-    vOffCbs='NA';
-    vMasterSequence='NA';
+	vOffCbs='NA';
+	vMasterSequence='NA';
 
 }
 else if (vUpdateService){
-    vOffCbs=vCBSOffering;
-    vMasterSequence=vPurchaseSeqVAS;
+	vOffCbs=vCBSOffering;
+	vMasterSequence=vPurchaseSeqVAS;
 }
 else{
-    vOffCbs=vCBSOffering;
-    vMasterSequence=transactionId;
+	if(typeof vCBSOffering!='undefined'){
+	vOffCbs=vCBSOffering;
+	vMasterSequence=transactionId;
+	}
+	else{
+		vOffCbs='NA';
+		vMasterSequence='NA';
+	}
 }
 
 
