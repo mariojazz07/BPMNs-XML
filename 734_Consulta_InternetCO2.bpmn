@@ -2235,12 +2235,16 @@ if (vSubscriberType != 'PRE') {
     <bpmn2:scriptTask id="ScriptTask_1" name="setPlanCBS">
       <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:script>var plan = new Object();
-var user = new Object();
+      <bpmn2:script>//var plan = new Object();
+//var user = new Object();
 
 if (vSubscriberType != 'PRE') {
     if (!vIsPrimaryPlan) {
         if (typeof (planWallet) != 'undefined') {
+            //
+                var plan = new Object();
+                var user = new Object();
+            //
             activePlanSeq = vPurchaseSeqVAS;
             planInstances = getSortedItemsPospaid(snatchInstances(planWallet.FreeUnitItemDetail, bundlePlanChildOffers, false, true, false));
             tmpInstances_plan = splitInstancesPlan(planInstances, activePlanSeq);
@@ -2248,7 +2252,10 @@ if (vSubscriberType != 'PRE') {
         }
     } else {
         if (typeof (planWallet) != 'undefined') {
-            
+            //
+                var plan = new Object();
+                var user = new Object();
+            //
             planInstances = getSortedItemsPospaid(snatchInstances(planWallet.FreeUnitItemDetail, bundlePlanChildOffers, false, true, false));
             tmpInstances_plan = splitInstancesPlan(planInstances, activePlanSeq);
             plan = setPlanCBS(tmpInstances_plan, planBillCycle);

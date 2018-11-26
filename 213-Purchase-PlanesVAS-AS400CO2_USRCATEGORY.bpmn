@@ -109,7 +109,8 @@ if (vExecuteValue) {
       vUpdateService = true;
 
       vEffectiveTime = parseDateToStringCBS(vEffectiveTime);
-      vServiceEndDate = getCbsDate(vEndDateAs400);
+      //vServiceEndDate = getCbsDate(vEndDateAs400);
+      vServiceEndDate=vEndDateAs400;
 
     } else {
       vEffectiveTime = parseDateToStringCBS(vEffectiveTime);
@@ -364,7 +365,7 @@ var tLinea = tSaltoL + '********************************************************
 
 
 LOGGER.info(tLinea + 'vDoSchedule:' + vDoSchedule + tLinea);
-LOGGER.info(tLinea + 'vServiceStartDate:' + vServiceStartDate + tLinea);
+LOGGER.info(tLinea + 'vServiceEndDate:' + vServiceEndDate + tLinea);
 LOGGER.info(tLinea + 'vScheduleDateWarning:' + vScheduleDateWarning + tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:serviceTask id="ServiceTask_2" name="PCCSubscribeServiceTask" implementation="##WebService">
@@ -519,7 +520,6 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
 </bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_2" name="addService" default="SequenceFlow_13">
-      <bpmn2:incoming>SequenceFlow_55</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_58</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_60</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
@@ -2336,6 +2336,7 @@ var vPccJsonInfo;
 var vUpdateUsrCategory = false;
 var vSetOffering = false;
 var vCategoryPCC = 'normal';
+var vPaidTypePCC='1';
 
 if (typeof vPCCService != 'undefined') {
 	if (vPCCService != 'NA') {
@@ -2359,14 +2360,15 @@ if (typeof vPaqInfo != 'undefined') {
 if (typeof vPlanFUP != 'undefined') {
 	vHasFUP128 = true;
 	vCategoryPCC = GetUsrCategoryByType(vPaymentType,vPlanFUP);
-	vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+	
 
-} else if (vSubscriberFound &amp;&amp; vPaymentType == '2') {
+} else if (vPaymentType == '2') {
 	vCategoryPCC = 'Hibrido';
-	vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
-} else {
+	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+} else if (vPaymentType == '1'){
 	vCategoryPCC = 'normal';
-	vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
 }
 
 
@@ -2426,19 +2428,24 @@ function GetUsrCategoryByType(vSubType, vFUPType) {
 	}
 
 	return vFUPByType;
-}</bpmn2:script>
+}
+
+
+LOGGER.info(tLinea+'vCategoryPCC:'+vCategoryPCC+tLinea);
+//LOGGER.info(tLinea+'vPlanFUP:'+vPlanFUP+tLinea);
+LOGGER.info(tLinea+'vPaymentType:'+vPaymentType+tLinea);
+</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ServiceTask_9" targetRef="ScriptTask_11"/>
-    <bpmn2:exclusiveGateway id="ExclusiveGateway_9" name="createPCC" gatewayDirection="Diverging" default="SequenceFlow_25">
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_9" name="createPCC" gatewayDirection="Diverging" default="SequenceFlow_71">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-      <bpmn2:outgoing>SequenceFlow_25</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_71</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_11" targetRef="ExclusiveGateway_9"/>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="Si" sourceRef="ExclusiveGateway_9" targetRef="ServiceTask_4">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_81">vHasUnlimited || vCreatePcc</bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_81">vCreatePcc</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="SequenceFlow_25" name="No" sourceRef="ExclusiveGateway_9" targetRef="ExclusiveGateway_8"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_10" name="doPCC" default="SequenceFlow_11">
       <bpmn2:incoming>SequenceFlow_54</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_67</bpmn2:incoming>
@@ -2699,7 +2706,7 @@ LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
       <bpmn2:dataInputAssociation id="DataInputAssociation_47">
         <bpmn2:targetRef>DataInput_47</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_72">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_176">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_176">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_174">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -2747,7 +2754,7 @@ LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
       <bpmn2:dataInputAssociation id="DataInputAssociation_51">
         <bpmn2:targetRef>DataInput_51</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_76">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_186">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_186">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_187">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -2792,7 +2799,7 @@ LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
       <bpmn2:dataInputAssociation id="DataInputAssociation_55">
         <bpmn2:targetRef>DataInput_55</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_79">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_192">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_192">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_193">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -2837,7 +2844,7 @@ LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
       <bpmn2:dataInputAssociation id="DataInputAssociation_59">
         <bpmn2:targetRef>DataInput_59</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_82">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_198">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_198">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_199">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -2902,18 +2909,31 @@ var vSubscriberTypeVAS=subscriberType;
 var vVasTypePlan=typePlan;
 var vAnnex=annex;
 var vAs400TransactionID=TRANSACTIONID;
+var vOCEPExTransactionID= typeof externalTransacionId != 'undefined'?externalTransacionId:'';
 var vTransType=TRANSTYPE;
 // var vTransDate=TRANSDATE;
 // var vTransTime=TRANSTIME;
+
+//
+var vSubNum=SUBSNUMB;
+var vUser=USER;
+var vProgram=PROGRAM;
+//
 var vTransDate='';
 var vTransTime='';
 var vPlanCode=PLANCODE;
 var vPlanVas=PLANVAS;
+
+//
+var vIMSI=IMSI;
+var vSimcard=SIMCARD;
+//
 var vScheduleBillday=BILLDAY;
 var vScheduleEntitlement=ENTITLEMENT;
 var vSchSrvStartDate=SRVSTARDATE;
 var vSchSrvEndDate=SRVENDDATE;
 var vSchInclude=INCLUDE;
+var vExecute='TRUE';
 
 var vTmpDate=new Date();
 var vTmpTransDate = parseDateToStringAS(vTmpDate);
@@ -2975,6 +2995,12 @@ vTransTime=vTmpTransTime;
         <bpmn2:dataInput id="DataInput_147" name="ADICIONAL_SRVSTARDATE"/>
         <bpmn2:dataInput id="DataInput_148" name="ADICIONAL_SRVENDDATE"/>
         <bpmn2:dataInput id="DataInput_149" name="ADICIONAL_INCLUDE"/>
+        <bpmn2:dataInput id="DataInput_119" name="ADICIONAL_SUBSNUMB"/>
+        <bpmn2:dataInput id="DataInput_162" name="ADICIONAL_USER"/>
+        <bpmn2:dataInput id="DataInput_163" name="ADICIONAL_PROGRAM"/>
+        <bpmn2:dataInput id="DataInput_164" name="ADICIONAL_IMSI"/>
+        <bpmn2:dataInput id="DataInput_165" name="ADICIONAL_SIMCARD"/>
+        <bpmn2:dataInput id="DataInput_166" name="ADICIONAL_EXECUTE"/>
         <bpmn2:inputSet id="InputSet_17" name="Input Set 24">
           <bpmn2:dataInputRefs>DataInput_107</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_108</bpmn2:dataInputRefs>
@@ -3007,6 +3033,12 @@ vTransTime=vTmpTransTime;
           <bpmn2:dataInputRefs>DataInput_149</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_150</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_43</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_119</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_162</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_163</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_164</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_165</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_166</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
         <bpmn2:outputSet id="OutputSet_17" name="Output Set 8"/>
       </bpmn2:ioSpecification>
@@ -3227,13 +3259,55 @@ vTransTime=vTmpTransTime;
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_80">DataInput_43</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_119">
+        <bpmn2:targetRef>DataInput_119</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_136">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_268">vSubNum</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_249">DataInput_119</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_162">
+        <bpmn2:targetRef>DataInput_162</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_141">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_343">vUser</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_304">DataInput_162</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_163">
+        <bpmn2:targetRef>DataInput_163</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_142">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_352">vProgram</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_346">DataInput_163</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_164">
+        <bpmn2:targetRef>DataInput_164</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_143">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_361">vIMSI</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_355">DataInput_164</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_165">
+        <bpmn2:targetRef>DataInput_165</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_184">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_370">vSimcard</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_364">DataInput_165</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_166">
+        <bpmn2:targetRef>DataInput_166</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_185">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_379">vExecute</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_373">DataInput_166</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_50" sourceRef="ScriptTask_20" targetRef="ServiceTask_17"/>
     <bpmn2:scriptTask id="ScriptTask_21" name="setResponse">
       <bpmn2:incoming>SequenceFlow_51</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_52</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
-var BPMN_RESPONSE_MESSAGE = 'Alta Plan VAS Calendarizado para: +vSchSrvStartDate;
+var BPMN_RESPONSE_MESSAGE = 'Alta Plan VAS Calendarizado para: '+vSchSrvStartDate;
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:serviceTask id="ServiceTask_23" name="AS400IndexedQueueTask">
@@ -3262,7 +3336,7 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:dataInputAssociation id="DataInputAssociation_152">
         <bpmn2:targetRef>DataInput_152</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_175">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_383">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_383">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_384">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -3384,24 +3458,20 @@ if(typeof PCCGetSubscriberAllInfTask__platformErrorCode != 'undefined'){
     <bpmn2:sequenceFlow id="SequenceFlow_29" sourceRef="ServiceTask_5" targetRef="ScriptTask_22"/>
     <bpmn2:sequenceFlow id="SequenceFlow_44" sourceRef="ScriptTask_22" targetRef="ScriptTask_4"/>
     <bpmn2:sequenceFlow id="SequenceFlow_32" sourceRef="ServiceTask_24" targetRef="ScriptTask_20"/>
-    <bpmn2:exclusiveGateway id="ExclusiveGateway_8" name="UpdCategory" default="SequenceFlow_55">
-      <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_55</bpmn2:outgoing>
-      <bpmn2:outgoing>SequenceFlow_59</bpmn2:outgoing>
-    </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_55" name="No" sourceRef="ExclusiveGateway_8" targetRef="ExclusiveGateway_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_58" sourceRef="ServiceTask_4" targetRef="ExclusiveGateway_2"/>
     <bpmn2:serviceTask id="ServiceTask_1" name="PCCUpdateSubscriberTask">
-      <bpmn2:incoming>SequenceFlow_59</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_71</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_60</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_7">
         <bpmn2:dataInput id="DataInput_44" name="USR_IDENTIFIER"/>
         <bpmn2:dataInput id="DataInput_65" name="USR_CATEGORY"/>
+        <bpmn2:dataInput id="DataInput_167" name="USR_PAID_TYPE"/>
         <bpmn2:dataInput id="DataInput_66" name="PCCUpdateSubscriberTask__failOverPolicy"/>
         <bpmn2:inputSet id="InputSet_8" name="Input Set 8">
           <bpmn2:dataInputRefs>DataInput_44</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_65</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_66</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_167</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
         <bpmn2:outputSet id="OutputSet_8" name="Output Set 8"/>
       </bpmn2:ioSpecification>
@@ -3426,10 +3496,14 @@ if(typeof PCCGetSubscriberAllInfTask__platformErrorCode != 'undefined'){
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_74">DataInput_66</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_167">
+        <bpmn2:targetRef>DataInput_167</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_186">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_340">vPaidTypePCC</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_87">DataInput_167</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
     </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_59" name="Si" sourceRef="ExclusiveGateway_8" targetRef="ServiceTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_87">vUpdateUsrCategory</bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_60" sourceRef="ServiceTask_1" targetRef="ExclusiveGateway_2"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="Execute" gatewayDirection="Diverging" default="SequenceFlow_34">
       <bpmn2:incoming>SequenceFlow_62</bpmn2:incoming>
@@ -3439,40 +3513,47 @@ if(typeof PCCGetSubscriberAllInfTask__platformErrorCode != 'undefined'){
     <bpmn2:scriptTask id="ScriptTask_24" name="ScheduleValuesMinute">
       <bpmn2:incoming>SequenceFlow_34</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_46</bpmn2:outgoing>
-      <bpmn2:script>var vEventType=eventType;
-var vSubEvent=subevent;
-var vSubscriberTypeVAS=subscriberType;
-var vVasTypePlan=typePlan;
-var vAnnex=annex;
-var vAs400TransactionID=TRANSACTIONID;
-var vOCEPExTransactionID= typeof externalTransacionId != 'undefined'?externalTransacionId:'';
-var vTransType=TRANSTYPE;
-var vTransDate=TRANSDATE;
-var vTransTime=TRANSTIME;
-var vSubNum=SUBSNUMB;
-var vUser=USER;
-var vProgram=PROGRAM;
-var vPlanCode=PLANCODE;
-var vPlanVas=PLANVAS;
-var vIMSI=IMSI;
-var vSimcard=SIMCARD;
-var vScheduleBillday=BILLDAY;
-var vScheduleEntitlement=ENTITLEMENT;
-var vSchSrvStartDate=SRVSTARDATE;
-var vSchSrvEndDate=SRVENDDATE;
-var vSchInclude=INCLUDE;
-var vExecute='TRUE';
+      <bpmn2:script>var vEventType = typeof eventType != 'undefined' ? eventType : 'PLAN_VAS';
+var vSubEvent = typeof subevent != 'undefined' ? subevent : 'CREATESUBS';
+var vSubscriberTypeVAS = subscriberType;
+var vVasTypePlan = typeof typePlan != 'undefined' ? typePlan : 'POS';
+var vAnnex = annex;
+var vAs400TransactionID = typeof TRANSACTIONID != 'undefined' ? TRANSACTIONID : '0';
+var vOCEPExTransactionID = typeof externalTransacionId != 'undefined' ? externalTransacionId : '0';
+var vTransType = typeof TRANSTYPE != 'undefined' ? TRANSTYPE : '1';
+var vTransDate = typeof TRANSDATE != 'undefined' ? TRANSDATE : ' ';
+var vTransTime = typeof TRANSTIME != 'undefined' ? TRANSTIME : ' ';
+var vSubNum = typeof SUBSNUMB != 'undefined' ? SUBSNUMB : subscriberId;
+var vUser = typeof USER != 'undefined' ? USER : 'CDCPE';
+var vProgram = typeof PROGRAM != 'undefined' ? PROGRAM : 'CDCPE';
+var vPlanCode = typeof PLANCODE != 'undefined' ? PLANCODE : ' ';
+var vPlanVas = typeof PLANVAS != 'undefined' ? PLANVAS : ' ';
+var vIMSI = typeof IMSI != 'undefined' ? IMSI : '0';
+var vSimcard = typeof SIMCARD != 'undefined' ? SIMCARD : '0';
+var vScheduleBillday = typeof BILLDAY != 'undefined' ? BILLDAY : ' ';
+var vScheduleEntitlement = typeof ENTITLEMENT != 'undefined' ? ENTITLEMENT : 'HN_POS,Postpaid';
+var vSchSrvStartDate='';
 
-var vExecuteDate=new Date();
-var ONE_MIN=1*60*1000;
+if(typeof SRVSTARDATE != 'undefined'){
+	vSchSrvStartDate=SRVSTARDATE;
+}
+else{
+	if(typeof DEVICE != 'undefined'){
+		if(DEVICE=='CDCPE'){
+			vSchSrvStartDate=TRANSDATE;
+		}
+	}
+}
 
-vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime()+ONE_MIN);
 
+var vSchSrvEndDate = typeof SRVENDDATE != 'undefined' ? SRVENDDATE : '0';
+var vSchInclude = typeof INCLUDE != 'undefined' ? INCLUDE : ' ';
+var vExecute = 'TRUE';
 
+var vExecuteDate = new Date();
+var ONE_MIN = 1 * 60 * 1000;
 
-
-
-
+vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime() + ONE_MIN);
 
 
 </bpmn2:script>
@@ -3503,7 +3584,7 @@ vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime()+ONE_MIN);
         <bpmn2:dataInput id="DataInput_90" name="ADICIONAL_TRANSTYPE"/>
         <bpmn2:dataInput id="DataInput_91" name="ADICIONAL_TRANSDATE"/>
         <bpmn2:dataInput id="DataInput_95" name="ADICIONAL_TRANSTIME"/>
-        <bpmn2:dataInput id="DataInput_103" name="ADICIONAL_SUBNUM"/>
+        <bpmn2:dataInput id="DataInput_103" name="ADICIONAL_SUBSNUMB"/>
         <bpmn2:dataInput id="DataInput_104" name="ADICIONAL_USER"/>
         <bpmn2:dataInput id="DataInput_105" name="ADICIONAL_PROGRAM"/>
         <bpmn2:dataInput id="DataInput_96" name="ADICIONAL_PLANCODE"/>
@@ -3578,7 +3659,7 @@ vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime()+ONE_MIN);
       <bpmn2:dataInputAssociation id="DataInputAssociation_32">
         <bpmn2:targetRef>DataInput_32</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_43">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_100">'27'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_100">'23'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_101">DataInput_62</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -3847,6 +3928,7 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:incoming>SequenceFlow_66</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_66" sourceRef="ScriptTask_25" targetRef="EndEvent_6"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_71" name="No" sourceRef="ExclusiveGateway_9" targetRef="ServiceTask_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="AprovisionamientoVas-Purchase">
@@ -4246,16 +4328,10 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
           <dc:Bounds height="15.0" width="62.0" x="650.0" y="423.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_8" bpmnElement="ExclusiveGateway_8" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="153.0" y="596.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_117" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="72.0" x="142.0" y="646.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ServiceTask_8" bpmnElement="ServiceTask_1" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="317.0" y="596.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="123.0" y="667.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_126" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="30.0" width="90.0" x="327.0" y="606.0"/>
+          <dc:Bounds height="30.0" width="90.0" x="133.0" y="677.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_6" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
@@ -4454,14 +4530,6 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
         <di:waypoint xsi:type="dc:Point" x="496.0" y="522.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_39">
           <dc:Bounds height="15.0" width="11.0" x="345.0" y="523.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_22" bpmnElement="SequenceFlow_25" sourceElement="BPMNShape_ExclusiveGateway_9" targetElement="BPMNShape_ExclusiveGateway_8">
-        <di:waypoint xsi:type="dc:Point" x="178.0" y="547.0"/>
-        <di:waypoint xsi:type="dc:Point" x="178.0" y="571.0"/>
-        <di:waypoint xsi:type="dc:Point" x="178.0" y="596.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_76">
-          <dc:Bounds height="15.0" width="16.0" x="171.0" y="573.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_47" bpmnElement="SequenceFlow_47" sourceElement="BPMNShape_ServiceTask_20" targetElement="BPMNShape_ExclusiveGateway_11">
@@ -4820,32 +4888,16 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
         <di:waypoint xsi:type="dc:Point" x="570.0" y="245.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_5"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_55" bpmnElement="SequenceFlow_55" sourceElement="BPMNShape_ExclusiveGateway_8" targetElement="BPMNShape_ExclusiveGateway_2">
-        <di:waypoint xsi:type="dc:Point" x="178.0" y="646.0"/>
-        <di:waypoint xsi:type="dc:Point" x="178.0" y="692.0"/>
-        <di:waypoint xsi:type="dc:Point" x="526.0" y="692.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_118">
-          <dc:Bounds height="15.0" width="16.0" x="322.0" y="693.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_58" bpmnElement="SequenceFlow_58" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ExclusiveGateway_2">
         <di:waypoint xsi:type="dc:Point" x="551.0" y="547.0"/>
         <di:waypoint xsi:type="dc:Point" x="551.0" y="607.0"/>
         <di:waypoint xsi:type="dc:Point" x="551.0" y="667.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_119"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_59" bpmnElement="SequenceFlow_59" sourceElement="BPMNShape_ExclusiveGateway_8" targetElement="BPMNShape_ServiceTask_8">
-        <di:waypoint xsi:type="dc:Point" x="203.0" y="621.0"/>
-        <di:waypoint xsi:type="dc:Point" x="260.0" y="621.0"/>
-        <di:waypoint xsi:type="dc:Point" x="317.0" y="621.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_134">
-          <dc:Bounds height="15.0" width="11.0" x="255.0" y="622.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_60" bpmnElement="SequenceFlow_60" sourceElement="BPMNShape_ServiceTask_8" targetElement="BPMNShape_ExclusiveGateway_2">
-        <di:waypoint xsi:type="dc:Point" x="427.0" y="621.0"/>
-        <di:waypoint xsi:type="dc:Point" x="551.0" y="621.0"/>
-        <di:waypoint xsi:type="dc:Point" x="551.0" y="667.0"/>
+        <di:waypoint xsi:type="dc:Point" x="233.0" y="692.0"/>
+        <di:waypoint xsi:type="dc:Point" x="379.0" y="692.0"/>
+        <di:waypoint xsi:type="dc:Point" x="526.0" y="692.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_144"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_34" bpmnElement="SequenceFlow_34" sourceElement="BPMNShape_ExclusiveGateway_6" targetElement="BPMNShape_ScriptTask_24">
@@ -4893,6 +4945,14 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
         <di:waypoint xsi:type="dc:Point" x="700.0" y="25.0"/>
         <di:waypoint xsi:type="dc:Point" x="722.0" y="25.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_165"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_71" bpmnElement="SequenceFlow_71" sourceElement="BPMNShape_ExclusiveGateway_9" targetElement="BPMNShape_ServiceTask_8">
+        <di:waypoint xsi:type="dc:Point" x="178.0" y="547.0"/>
+        <di:waypoint xsi:type="dc:Point" x="178.0" y="607.0"/>
+        <di:waypoint xsi:type="dc:Point" x="178.0" y="667.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_167">
+          <dc:Bounds height="15.0" width="16.0" x="171.0" y="608.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">

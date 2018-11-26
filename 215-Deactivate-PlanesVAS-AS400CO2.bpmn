@@ -235,7 +235,7 @@ function parseDateToStringSchedule(date){
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
 var BPMN_RESPONSE_MESSAGE = 'Operation Successful';
-var AS400QueueOut=transactionId+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
+var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:serviceTask id="ServiceTask_3" name="removeScheduleTask" implementation="##WebService">
       <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
@@ -474,7 +474,7 @@ if (vPrimaryOffer||vDelOrigin=='CDCPE') {
       <bpmn2:dataInputAssociation id="DataInputAssociation_21">
         <bpmn2:targetRef>DataInput_21</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_18">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_33">'MGTEL003I'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_33">'MGTEL003O'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_35">DataInput_47</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
