@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- origin at X=0.0 Y=0.0 -->
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.1.6.Final-v20160330-1631-B1306" targetNamespace="http://org.eclipse.bpmn2/default/process">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
   <bpmn2:process id="Consulta0101" name="Default Process" isExecutable="false">
     <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
@@ -11,508 +11,478 @@
     <bpmn2:scriptTask id="ScriptTask_5" name="Inicio">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
-var vInternet = false;&#xD;
-var bExiste = false;&#xD;
-var vHoy = new Date();&#xD;
-&#xD;
-var NexusPCC = {Services:[]};&#xD;
-var paqueteY = {};&#xD;
-var FechaPI = new Date();    &#xD;
-var FechaPF = new Date();&#xD;
-var IDs = [];&#xD;
-var productsID = [];&#xD;
-var IlimitadosJ = [];&#xD;
-var APP_FACEBOOK = '';&#xD;
-var APP_CLASH_OF_CLANS ='';&#xD;
-var APP_CLASH_ROYALE = '';&#xD;
-var APP_INSTAGRAM = '';&#xD;
-var APP_POKEMON_GO = '';&#xD;
-var APP_WHATSAPP = '';&#xD;
-var APP_YOUTUBE = '';&#xD;
-&#xD;
-BILLCYCLEDAY = '7';&#xD;
-&#xD;
-var Jproductos = [{&#xD;
-        &quot;ProductID&quot;: 353,&#xD;
-        &quot;Name&quot;:&quot;ILI-353&quot;,&#xD;
-        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 3,&#xD;
-        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;&#xD;
-    },{&#xD;
-        &quot;ProductID&quot;: 1103,&#xD;
-        &quot;Name&quot;:&quot;ILI-1103&quot;,&#xD;
-        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 3,&#xD;
-        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 355,&#xD;
-        &quot;Name&quot;:&quot;ILI-355&quot;,&#xD;
-        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 1105,&#xD;
-        &quot;Name&quot;:&quot;ILI-1105&quot;,&#xD;
-        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 403,&#xD;
-        &quot;Name&quot;:&quot;ILI-403&quot;,&#xD;
-        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 7,&#xD;
-        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 1113,&#xD;
-        &quot;Name&quot;:&quot;ILI-1113&quot;,&#xD;
-        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 7,&#xD;
-        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 416,&#xD;
-        &quot;Name&quot;:&quot;ILI-416&quot;,&#xD;
-        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 1115,&#xD;
-        &quot;Name&quot;:&quot;ILI-1115&quot;,&#xD;
-        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 720,&#xD;
-        &quot;Name&quot;:&quot;ILI-720&quot;,&#xD;
-        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 2,&#xD;
-        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 1078,&#xD;
-        &quot;Name&quot;:&quot;ILI-1078&quot;,&#xD;
-        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 2,&#xD;
-        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 721,&#xD;
-        &quot;Name&quot;:&quot;ILI-721&quot;,&#xD;
-        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 1079,&#xD;
-        &quot;Name&quot;:&quot;ILI-1079&quot;,&#xD;
-        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,&#xD;
-        &quot;ServiceID&quot;: 1,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 526,&#xD;
-        &quot;Name&quot;:&quot;ILI-526&quot;,&#xD;
-        &quot;PName&quot;: &quot;Youtube Ilimitado (L 28/1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_YOUTUBE&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 4,&#xD;
-        &quot;QNAME&quot; : &quot;APP_YOUTUBE Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 527,&#xD;
-        &quot;Name&quot;:&quot;ILI-527&quot;,&#xD;
-        &quot;PName&quot;: &quot;Clash of Clan Ilimitado (L 12/1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_CLASH_OF_CLANS&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 5,&#xD;
-        &quot;QNAME&quot; : &quot;APP_CLASH_OF_CLANS Quota&quot;&#xD;
-    },&#xD;
-    {&#xD;
-        &quot;ProductID&quot;: 528,&#xD;
-        &quot;Name&quot;:&quot;ILI-528&quot;,&#xD;
-        &quot;PName&quot;: &quot;Clash Royale Ilimitado (L 17/1 dia)&quot;,&#xD;
-        &quot;SRV&quot; : &quot;APP_CLASH_ROYALE&quot;,&#xD;
-        &quot;QInitial&quot; : 2147483645.00,&#xD;
-        &quot;ServiceID&quot;: 6,&#xD;
-        &quot;QNAME&quot; : &quot;APP_CLASH_ROYALE Quota&quot;&#xD;
-    }&#xD;
-]&#xD;
-&#xD;
-&#xD;
-var PaqueteM = //Modelo&#xD;
-    {&#xD;
-        SRVNAME: &quot;Name&quot;,&#xD;
-        P:&quot;ProductID&quot;,&#xD;
-        I:&quot;Start&quot;,&#xD;
-        V:&quot;Vigencia&quot;,&#xD;
-        Initial : &quot;QInitial&quot;,&#xD;
-        SRV: &quot;QNAME&quot;,&#xD;
-        Name: &quot;PName&quot;,&#xD;
-        ServiceID: &quot;ServiceID&quot;,&#xD;
-        ProductID: &quot;ProductID&quot;,&#xD;
-        QTANAME: &quot;QNAME&quot;,&#xD;
-        QTAVALUE_MB: &quot;QInitial&quot;,&#xD;
-        QTACONSUMPTION_MB: &quot;QConsumption&quot;,&#xD;
-        //QTABALANCE:&quot;QBalance&quot;,&#xD;
-        QTABALANCE_MB: &quot;QBalance&quot;,&#xD;
-        QTAPERCENTAGE: &quot;QBalanceP&quot;,&#xD;
-        SRVSTARTDATETIME: &quot;Start&quot;,&#xD;
-        SRVENDDATETIME: &quot;End&quot;,&#xD;
-        SRVISEXPIRED:&quot;Expired&quot;,&#xD;
-        SRVPRODUCTTYPE:&quot;Type&quot;,&#xD;
-        USRBILLCYCLEDATE: &quot;BillCycleDate&quot;&#xD;
-        //Expirado:&quot;Expired&quot;,&#xD;
-        //Clase: &quot;Class&quot;&#xD;
-    };&#xD;
-&#xD;
-&#xD;
-if(typeof TYPE == 'undefined'){&#xD;
-    var TYPE = 'INTERNET';&#xD;
-}&#xD;
-&#xD;
-if (TYPE == &quot;INTERNET&quot;) {&#xD;
-    vInternet = true;&#xD;
-}&#xD;
-&#xD;
-function parseCBSDate2(Texto) {&#xD;
-    var FechaD = new Date();&#xD;
-    var tAnio = Texto.substr(6, 4);&#xD;
-    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
-    var tMes = Number(Texto.substring(0, 2)) - 1;&#xD;
-    var tDia = Texto.substr(3, 2);&#xD;
-    var tHora = Texto.substr(11, 2);&#xD;
-    var tMinutos = Texto.substr(14, 2);&#xD;
-    var tSegundos = Texto.substr(17, 2);&#xD;
-&#xD;
-    FechaD.setFullYear(tAnio,tMes, tDia);&#xD;
-    //FechaD.setMonth(tMes, tDia);&#xD;
-    //FechaD.setDate( tDia);&#xD;
-    FechaD.setHours(tHora, tMinutos,tSegundos,0);&#xD;
-    //FechaD.setMinutes(tMinutos);&#xD;
-    //FechaD.setSeconds(tSegundos);&#xD;
-    return FechaD;&#xD;
-};&#xD;
-&#xD;
-function parseCBSDate(Texto) {&#xD;
-    var FechaD = new Date();&#xD;
-    var tAnio = Texto.substr(0, 4);&#xD;
-    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
-    var tMes = Number(Texto.substring(4, 6)) - 1;&#xD;
-    var tDia = Texto.substr(6, 2);&#xD;
-    var tHora = Texto.substr(8, 2);&#xD;
-    var tMinutos = Texto.substr(10, 2);&#xD;
-    var tSegundos = Texto.substr(12, 2);&#xD;
-&#xD;
-    FechaD.setFullYear(tAnio,tMes, tDia);&#xD;
-    //FechaD.setMonth(tMes, tDia);&#xD;
-    //FechaD.setDate( tDia);&#xD;
-    FechaD.setHours(tHora, tMinutos,tSegundos,0);&#xD;
-    //FechaD.setMinutes(tMinutos);&#xD;
-    //FechaD.setSeconds(tSegundos);&#xD;
-    return FechaD;&#xD;
-};&#xD;
-&#xD;
-function parseTimeCBS  (gTime) {&#xD;
-    var tTiempo = new Date();&#xD;
-    tTiempo.setTime(gTime);&#xD;
-    var Texto = parseDate2CBS(tTiempo);&#xD;
-    return Texto;&#xD;
-};&#xD;
-&#xD;
-function parseDate2CBS (Fecha) {&#xD;
-    var Texto = ' ';&#xD;
-    var tAnio = Fecha.getFullYear();&#xD;
-    var tMes = Fecha.getMonth() + 1;&#xD;
-    var tDia = Fecha.getDate();&#xD;
-    var tHora = Fecha.getHours();&#xD;
-    var tMinutos = Fecha.getMinutes();&#xD;
-    var tSegundos = Fecha.getSeconds();&#xD;
-    Texto = String(tAnio);&#xD;
-    if (tMes &lt; 10) Texto = Texto + '0';&#xD;
-    Texto = Texto +  String(tMes);&#xD;
-    if (tDia &lt; 10) Texto = Texto + '0';&#xD;
-    Texto = Texto +  String(tDia);&#xD;
-    if (tHora &lt; 10) Texto = Texto + '0';&#xD;
-    Texto = Texto +  String(tHora);&#xD;
-    if (tMinutos &lt; 10) Texto = Texto + '0';&#xD;
-    Texto = Texto +  String(tMinutos);    &#xD;
-    if (tSegundos &lt; 10) Texto = Texto + '0';&#xD;
-    Texto = Texto +  String(tSegundos);&#xD;
-    return Texto;&#xD;
-};&#xD;
-&#xD;
-function getObjects(obj, key, val, level) {&#xD;
-    var levelX = level;&#xD;
-    var indexY = 0;&#xD;
-    var objects = [];&#xD;
-&#xD;
-    for (var i in obj) {&#xD;
-        if (typeof obj[i] == 'object') {&#xD;
-            if (obj[i].key != undefined) {&#xD;
-                if (PaqueteM[obj[i].key] != undefined) {&#xD;
-                    paqueteY[PaqueteM[obj[i].key]] = obj[i].value;&#xD;
-                };&#xD;
-            }&#xD;
-            objects = objects.concat(getObjects(obj[i], key, val, levelX + 1)); //Busca en Hijos&#xD;
-            if (level == 1) {&#xD;
-                if (paqueteY[PaqueteM[key]] != undefined) {&#xD;
-                    if (val.length > 0) { //Se sale sí ya encontró&#xD;
-                        paqueteY.index = val.indexOf(paqueteY[PaqueteM[key]])&#xD;
-                    };&#xD;
-                    if (paqueteY.index >= 0  || val.length  == 0 ) {&#xD;
-                        objects.push(paqueteY); //Inserta en arreglo a devolver&#xD;
-                    }&#xD;
-                }&#xD;
-                paqueteY = {}; //Limpia Paquete Formado&#xD;
-            };&#xD;
-         } else {&#xD;
-               if (PaqueteM.hasOwnProperty(i) ) {&#xD;
-                    paqueteY[PaqueteM[i]] = obj[i];&#xD;
-                };&#xD;
-        }&#xD;
-    }&#xD;
-    &#xD;
-    return objects;&#xD;
-};&#xD;
-&#xD;
-function calPorcentaje(fechaI, fechaF) {&#xD;
-    var dif_H = 0;&#xD;
-    var dif_F = 0;&#xD;
-    var porcentaje = 0;&#xD;
-    if ( vHoy > fechaI) {&#xD;
-        if (vHoy > fechaF) {&#xD;
-            dif_H = fechaF.getTime() - fechaI.getTime();&#xD;
-        } else {&#xD;
-            dif_H = vHoy.getTime() - fechaI.getTime();&#xD;
-        }&#xD;
-    } else {&#xD;
-        dif_H = 0;&#xD;
-    };&#xD;
-    if ( fechaF > fechaI) {&#xD;
-        dif_F = fechaF.getTime() - fechaI.getTime();&#xD;
-    } else {&#xD;
-        dif_F = 0;&#xD;
-    }&#xD;
-    if ( dif_F > 0) {&#xD;
-        porcentaje  = Number(100 - (dif_H / dif_F * 100) ).toFixed(2);&#xD;
-    } else {&#xD;
-        porcentaje = 100.0;    &#xD;
-    }        &#xD;
-    return Number(porcentaje).toFixed(2);&#xD;
-}&#xD;
-&#xD;
-function valorMB(ValorT) {&#xD;
-    var VarloN = Number(ValorT);&#xD;
-    ValorN = VarloN > 1024  ? Number((VarloN / 1024).toFixed(2)) : Number((VarloN).toFixed(2));&#xD;
-    return ValorN&#xD;
-}&#xD;
-&#xD;
-function extiende(obj, index) {&#xD;
-    var dif_H = 0;&#xD;
-    var dif_F = 0;&#xD;
-    obj.Expired = obj.Expired.toUpperCase() == 'TRUE';&#xD;
-    obj.QInitial = Number(obj.QInitial).toFixed(2);&#xD;
-    obj.QBalance = Number(obj.QBalance).toFixed(2);&#xD;
-    obj.QConsumption = Number(obj.QConsumption).toFixed(2);&#xD;
-    obj.QBalanceP = Number(obj.QBalanceP).toFixed(2);&#xD;
-    if (obj.Type == 'PL' ) {&#xD;
-        obj.Start = new BillCycle(BILLCYCLEDAY);&#xD;
-        obj.Start = parseDate2CBS(obj.Start.fecha);&#xD;
-        //obj.Start = '20170707000000'&#xD;
-&#xD;
-    };&#xD;
-&#xD;
-    if (obj.Type == 'ILI' ) {&#xD;
-        bExiste = true;&#xD;
-        FechaSI = parseCBSDate(String(obj.Start));&#xD;
-        FechaSF = parseCBSDate(String(obj.End));&#xD;
-        //if (FechaSF > vHoy) {&#xD;
-        //    obj.Class = &quot;Vigente&quot;&#xD;
-        //} else {&#xD;
-        //    obj.Class = &quot;Vencido&quot;&#xD;
-        //}&#xD;
-        obj.Class = &quot;Vencido&quot;&#xD;
-        obj.QBalanceP = calPorcentaje(FechaSI, FechaSF);&#xD;
-        addChildren(obj);&#xD;
-        //Eliminar campos que no deben ir&#xD;
-        delete obj.Type;&#xD;
-        delete obj.index;&#xD;
-    };&#xD;
-}&#xD;
-&#xD;
-function addChildren (servicioX) {&#xD;
-    //Productos que tienen SRVNAME&#xD;
-    Products = getObjects(Jproductos, &quot;SRV&quot;, [servicioX.Name], 1);&#xD;
-    IDs = [];&#xD;
-    productsID = [];&#xD;
-    for (var PID in Products) {&#xD;
-        //Concatenar Productos del mismo servicio&#xD;
-        IDs.push(Products[PID].ProductID);&#xD;
-        productsID.push(Products[PID]);&#xD;
-    }&#xD;
-    if (IDs.length > 0) {&#xD;
-        Hijos = getObjects(IlimitadosJ, &quot;P&quot;, IDs, 1);&#xD;
-        Child = false;&#xD;
-        for (var H in Hijos) {&#xD;
-            if (H == 0) {&#xD;
-                servicioX.Child = [];&#xD;
-            }&#xD;
-            //TODO: Vigilar que Hijo esté entre las fechas de Servicio&#xD;
-            FechaPI = parseCBSDate(String(Hijos[H].Start))&#xD;
-            FechaPF.setTime(FechaPI.getTime()+(Hijos[H].Vigencia * 60 * 1000));&#xD;
-            if (FechaPF >= FechaSI) {&#xD;
-                Child = true;&#xD;
-                //Agregar Campos del Child, similar al Padre, Se debe usar Servicio?&#xD;
-                Hijos[H].Name = productsID[Hijos[H].index].PName&#xD;
-                if (FechaPF > vHoy) {&#xD;
-                    Hijos[H].Expired = false;&#xD;
-                    if (FechaPI > vHoy) {&#xD;
-                        Hijos[H].Class = &quot;Pendiente&quot;&#xD;
-                    } else {&#xD;
-                        Hijos[H].Class = &quot;Vigente&quot;&#xD;
-                    }&#xD;
-                } else {&#xD;
-                    Hijos[H].Class = &quot;Vencido&quot;&#xD;
-                    Hijos[H].Expired = true;&#xD;
-                }       &#xD;
-                Hijos[H].QNAME = servicioX.QNAME&#xD;
-                Hijos[H].QBalanceP = calPorcentaje(FechaPI, FechaPF);&#xD;
-                Hijos[H].QBalance = servicioX.QBalance;&#xD;
-                Hijos[H].QInitial = servicioX.QInitial;&#xD;
-                Hijos[H].Start = parseTimeCBS(FechaPI.getTime());&#xD;
-                Hijos[H].End = parseTimeCBS(FechaPF.getTime());&#xD;
-                Hijos[H].QConsumption = servicioX.QConsumption;&#xD;
-                //eliminar Campos que no se usan&#xD;
-                delete Hijos[H].ProductID;&#xD;
-                delete Hijos[H].Vigencia;&#xD;
-                delete Hijos[H].index;&#xD;
-                servicioX.Child.push(Hijos[H]);&#xD;
-            }&#xD;
-        }&#xD;
-        if (!Child) { // No tiene hijos&#xD;
-            delete servicioX.Child;&#xD;
-        }&#xD;
-    }&#xD;
-&#xD;
-}&#xD;
-&#xD;
-&#xD;
-function extiendeH(obj) {&#xD;
-    obj.Expired = true;&#xD;
-    //obj.QInitial = Number(obj.QInitial).toFixed(2);&#xD;
-    //obj.QBalance = Number(obj.QBalance).toFixed(2);&#xD;
-    //obj.QConsumption = Number(obj.QConsumption).toFixed(2);&#xD;
-    obj.QInitial = valorMB(obj.QInitial);//Number(obj.QInitial).toFixed(2);&#xD;
-    obj.QBalance = valorMB(obj.QBalance);//Number(obj.QBalance).toFixed(2);&#xD;
-    obj.QConsumption = valorMB(obj.QInitial);//Number(obj.QConsumption).toFixed(2);&#xD;	
-    obj.QBalanceP = (obj.QBalance / obj.QInitial * 100).toFixed(2);&#xD;
-}&#xD;
-&#xD;
-&#xD;
-function sortByValue(jsObj){&#xD;
-      var sortedArray = [];&#xD;
-      for(var i in jsObj)&#xD;
-      {&#xD;
-        sortedArray.push([jsObj[i].Id, jsObj[i]]);&#xD;
-    }&#xD;
-    return sortedArray.sort();&#xD;
-}&#xD;
-&#xD;
-function parseMSDate(Texto) {&#xD;
-    var FechaD = new Date();&#xD;
-    var tAnio = Texto.substr(6, 4);&#xD;
-    //var tMes = Number(Texto.substr(4,2))-1 ;&#xD;
-    var tMes = Number(Texto.substring(0, 2)) - 1;&#xD;
-    var tDia = Texto.substr(3, 2);&#xD;
-    var tHora = Texto.substr(11, 2);&#xD;
-    var tMinutos = Texto.substr(14, 2);&#xD;
-    var tSegundos = Texto.substr(17, 2);&#xD;
-&#xD;
-    FechaD.setFullYear(tAnio);&#xD;
-    FechaD.setMonth(tMes);&#xD;
-    FechaD.setDate(tDia);&#xD;
-    FechaD.setHours(tHora);&#xD;
-    FechaD.setMinutes(tMinutos);&#xD;
-    FechaD.setSeconds(tSegundos);&#xD;
-    return FechaD;&#xD;
-};&#xD;
-&#xD;
-&#xD;
-function BillCycle(Day) {&#xD;
-    if (!isNaN(Day)) {&#xD;
-        this.day = Day&#xD;
-        if ((this.day > 31) || (this.day &lt; 1)) {&#xD;
-            this.day = 1;&#xD;
-        }&#xD;
-        this.fecha = addMonth(vHoy.getTime() ,this.day);&#xD;
-    }&#xD;
-}&#xD;
-&#xD;
-&#xD;
-function lastDay (tiempoX) {&#xD;
-  var fechaT = new Date()&#xD;
-  fechaT.setTime(tiempoX)&#xD;
-  fechaT.setDate(1) //Set al dia 1 del mes&#xD;
-  fechaT.setMonth(fechaT.getMonth() + 1) &#xD;
-  fechaT.setDate(0) //Pone el ultimo dia del mes anterior&#xD;
-  return Number(fechaT.getDate())&#xD;
-}&#xD;
-&#xD;
-function addMonth (tiempoX, diaX) {&#xD;
-  var fechaX = new Date()&#xD;
-  var fechaT = new Date()&#xD;
-  var lastT = 0&#xD;
-    &#xD;
-  fechaX.setTime(tiempoX)&#xD;
-  fechaT.setTime(fechaX.getTime())&#xD;
-  lastT = lastDay(fechaT.getTime())&#xD;
-  if (lastT >= diaX) {&#xD;
-    fechaT.setDate(diaX) //Elevar al dia del corte&#xD;
-    if (fechaT &lt;= fechaX) {&#xD;
-        fechaT.setDate(lastT) //Elevar al ultimo dia del mes&#xD;
-        fechaT.setDate(fechaT.getDate() + 1) //Sumar 1 dia para pasar al sigiuente Mes&#xD;
-        if (diaX > 1 ) {&#xD;
-          fechaT = addMonth(fechaT.getTime(), diaX) //Sumar 1 mes&#xD;
-        }&#xD;
-    //} else {&#xD;
-    //  fechaT.setUTCDate(lastT) // Dejarla en el ultimo de este mes&#xD;
-    }&#xD;
-  }&#xD;
-  return fechaT&#xD;
-}&#xD;
-&#xD;
-</bpmn2:script>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';
+var vInternet = false;
+var bExiste = false;
+var vHoy = new Date();
+var NexusPCC = {Services:[]};
+var paqueteY = {};
+var FechaPI = new Date();    
+var FechaPF = new Date();
+var IDs = [];
+var productsID = [];
+var IlimitadosJ = [];
+var APP_FACEBOOK = '';
+var APP_CLASH_OF_CLANS ='';
+var APP_CLASH_ROYALE = '';
+var APP_INSTAGRAM = '';
+var APP_POKEMON_GO = '';
+var APP_WHATSAPP = '';
+var APP_YOUTUBE = '';
+BILLCYCLEDAY = '7';
+var Jproductos = [{
+        &quot;ProductID&quot;: 353,
+        &quot;Name&quot;:&quot;ILI-353&quot;,
+        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,
+        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 3,
+        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;
+    },{
+        &quot;ProductID&quot;: 1103,
+        &quot;Name&quot;:&quot;ILI-1103&quot;,
+        &quot;PName&quot;: &quot;Promo Whatsapp Gratis&quot;,
+        &quot;SRV&quot; : &quot;APP_WHATSAPP&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 3,
+        &quot;QNAME&quot; : &quot;APP_WHATSAPP Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 355,
+        &quot;Name&quot;:&quot;ILI-355&quot;,
+        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 1105,
+        &quot;Name&quot;:&quot;ILI-1105&quot;,
+        &quot;PName&quot;: &quot;Promo Facebook Gratis&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 403,
+        &quot;Name&quot;:&quot;ILI-403&quot;,
+        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,
+        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 7,
+        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 1113,
+        &quot;Name&quot;:&quot;ILI-1113&quot;,
+        &quot;PName&quot;: &quot;Paquete Pokemon Go L.12&quot;,
+        &quot;SRV&quot; : &quot;APP_POKEMON_GO&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 7,
+        &quot;QNAME&quot; : &quot;APP_POKEMON_GO Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 416,
+        &quot;Name&quot;:&quot;ILI-416&quot;,
+        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 1115,
+        &quot;Name&quot;:&quot;ILI-1115&quot;,
+        &quot;PName&quot;: &quot;Paquete Facebook WelcomePack&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 720,
+        &quot;Name&quot;:&quot;ILI-720&quot;,
+        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 2,
+        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 1078,
+        &quot;Name&quot;:&quot;ILI-1078&quot;,
+        &quot;PName&quot;: &quot;Instagram Ilimitado (L 22 / 1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_INSTAGRAM&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 2,
+        &quot;QNAME&quot; : &quot;APP_INSTAGRAM Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 721,
+        &quot;Name&quot;:&quot;ILI-721&quot;,
+        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 1079,
+        &quot;Name&quot;:&quot;ILI-1079&quot;,
+        &quot;PName&quot;: &quot;Facebook Ilimitado (L 15 / 1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_FACEBOOK&quot;,
+        &quot;ServiceID&quot;: 1,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;QNAME&quot; : &quot;APP_FACEBOOK Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 526,
+        &quot;Name&quot;:&quot;ILI-526&quot;,
+        &quot;PName&quot;: &quot;Youtube Ilimitado (L 28/1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_YOUTUBE&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 4,
+        &quot;QNAME&quot; : &quot;APP_YOUTUBE Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 527,
+        &quot;Name&quot;:&quot;ILI-527&quot;,
+        &quot;PName&quot;: &quot;Clash of Clan Ilimitado (L 12/1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_CLASH_OF_CLANS&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 5,
+        &quot;QNAME&quot; : &quot;APP_CLASH_OF_CLANS Quota&quot;
+    },
+    {
+        &quot;ProductID&quot;: 528,
+        &quot;Name&quot;:&quot;ILI-528&quot;,
+        &quot;PName&quot;: &quot;Clash Royale Ilimitado (L 17/1 dia)&quot;,
+        &quot;SRV&quot; : &quot;APP_CLASH_ROYALE&quot;,
+        &quot;QInitial&quot; : 2147483645.00,
+        &quot;ServiceID&quot;: 6,
+        &quot;QNAME&quot; : &quot;APP_CLASH_ROYALE Quota&quot;
+    }
+]
+var PaqueteM = //Modelo
+    {
+        SRVNAME: &quot;Name&quot;,
+        P:&quot;ProductID&quot;,
+        I:&quot;Start&quot;,
+        V:&quot;Vigencia&quot;,
+        Initial : &quot;QInitial&quot;,
+        SRV: &quot;QNAME&quot;,
+        Name: &quot;PName&quot;,
+        ServiceID: &quot;ServiceID&quot;,
+        ProductID: &quot;ProductID&quot;,
+        QTANAME: &quot;QNAME&quot;,
+        QTAVALUE_MB: &quot;QInitial&quot;,
+        QTACONSUMPTION_MB: &quot;QConsumption&quot;,
+        //QTABALANCE:&quot;QBalance&quot;,
+        QTABALANCE_MB: &quot;QBalance&quot;,
+        QTAPERCENTAGE: &quot;QBalanceP&quot;,
+        SRVSTARTDATETIME: &quot;Start&quot;,
+        SRVENDDATETIME: &quot;End&quot;,
+        SRVISEXPIRED:&quot;Expired&quot;,
+        SRVPRODUCTTYPE:&quot;Type&quot;,
+        USRBILLCYCLEDATE: &quot;BillCycleDate&quot;
+        //Expirado:&quot;Expired&quot;,
+        //Clase: &quot;Class&quot;
+    };
+if(typeof TYPE == 'undefined'){
+    var TYPE = 'INTERNET';
+}
+if (TYPE == &quot;INTERNET&quot;) {
+    vInternet = true;
+}
+function parseCBSDate2(Texto) {
+    var FechaD = new Date();
+    var tAnio = Texto.substr(6, 4);
+    //var tMes = Number(Texto.substr(4,2))-1 ;
+    var tMes = Number(Texto.substring(0, 2)) - 1;
+    var tDia = Texto.substr(3, 2);
+    var tHora = Texto.substr(11, 2);
+    var tMinutos = Texto.substr(14, 2);
+    var tSegundos = Texto.substr(17, 2);
+    FechaD.setFullYear(tAnio,tMes, tDia);
+    //FechaD.setMonth(tMes, tDia);
+    //FechaD.setDate( tDia);
+    FechaD.setHours(tHora, tMinutos,tSegundos,0);
+    //FechaD.setMinutes(tMinutos);
+    //FechaD.setSeconds(tSegundos);
+    return FechaD;
+};
+function parseCBSDate(Texto) {
+    var FechaD = new Date();
+    var tAnio = Texto.substr(0, 4);
+    //var tMes = Number(Texto.substr(4,2))-1 ;
+    var tMes = Number(Texto.substring(4, 6)) - 1;
+    var tDia = Texto.substr(6, 2);
+    var tHora = Texto.substr(8, 2);
+    var tMinutos = Texto.substr(10, 2);
+    var tSegundos = Texto.substr(12, 2);
+    FechaD.setFullYear(tAnio,tMes, tDia);
+    //FechaD.setMonth(tMes, tDia);
+    //FechaD.setDate( tDia);
+    FechaD.setHours(tHora, tMinutos,tSegundos,0);
+    //FechaD.setMinutes(tMinutos);
+    //FechaD.setSeconds(tSegundos);
+    return FechaD;
+};
+function parseTimeCBS  (gTime) {
+    var tTiempo = new Date();
+    tTiempo.setTime(gTime);
+    var Texto = parseDate2CBS(tTiempo);
+    return Texto;
+};
+function parseDate2CBS (Fecha) {
+    var Texto = ' ';
+    var tAnio = Fecha.getFullYear();
+    var tMes = Fecha.getMonth() + 1;
+    var tDia = Fecha.getDate();
+    var tHora = Fecha.getHours();
+    var tMinutos = Fecha.getMinutes();
+    var tSegundos = Fecha.getSeconds();
+    Texto = String(tAnio);
+    if (tMes &lt; 10) Texto = Texto + '0';
+    Texto = Texto +  String(tMes);
+    if (tDia &lt; 10) Texto = Texto + '0';
+    Texto = Texto +  String(tDia);
+    if (tHora &lt; 10) Texto = Texto + '0';
+    Texto = Texto +  String(tHora);
+    if (tMinutos &lt; 10) Texto = Texto + '0';
+    Texto = Texto +  String(tMinutos);    
+    if (tSegundos &lt; 10) Texto = Texto + '0';
+    Texto = Texto +  String(tSegundos);
+    return Texto;
+};
+function getObjects(obj, key, val, level) {
+    var levelX = level;
+    var indexY = 0;
+    var objects = [];
+    for (var i in obj) {
+        if (typeof obj[i] == 'object') {
+            if (obj[i].key != undefined) {
+                if (PaqueteM[obj[i].key] != undefined) {
+                    paqueteY[PaqueteM[obj[i].key]] = obj[i].value;
+                };
+            }
+            objects = objects.concat(getObjects(obj[i], key, val, levelX + 1)); //Busca en Hijos
+            if (level == 1) {
+                if (paqueteY[PaqueteM[key]] != undefined) {
+                    if (val.length > 0) { //Se sale sí ya encontró
+                        paqueteY.index = val.indexOf(paqueteY[PaqueteM[key]])
+                    };
+                    if (paqueteY.index >= 0  || val.length  == 0 ) {
+                        objects.push(paqueteY); //Inserta en arreglo a devolver
+                    }
+                }
+                paqueteY = {}; //Limpia Paquete Formado
+            };
+         } else {
+               if (PaqueteM.hasOwnProperty(i) ) {
+                    paqueteY[PaqueteM[i]] = obj[i];
+                };
+        }
+    }
+    return objects;
+};
+function calPorcentaje(fechaI, fechaF) {
+    var dif_H = 0;
+    var dif_F = 0;
+    var porcentaje = 0;
+    if ( vHoy > fechaI) {
+        if (vHoy > fechaF) {
+            dif_H = fechaF.getTime() - fechaI.getTime();
+        } else {
+            dif_H = vHoy.getTime() - fechaI.getTime();
+        }
+    } else {
+        dif_H = 0;
+    };
+    if ( fechaF > fechaI) {
+        dif_F = fechaF.getTime() - fechaI.getTime();
+    } else {
+        dif_F = 0;
+    }
+    if ( dif_F > 0) {
+        porcentaje  = Number(100 - (dif_H / dif_F * 100) ).toFixed(2);
+    } else {
+        porcentaje = 100.0;    
+    }        
+    return Number(porcentaje).toFixed(2);
+}
+function valorMB(ValorT) {
+    var VarloN = Number(ValorT);
+    ValorN = VarloN > 1024  ? Number((VarloN / 1024).toFixed(2)) : Number((VarloN).toFixed(2));
+    return ValorN
+}
+function extiende(obj, index) {
+    var dif_H = 0;
+    var dif_F = 0;
+    obj.Expired = obj.Expired.toUpperCase() == 'TRUE';
+    // obj.QInitial = Number(obj.QInitial).toFixed(2);
+    // obj.QBalance = Number(obj.QBalance).toFixed(2);
+    // obj.QConsumption = Number(obj.QConsumption).toFixed(2);
+    // obj.QBalanceP = Number(obj.QBalanceP).toFixed(2);
+
+
+    obj.QInitial = typeof obj.QInitial !='undefined'? Number(obj.QInitial).toFixed(2):'-';
+    obj.QBalance = typeof obj.QBalance!='undefined'? Number(obj.QBalance).toFixed(2):'-';
+    obj.QConsumption = typeof obj.QConsumption!='undefined'? Number(obj.QConsumption).toFixed(2):'-';
+    obj.QBalanceP = typeof obj.QBalanceP != 'undefined'? Number(obj.QBalanceP).toFixed(2):'-';
+
+    
+    if (obj.Type == 'PL' ) {
+        obj.Start = new BillCycle(BILLCYCLEDAY);
+        obj.Start = parseDate2CBS(obj.Start.fecha);
+        //obj.Start = '20170707000000'
+    };
+    if (obj.Type == 'ILI' ) {
+        bExiste = true;
+        FechaSI = parseCBSDate(String(obj.Start));
+        FechaSF = parseCBSDate(String(obj.End));
+        //if (FechaSF > vHoy) {
+        //    obj.Class = &quot;Vigente&quot;
+        //} else {
+        //    obj.Class = &quot;Vencido&quot;
+        //}
+        obj.Class = &quot;Vencido&quot;
+        obj.QBalanceP = calPorcentaje(FechaSI, FechaSF);
+        addChildren(obj);
+        //Eliminar campos que no deben ir
+        delete obj.Type;
+        delete obj.index;
+    };
+}
+function addChildren (servicioX) {
+    //Productos que tienen SRVNAME
+    Products = getObjects(Jproductos, &quot;SRV&quot;, [servicioX.Name], 1);
+    IDs = [];
+    productsID = [];
+    for (var PID in Products) {
+        //Concatenar Productos del mismo servicio
+        IDs.push(Products[PID].ProductID);
+        productsID.push(Products[PID]);
+    }
+    if (IDs.length > 0) {
+        Hijos = getObjects(IlimitadosJ, &quot;P&quot;, IDs, 1);
+        Child = false;
+        for (var H in Hijos) {
+            if (H == 0) {
+                servicioX.Child = [];
+            }
+            //TODO: Vigilar que Hijo esté entre las fechas de Servicio
+            FechaPI = parseCBSDate(String(Hijos[H].Start))
+            FechaPF.setTime(FechaPI.getTime()+(Hijos[H].Vigencia * 60 * 1000));
+            if (FechaPF >= FechaSI) {
+                Child = true;
+                //Agregar Campos del Child, similar al Padre, Se debe usar Servicio?
+                Hijos[H].Name = productsID[Hijos[H].index].PName
+                if (FechaPF > vHoy) {
+                    Hijos[H].Expired = false;
+                    if (FechaPI > vHoy) {
+                        Hijos[H].Class = &quot;Pendiente&quot;
+                    } else {
+                        Hijos[H].Class = &quot;Vigente&quot;
+                    }
+                } else {
+                    Hijos[H].Class = &quot;Vencido&quot;
+                    Hijos[H].Expired = true;
+                }       
+                Hijos[H].QNAME = servicioX.QNAME
+                Hijos[H].QBalanceP = calPorcentaje(FechaPI, FechaPF);
+                Hijos[H].QBalance = servicioX.QBalance;
+                Hijos[H].QInitial = servicioX.QInitial;
+                Hijos[H].Start = parseTimeCBS(FechaPI.getTime());
+                Hijos[H].End = parseTimeCBS(FechaPF.getTime());
+                Hijos[H].QConsumption = servicioX.QConsumption;
+                //eliminar Campos que no se usan
+                delete Hijos[H].ProductID;
+                delete Hijos[H].Vigencia;
+                delete Hijos[H].index;
+                servicioX.Child.push(Hijos[H]);
+            }
+        }
+        if (!Child) { // No tiene hijos
+            delete servicioX.Child;
+        }
+    }
+}
+function extiendeH(obj) {
+    obj.Expired = true;
+    //obj.QInitial = Number(obj.QInitial).toFixed(2);
+    //obj.QBalance = Number(obj.QBalance).toFixed(2);
+    //obj.QConsumption = Number(obj.QConsumption).toFixed(2);
+    obj.QInitial = valorMB(obj.QInitial);//Number(obj.QInitial).toFixed(2);
+    obj.QBalance = valorMB(obj.QBalance);//Number(obj.QBalance).toFixed(2);
+    obj.QConsumption = valorMB(obj.QConsumption);//Number(obj.QConsumption).toFixed(2);
+    obj.QBalanceP = (obj.QBalance / obj.QInitial * 100).toFixed(2);
+}
+function sortByValue(jsObj){
+      var sortedArray = [];
+      for(var i in jsObj)
+      {
+        sortedArray.push([jsObj[i].Id, jsObj[i]]);
+    }
+    return sortedArray.sort();
+}
+function parseMSDate(Texto) {
+    var FechaD = new Date();
+    var tAnio = Texto.substr(6, 4);
+    //var tMes = Number(Texto.substr(4,2))-1 ;
+    var tMes = Number(Texto.substring(0, 2)) - 1;
+    var tDia = Texto.substr(3, 2);
+    var tHora = Texto.substr(11, 2);
+    var tMinutos = Texto.substr(14, 2);
+    var tSegundos = Texto.substr(17, 2);
+    FechaD.setFullYear(tAnio);
+    FechaD.setMonth(tMes);
+    FechaD.setDate(tDia);
+    FechaD.setHours(tHora);
+    FechaD.setMinutes(tMinutos);
+    FechaD.setSeconds(tSegundos);
+    return FechaD;
+};
+function BillCycle(Day) {
+    if (!isNaN(Day)) {
+        this.day = Day
+        if ((this.day > 31) || (this.day &lt; 1)) {
+            this.day = 1;
+        }
+        this.fecha = addMonth(vHoy.getTime() ,this.day);
+    }
+}
+function lastDay (tiempoX) {
+  var fechaT = new Date()
+  fechaT.setTime(tiempoX)
+  fechaT.setDate(1) //Set al dia 1 del mes
+  fechaT.setMonth(fechaT.getMonth() + 1) 
+  fechaT.setDate(0) //Pone el ultimo dia del mes anterior
+  return Number(fechaT.getDate())
+}
+function addMonth (tiempoX, diaX) {
+  var fechaX = new Date()
+  var fechaT = new Date()
+  var lastT = 0
+  fechaX.setTime(tiempoX)
+  fechaT.setTime(fechaX.getTime())
+  lastT = lastDay(fechaT.getTime())
+  if (lastT >= diaX) {
+    fechaT.setDate(diaX) //Elevar al dia del corte
+    if (fechaT &lt;= fechaX) {
+        fechaT.setDate(lastT) //Elevar al ultimo dia del mes
+        fechaT.setDate(fechaT.getDate() + 1) //Sumar 1 dia para pasar al sigiuente Mes
+        if (diaX > 1 ) {
+          fechaT = addMonth(fechaT.getTime(), diaX) //Sumar 1 mes
+        }
+    //} else {
+    //  fechaT.setUTCDate(lastT) // Dejarla en el ultimo de este mes
+    }
+  }
+  return fechaT
+}</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="StartEvent_1" targetRef="ScriptTask_5"/>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ScriptTask_5" targetRef="ServiceTask_7"/>
@@ -818,11 +788,11 @@ if(typeof vPaqInfo != 'undefined'){
             }
 
             extiende(servicios[i], i); //Agrega campos
-			
-						
-			if (servicios[i].Name != 'Base_Service_OCS') {
-				NexusPCC.Services.push(servicios[i]);
-			}	
+            
+                        
+            if (servicios[i].Name != 'Base_Service_OCS') {
+                NexusPCC.Services.push(servicios[i]);
+            }    
 
         };
 
