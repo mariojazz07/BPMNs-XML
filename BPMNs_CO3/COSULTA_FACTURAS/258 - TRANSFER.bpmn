@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
+  <bpmn2:process id="process_1" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:scriptTask id="ScriptTask_1" name="Functions">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+      <bpmn2:script>function getJSON(strJson) {
+    var vExpr = &quot;([a,r,s]+|[t*,n,s,(0-9)*]+|[v,(0-9)*]+|[a,r,c]+|[c,b,s]+):&quot;;
+    var vNumExpr = '(&quot;[a-z]+&quot;:)([0-9]+)(s*,|}|$)';
+    var regEx;
+    var numRegExp;
+    var tmpJson = &quot;&quot;;
+    if (typeof REG_EXP != &quot;undefined&quot;) {
+        vExpr = REG_EXP;
+    }
+    regEx = new RegExp(vExpr, &quot;gi&quot;);
+    numRegExp = new RegExp(vNumExpr, &quot;gmi&quot;);
+    tmpJson = strJson.replace(regEx, &quot;&quot;);
+    tmpJson = tmpJson.replace(numRegExp, '$1&quot;$2&quot;$3');
+    return JSON.parse(tmpJson);
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
+    <bpmn2:serviceTask id="ServiceTask_1" name="QueryInvoiceEnhancedTask">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_4">
+        <bpmn2:dataInput id="DataInput_1" name="JSON"/>
+        <bpmn2:dataOutput id="DataOutput_1" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_4" name="Input Set 4">
+          <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_4" name="Output Set 4">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn2:targetRef>DataInput_1</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_1">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3">vJsonQuery</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_2">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">DataOutput_1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">vJsonResponse</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_2" name="ProcessQueryEnhance">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+      <bpmn2:script>var vJsonResult = getJSON(vJsonResponse);
+var vTmpObject = new Object();
+var vInvoiceInfo = new Array();
+var InvoicesObj={Invoices:new Object};
+var vTmpJson = vJsonResult.QueryInvoiceEnhancedResultMsg.QueryInvoiceEnhancedResult.InvoiceInfo;
+
+for (var i = 0; i &lt; vTmpJson.length; i++) {
+    vTmpObject = new Object();
+    vTmpObject.PrimaryIdentity = subscriberId;
+    vTmpObject.AccountKey = vTmpJson[i].AcctKey;
+    vTmpObject.InvoiceType = vTmpJson[i].InvoiceType;
+    vTmpObject.TransType = vTmpJson[i].TransType;
+    vTmpObject.InvoiceID = vTmpJson[i].InvoiceID;
+    vTmpObject.InvoiceNo = vTmpJson[i].InvoiceNo;
+    vTmpObject.BillCycleID = vTmpJson[i].BillCycleID;
+    vTmpObject.InvoiceAmount = vTmpJson[i].InvoiceAmount;
+    vTmpObject.TAXAmount = vTmpJson[i].TAXAmount;
+    vTmpObject.OpenAmount = vTmpJson[i].OpenAmount;
+    vTmpObject.InvoiceDate = vTmpJson[i].InvoiceDate;
+    vTmpObject.DueDate = vTmpJson[i].DueDate;
+    vTmpObject.Status = vTmpJson[i].Status;
+    vTmpObject.OpenTaxAmount = vTmpJson[i].OpenTaxAmount;
+    //Adicionales
+    if (vTmpJson.AdditionalProperty instanceof Array) {
+        for (var j = 0; j &lt; vTmpJson.AdditionalProperty.length; j++) {
+            var vTmpValue = vTmpJson.AdditionalProperty[j].Value;
+            var vTmpCode = vTmpJson.AdditionalProperty[j].Code;
+            vTmpObject[vTmpValue] = vTmpCode;
+
+        }
+    } else if (typeof vTmpJson.AdditionalProperty != 'undefined') {
+        var vTmpValue = vTmpJson.AdditionalProperty.Value;
+        var vTmpCode = vTmpJson.AdditionalProperty.Code;
+        vTmpObject[vTmpValue] = vTmpCode;
+    }
+
+    //
+    vInvoiceInfo.push(vTmpObject);
+
+
+}
+
+InvoicesObj.Invoices.InvoiceInfo=vInvoiceInfo;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:scriptTask id="ScriptTask_3" name="SetResponse">
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';
+var BPMN_RESPONSE_MESSAGE = 'Operation Successful';
+var JSON_RESPONSE='';
+
+if(vIsEnhanced){
+    JSON_RESPONSE=JSON.stringify(InvoicesObj);
+}
+else{
+    JSON_RESPONSE=JSON.stringify(vInvoiceDetail);
+}
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ScriptTask_2" targetRef="ScriptTask_3"/>
+    <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ScriptTask_3" targetRef="EndEvent_2"/>
+    <bpmn2:scriptTask id="ScriptTask_4" name="BuildQuery">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:script>var vError = false;
+var vStatus = '';
+var vAccount = ACCOUNT;
+var vRetrieveDetail = '0';
+var vTotalRow = '100';
+var vBeginRow = '0';
+var vFetchRow = '0';
+var vIsEnhanced=false;
+var vIsDetail=false;
+var vJsonQuery = {
+    queryObj: {
+        acctAccessCode: new Object()
+    },
+    invoiceHeaderFilter: new Object()
+};
+
+if (productId == '9002366') {
+    if (typeof INVOICE_TYPE != 'undefined') {
+        vStatus = (INVOICE_TYPE == 'OPEN') ? 'O' : ((INVOICE_TYPE == 'CLOSED') ? 'C' : '');
+
+
+    }
+    vJsonQuery.queryObj.acctAccessCode.accountCode = vAccount;
+    vJsonQuery.invoiceHeaderFilter.Status = vStatus;
+    vJsonQuery.retrieveDetail = vRetrieveDetail;
+    vJsonQuery.totalRowNum = vTotalRow;
+    vJsonQuery.beginRowNum = vBeginRow;
+    vJsonQuery.fetchRowNum = vFetchRow;
+    vIsEnhanced=true;
+
+
+
+}
+
+else if(productId=='9002367'){
+
+    vJsonQuery.queryObj.acctAccessCode.accountCode = vAccount;
+    vJsonQuery.invoice=new Object();
+    vJsonQuery.invoice.invoiceID=INVOICE_ID;
+    vJsonQuery.totalRowNum = vTotalRow;
+    vJsonQuery.beginRowNum = vBeginRow;
+    vJsonQuery.fetchRowNum = vFetchRow;
+    vIsDetail=true;
+
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="ScriptTask_1" targetRef="ScriptTask_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ServiceTask_1" targetRef="ScriptTask_2"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="IsEnhanced" gatewayDirection="Diverging" default="SequenceFlow_12">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ScriptTask_4" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" name="Si" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2">vIsEnhanced</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:serviceTask id="ServiceTask_2" name="QueryInvoiceDetailTask">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_5">
+        <bpmn2:dataInput id="DataInput_2" name="JSON"/>
+        <bpmn2:dataOutput id="DataOutput_2" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_5" name="Input Set 4">
+          <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_5" name="Output Set 4">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn2:targetRef>DataInput_2</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_3">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">vJsonQuery</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_8">DataInput_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn2:sourceRef>DataOutput_2</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_4">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">DataOutput_1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">vJsonResponse</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" name="No" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_2"/>
+    <bpmn2:scriptTask id="ScriptTask_5" name="ProcessQueryDetail">
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+      <bpmn2:script>//var vJsonResult = getJSON(vJsonResponse);
+var vJsonResult = JSON.parse(vJsonResponse);
+var vTmpObject = new Object();
+var vInvoiceDetail = {InvoiceDetail:new Object()};
+var vTmpInvoiceArray=new Array();
+
+var vTmpJson = vJsonResult.queryInvoiceDetailResult.invoiceDetail[0];
+var vTmpTaxArray=new Array();
+
+vTmpObject.InvoiceID = vTmpJson.invoiceID;
+vTmpObject.ServiceCategory = vTmpJson.serviceCategory;
+vTmpObject.ChargeCode = vTmpJson.chargeCode;
+vTmpObject.ChargeAmount = vTmpJson.chargeAmount;
+vTmpObject.OfferingID = vTmpJson.taxAmount;
+vTmpObject.Quantity = vTmpJson.quantity;
+vTmpObject.TAXAmount =vTmpJson.taxAmount;
+
+
+vTmpTaxArray=vTmpJson.taxList;
+
+for(var i=0;i&lt;vTmpTaxArray.length;i++){
+    var vTmpTaxObject=new Object();
+    
+    vTmpTaxObject.TaxCode=vTmpJson.taxList[i].taxCode;
+    vTmpTaxObject.TaxAmt=vTmpJson.taxList[i].taxAmt;
+    vTmpTaxObject.CurrencyID=vTmpJson.taxList[i].currencyId;
+    vTmpInvoiceArray.push(vTmpTaxObject);
+
+}
+
+vTmpObject.TaxList=vTmpInvoiceArray;
+vTmpObject.OpenAmount=vTmpJson.openAmount;
+vTmpObject.CurrencyID=vTmpJson.currencyID;
+vTmpObject.Status=vTmpJson.status;
+vTmpObject.DiscountAmount=vTmpJson.discountAmt;
+vTmpObject.OpenTAXAmount=vTmpJson.openTaxAmount;
+
+
+
+//Adicionales
+if (vTmpJson.AdditionalProperty instanceof Array) {
+    for (var j = 0; j &lt; vTmpJson.AdditionalProperty.length; j++) {
+        var vTmpValue = vTmpJson.AdditionalProperty[j].Value;
+        var vTmpCode = vTmpJson.AdditionalProperty[j].Code;
+        vTmpObject[vTmpValue] = vTmpCode;
+
+    }
+} else if (typeof vTmpJson.AdditionalProperty != 'undefined') {
+    var vTmpValue = vTmpJson.AdditionalProperty.Value;
+    var vTmpCode = vTmpJson.AdditionalProperty.Code;
+    vTmpObject[vTmpValue] = vTmpCode;
+}
+
+//
+vInvoiceDetail.InvoiceDetail=vTmpObject;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="ServiceTask_2" targetRef="ScriptTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_15" sourceRef="ScriptTask_5" targetRef="ScriptTask_3"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_1">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="100.0" y="100.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="68.0" x="84.0" y="136.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="ScriptTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="200.0" y="93.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="54.0" x="228.0" y="110.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="548.0" y="210.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="86.0" x="560.0" y="220.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="711.0" y="210.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="84.0" x="724.0" y="220.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_3" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="883.0" y="210.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_10" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="900.0" y="227.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="1060.0" y="217.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="1046.0" y="253.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_4" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="370.0" y="93.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="60.0" x="395.0" y="110.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="578.0" y="93.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="66.0" x="570.0" y="143.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_2" bpmnElement="ServiceTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="711.0" y="93.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="76.0" x="728.0" y="103.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_5" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="883.0" y="93.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_22" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="110.0" x="883.0" y="110.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_1">
+        <di:waypoint xsi:type="dc:Point" x="136.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="168.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="200.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="821.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="852.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="883.0" y="235.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_11"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="993.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1026.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1060.0" y="235.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_13"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_4">
+        <di:waypoint xsi:type="dc:Point" x="310.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="340.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="370.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_2">
+        <di:waypoint xsi:type="dc:Point" x="658.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="684.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="235.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="480.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="529.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="578.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="603.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="603.0" y="176.0"/>
+        <di:waypoint xsi:type="dc:Point" x="603.0" y="210.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19">
+          <dc:Bounds height="15.0" width="11.0" x="598.0" y="178.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_2">
+        <di:waypoint xsi:type="dc:Point" x="628.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="669.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21">
+          <dc:Bounds height="15.0" width="16.0" x="663.0" y="119.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="821.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="852.0" y="118.0"/>
+        <di:waypoint xsi:type="dc:Point" x="883.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_23"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_ScriptTask_3">
+        <di:waypoint xsi:type="dc:Point" x="938.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="938.0" y="176.0"/>
+        <di:waypoint xsi:type="dc:Point" x="938.0" y="210.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_24"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
