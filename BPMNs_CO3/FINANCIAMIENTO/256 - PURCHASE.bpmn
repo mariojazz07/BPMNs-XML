@@ -331,7 +331,7 @@ var MESSAGE='Financiamiento creado exitosamente';</bpmn2:script>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
     </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_7" name="No" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_7" name="No" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_3"/>
     <bpmn2:scriptTask id="ScriptTask_9" name="SetSuplementaryValues">
       <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
@@ -481,7 +481,7 @@ var tLinea = tSaltoL + '********************************************************
     <bpmn2:sequenceFlow id="SequenceFlow_29" sourceRef="ScriptTask_10" targetRef="ScriptTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ServiceTask_4" targetRef="ScriptTask_7"/>
     <bpmn2:serviceTask id="ServiceTask_5" name="ExecuteOrderTask">
-      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_1">
         <bpmn2:dataInput id="DataInput_26" name="CHANNEL_ID"/>
@@ -619,7 +619,7 @@ var tLinea = tSaltoL + '********************************************************
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ServiceTask_5" targetRef="ScriptTask_9"/>
     <bpmn2:serviceTask id="ServiceTask_6" name="ExecuteOrderTask">
       <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_2">
         <bpmn2:dataInput id="DataInput_36" name="CHANNEL_ID"/>
@@ -628,10 +628,11 @@ var tLinea = tSaltoL + '********************************************************
         <bpmn2:dataInput id="DataInput_39" name="SUBSCRIBER_ID"/>
         <bpmn2:dataInput id="DataInput_40" name="PRODUCT_ID"/>
         <bpmn2:dataInput id="DataInput_41" name="ORDER_TYPE"/>
-        <bpmn2:dataInput id="DataInput_42" name="PRECIO_PAQUETE"/>
+        <bpmn2:dataInput id="DataInput_42" name="SUBPRIMARY_IDENTITY"/>
         <bpmn2:dataInput id="DataInput_43" name="ExecuteOrderTask__failOverPolicy"/>
         <bpmn2:dataInput id="DataInput_44" name="ExecuteOrderTask__retryPolicyNumber"/>
         <bpmn2:dataInput id="DataInput_45" name="ExecuteOrderTask__retryPolicyDelay"/>
+        <bpmn2:dataInput id="DataInput_46" name="ACCOUNT"/>
         <bpmn2:dataOutput id="DataOutput_5" name="BPMN_RESPONSE_CODE"/>
         <bpmn2:dataOutput id="DataOutput_6" name="BPMN_RESPONSE_MESSAGE"/>
         <bpmn2:dataOutput id="DataOutput_7" name="TRXID"/>
@@ -647,6 +648,7 @@ var tLinea = tSaltoL + '********************************************************
           <bpmn2:dataInputRefs>DataInput_43</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_44</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_45</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_46</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
         <bpmn2:outputSet id="OutputSet_2" name="Output">
           <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
@@ -672,7 +674,7 @@ var tLinea = tSaltoL + '********************************************************
       <bpmn2:dataInputAssociation id="DataInputAssociation_38">
         <bpmn2:targetRef>DataInput_38</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_42">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_85"><![CDATA['Paquete con Cuota']]></bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_85">'Ajuste Factura de Consumo'</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_86">DataInput_12445</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -700,7 +702,7 @@ var tLinea = tSaltoL + '********************************************************
       <bpmn2:dataInputAssociation id="DataInputAssociation_42">
         <bpmn2:targetRef>DataInput_42</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_46">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_93">vPrecio</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_93">subscriberId</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_94">DataInput_12465</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -724,6 +726,9 @@ var tLinea = tSaltoL + '********************************************************
           <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_99">0</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_100">DataInput_12480</bpmn2:to>
         </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_46">
+        <bpmn2:targetRef>DataInput_46</bpmn2:targetRef>
       </bpmn2:dataInputAssociation>
       <bpmn2:dataOutputAssociation id="DataOutputAssociation_5">
         <bpmn2:sourceRef>DataOutput_5</bpmn2:sourceRef>
@@ -755,9 +760,19 @@ var tLinea = tSaltoL + '********************************************************
       </bpmn2:dataOutputAssociation>
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ServiceTask_6" targetRef="ScriptTask_4"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_6" name="Si" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_6">
+    <bpmn2:sequenceFlow id="SequenceFlow_6" name="Si" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_1">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_109">vIsDeuda</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
+    <bpmn2:scriptTask id="ScriptTask_1" name="BuildRequest">
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ScriptTask_1" targetRef="ServiceTask_6"/>
+    <bpmn2:scriptTask id="ScriptTask_3" name="BuildRequest">
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ScriptTask_3" targetRef="ServiceTask_5"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_1">
@@ -839,6 +854,18 @@ var tLinea = tSaltoL + '********************************************************
           <dc:Bounds height="15.0" width="101.0" x="675.0" y="80.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="ScriptTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="520.0" y="63.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="75.0" x="537.0" y="80.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_3" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="380.0" y="166.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="75.0" x="397.0" y="183.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ExclusiveGateway_1">
         <di:waypoint xsi:type="dc:Point" x="370.0" y="88.0"/>
         <di:waypoint xsi:type="dc:Point" x="390.0" y="88.0"/>
@@ -871,12 +898,12 @@ var tLinea = tSaltoL + '********************************************************
         <di:waypoint xsi:type="dc:Point" x="1075.0" y="481.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_25"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_5">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_3">
         <di:waypoint xsi:type="dc:Point" x="435.0" y="113.0"/>
-        <di:waypoint xsi:type="dc:Point" x="435.0" y="191.0"/>
-        <di:waypoint xsi:type="dc:Point" x="435.0" y="270.0"/>
+        <di:waypoint xsi:type="dc:Point" x="435.0" y="139.0"/>
+        <di:waypoint xsi:type="dc:Point" x="435.0" y="166.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_33">
-          <dc:Bounds height="15.0" width="16.0" x="428.0" y="193.0"/>
+          <dc:Bounds height="15.0" width="16.0" x="428.0" y="141.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_26" bpmnElement="SequenceFlow_26" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ScriptTask_9">
@@ -923,13 +950,25 @@ var tLinea = tSaltoL + '********************************************************
         <di:waypoint xsi:type="dc:Point" x="850.0" y="88.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_10"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_6">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_1">
         <di:waypoint xsi:type="dc:Point" x="460.0" y="88.0"/>
-        <di:waypoint xsi:type="dc:Point" x="565.0" y="88.0"/>
-        <di:waypoint xsi:type="dc:Point" x="671.0" y="88.0"/>
+        <di:waypoint xsi:type="dc:Point" x="490.0" y="88.0"/>
+        <di:waypoint xsi:type="dc:Point" x="520.0" y="88.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_11">
-          <dc:Bounds height="15.0" width="11.0" x="561.0" y="89.0"/>
+          <dc:Bounds height="15.0" width="11.0" x="485.0" y="89.0"/>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ServiceTask_6">
+        <di:waypoint xsi:type="dc:Point" x="630.0" y="88.0"/>
+        <di:waypoint xsi:type="dc:Point" x="650.0" y="88.0"/>
+        <di:waypoint xsi:type="dc:Point" x="671.0" y="88.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_ServiceTask_5">
+        <di:waypoint xsi:type="dc:Point" x="435.0" y="216.0"/>
+        <di:waypoint xsi:type="dc:Point" x="435.0" y="243.0"/>
+        <di:waypoint xsi:type="dc:Point" x="435.0" y="270.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_26"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
