@@ -43,7 +43,7 @@ var tLinea = tSaltoL + '********************************************************
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_2" name="DPG_Validation">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:script>var vAmount='0';
 var vDepositType='C_DEPOSITO_PAGO_EN_GARANTIA';
 var vPaymentType='';
@@ -55,8 +55,11 @@ var vCurrency='1153';
 var vIsCorrect=false;
 var vIsDPA=false;
 var vIsDPG=false;
+var vIsAffected=false;
 
-
+if(eventType=='AFECTACION_DPG'){
+    vIsAffected=true;
+}
 if (typeof AMOUNT != 'undefined'){
     vAmount=AMOUNT;
     vIsCorrect=true;
@@ -92,7 +95,7 @@ var BPMN_RESPONSE_MESSAGE = 'Error de Procesamiento';
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ScriptTask_3" targetRef="EndEvent_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_5" name="No" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_3"/>
-    <bpmn2:serviceTask id="ServiceTask_1" name="RefundTask">
+    <bpmn2:serviceTask id="ServiceTask_1" name="CBSRefundTask">
       <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_6">
@@ -337,11 +340,10 @@ var DEPOSIT_STATUS = 'DEVUELTO';
     <bpmn2:sequenceFlow id="SequenceFlow_20" sourceRef="ScriptTask_8" targetRef="ServiceTask_6"/>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ServiceTask_6" targetRef="ScriptTask_6"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="IsDPA" gatewayDirection="Diverging" default="SequenceFlow_18">
-      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ScriptTask_2" targetRef="ExclusiveGateway_3"/>
     <bpmn2:scriptTask id="ScriptTask_9" name="SetResponse">
       <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
@@ -357,6 +359,191 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
       <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="ScriptTask_9" targetRef="EndEvent_4"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="IsAffected" gatewayDirection="Diverging" default="SequenceFlow_21">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_29</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_2" targetRef="ExclusiveGateway_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_21" name="No" sourceRef="ExclusiveGateway_4" targetRef="ExclusiveGateway_3"/>
+    <bpmn2:scriptTask id="ScriptTask_10" name="SetResponse">
+      <bpmn2:incoming>SequenceFlow_28</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_24</bpmn2:outgoing>
+      <bpmn2:script>var vIsOK = false;
+
+if (typeof vBpmResponseCode != 'undefined') {
+    if (vBpmResponseCode == '0') {
+        var vIsOK = true;
+        var BPMN_RESPONSE_CODE = '0';
+
+        var BPMN_RESPONSE_MESSAGE = 'Afectacion de Deposito Exitoso';
+var DEPOSIT_INITIAL_AMOUNT = vActivateDepositInitialAmount;
+var DEPOSIT_CURRENT_AMOUNT = vActivateDepositCurrentAmount;
+var DEPOSIT_STATUS = vActivateDepositStatus;
+
+    }
+} else {
+    var BPMN_RESPONSE_CODE = '103';
+
+    var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_5" name="End Event 4">
+      <bpmn2:incoming>SequenceFlow_24</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_24" sourceRef="ScriptTask_10" targetRef="EndEvent_5"/>
+    <bpmn2:serviceTask id="ServiceTask_5" name="ExecuteOrderTask">
+      <bpmn2:incoming>SequenceFlow_30</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_28</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_8">
+        <bpmn2:dataInput id="DataInput_6" name="CHANNEL_ID"/>
+        <bpmn2:dataInput id="DataInput_7" name="PRODUCT_ID"/>
+        <bpmn2:dataInput id="DataInput_13" name="SUBSCRIBER_ID"/>
+        <bpmn2:dataInput id="DataInput_14" name="ORDER_TYPE"/>
+        <bpmn2:dataInput id="DataInput_5" name="COMMENT"/>
+        <bpmn2:dataInput id="DataInput_42" name="eventType"/>
+        <bpmn2:dataInput id="DataInput_45" name="ACCOUNT"/>
+        <bpmn2:dataInput id="DataInput_43" name="AMOUNT"/>
+        <bpmn2:dataInput id="DataInput_44" name="TYPE"/>
+        <bpmn2:dataInput id="DataInput_4" name="ExecuteOrderTask__retryPolicyNumber"/>
+        <bpmn2:dataOutput id="DataOutput_8" name="BPMN_RESPONSE_CODE"/>
+        <bpmn2:dataOutput id="DataOutput_3" name="DEPOSIT_INITIAL_AMOUNT"/>
+        <bpmn2:dataOutput id="DataOutput_4" name="DEPOSIT_CURRENT_AMOUNT"/>
+        <bpmn2:dataOutput id="DataOutput_5" name="DEPOSIT_STATUS"/>
+        <bpmn2:inputSet id="InputSet_8" name="Input Set 8">
+          <bpmn2:dataInputRefs>DataInput_42</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_43</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_44</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_45</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_7</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_13</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_14</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_8" name="Output Set 8">
+          <bpmn2:dataOutputRefs>DataOutput_8</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_42">
+        <bpmn2:targetRef>DataInput_42</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_50">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_107">vEvenType</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105">DataInput_42</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_43">
+        <bpmn2:targetRef>DataInput_43</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_51">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_110">vAffectedAmount</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_108">DataInput_43</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_44">
+        <bpmn2:targetRef>DataInput_44</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_52">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_113">vAffectedType</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_111">DataInput_44</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_45">
+        <bpmn2:targetRef>DataInput_45</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_54">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_119">vAffectedAccount</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_117">DataInput_45</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>DataInput_4</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_6">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">0</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_11">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>DataInput_5</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_7">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">'AFECTACION_DPG'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_17">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn2:targetRef>DataInput_6</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_22">'32'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20">DataInput_6</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_7">
+        <bpmn2:targetRef>DataInput_7</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_9">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_35">'9002368'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_23">DataInput_7</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_13">
+        <bpmn2:targetRef>DataInput_13</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_15">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_38">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_36">DataInput_13</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_14">
+        <bpmn2:targetRef>DataInput_14</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_16">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_41">'ACTIVATE'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_39">DataInput_14</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_8">
+        <bpmn2:sourceRef>DataOutput_8</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_55">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_120">DataOutput_8</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_122">vBpmResponseCode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn2:sourceRef>DataOutput_3</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_17">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_42">DataOutput_3</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_44">vActivateDepositInitialAmount</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_4">
+        <bpmn2:sourceRef>DataOutput_4</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_18">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_45">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47">vActivateDepositCurrentAmount</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_5">
+        <bpmn2:sourceRef>DataOutput_5</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_19">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_48">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_50">vActivateDepositStatus</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_28" sourceRef="ServiceTask_5" targetRef="ScriptTask_10"/>
+    <bpmn2:scriptTask id="ScriptTask_11" name="BuildRequest">
+      <bpmn2:incoming>SequenceFlow_29</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_30</bpmn2:outgoing>
+      <bpmn2:script>var vEvenType = 'AFECTACION_MANUAL_DPG';
+var vAffectedType = TYPE;
+var vAffectedAmount = vAmount;
+var vAffectedAccount = ACCOUNT;
+
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_29" name="Si" sourceRef="ExclusiveGateway_4" targetRef="ScriptTask_11">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_123">vIsAffected</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_30" sourceRef="ScriptTask_11" targetRef="ServiceTask_5"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="testOCEP">
@@ -373,45 +560,45 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_2" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="118.0" y="109.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="118.0" y="130.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="87.0" x="129.0" y="126.0"/>
+          <dc:Bounds height="15.0" width="87.0" x="129.0" y="147.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="449.0" y="24.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="319.0" y="119.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="50.0" x="449.0" y="74.0"/>
+          <dc:Bounds height="15.0" width="50.0" x="319.0" y="169.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_3" bpmnElement="ScriptTask_3" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="540.0" y="24.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="289.0" y="24.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="76.0" x="557.0" y="41.0"/>
+          <dc:Bounds height="15.0" width="76.0" x="306.0" y="41.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="696.0" y="32.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="443.0" y="31.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_9" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="65.0" x="682.0" y="68.0"/>
+          <dc:Bounds height="15.0" width="65.0" x="429.0" y="67.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_1" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="731.0" y="113.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="700.0" y="119.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="67.0" x="752.0" y="130.0"/>
+          <dc:Bounds height="15.0" width="92.0" x="709.0" y="136.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_4" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="898.0" y="113.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="854.0" y="119.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="85.0" x="910.0" y="130.0"/>
+          <dc:Bounds height="15.0" width="85.0" x="866.0" y="136.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="928.0" y="200.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="884.0" y="200.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_15" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="27.0" x="939.0" y="250.0"/>
+          <dc:Bounds height="15.0" width="27.0" x="895.0" y="250.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_5" isExpanded="true">
@@ -421,15 +608,15 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_6" bpmnElement="ScriptTask_6" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="431.0" y="200.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="730.0" y="369.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_19" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="76.0" x="448.0" y="217.0"/>
+          <dc:Bounds height="15.0" width="76.0" x="747.0" y="386.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_2">
-        <dc:Bounds height="36.0" width="36.0" x="360.0" y="207.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="767.0" y="450.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_20" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="65.0" x="346.0" y="243.0"/>
+          <dc:Bounds height="15.0" width="65.0" x="753.0" y="486.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_3" bpmnElement="EndEvent_3">
@@ -439,51 +626,81 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_7" bpmnElement="ScriptTask_7" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="580.0" y="113.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="559.0" y="119.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_30" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="68.0" x="601.0" y="130.0"/>
+          <dc:Bounds height="15.0" width="68.0" x="580.0" y="136.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ServiceTask_4" bpmnElement="ServiceTask_4" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="419.0" y="113.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="407.0" y="119.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_33" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="30.0" width="76.0" x="436.0" y="123.0"/>
+          <dc:Bounds height="30.0" width="76.0" x="424.0" y="129.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_8" bpmnElement="ScriptTask_8" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="770.0" y="200.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="730.0" y="200.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_35" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="44.0" x="803.0" y="217.0"/>
+          <dc:Bounds height="15.0" width="44.0" x="763.0" y="217.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ServiceTask_6" bpmnElement="ServiceTask_6" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="601.0" y="200.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="730.0" y="286.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_36" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="30.0" width="103.0" x="604.0" y="210.0"/>
+          <dc:Bounds height="30.0" width="103.0" x="733.0" y="296.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="303.0" y="109.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="320.0" y="209.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_17" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="34.0" x="311.0" y="159.0"/>
+          <dc:Bounds height="15.0" width="34.0" x="328.0" y="259.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_9" bpmnElement="ScriptTask_9" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="118.0" y="209.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="291.0" y="310.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_24" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="76.0" x="135.0" y="226.0"/>
+          <dc:Bounds height="15.0" width="76.0" x="308.0" y="327.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_4" bpmnElement="EndEvent_4">
-        <dc:Bounds height="36.0" width="36.0" x="155.0" y="310.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="443.0" y="317.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_39" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="65.0" x="141.0" y="346.0"/>
+          <dc:Bounds height="15.0" width="65.0" x="429.0" y="353.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_4" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="148.0" y="209.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="53.0" x="147.0" y="259.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_10" bpmnElement="ScriptTask_10" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="119.0" y="509.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_43" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="136.0" y="526.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_5" bpmnElement="EndEvent_5">
+        <dc:Bounds height="36.0" width="36.0" x="274.0" y="516.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_44" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="260.0" y="552.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_5" bpmnElement="ServiceTask_5" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="119.0" y="419.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_46" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="101.0" x="123.0" y="436.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_11" bpmnElement="ScriptTask_11" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="118.0" y="320.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_49" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="75.0" x="135.0" y="337.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_2">
         <di:waypoint xsi:type="dc:Point" x="173.0" y="74.0"/>
-        <di:waypoint xsi:type="dc:Point" x="173.0" y="91.0"/>
-        <di:waypoint xsi:type="dc:Point" x="173.0" y="109.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="102.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="130.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_4"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_1">
@@ -493,51 +710,51 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
         <bpmndi:BPMNLabel id="BPMNLabel_5"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ScriptTask_3" targetElement="BPMNShape_EndEvent_1">
-        <di:waypoint xsi:type="dc:Point" x="650.0" y="49.0"/>
-        <di:waypoint xsi:type="dc:Point" x="673.0" y="49.0"/>
-        <di:waypoint xsi:type="dc:Point" x="696.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="399.0" y="49.0"/>
+        <di:waypoint xsi:type="dc:Point" x="421.0" y="49.0"/>
+        <di:waypoint xsi:type="dc:Point" x="443.0" y="49.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_10"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_3">
-        <di:waypoint xsi:type="dc:Point" x="499.0" y="49.0"/>
-        <di:waypoint xsi:type="dc:Point" x="519.0" y="49.0"/>
-        <di:waypoint xsi:type="dc:Point" x="540.0" y="49.0"/>
+        <di:waypoint xsi:type="dc:Point" x="344.0" y="119.0"/>
+        <di:waypoint xsi:type="dc:Point" x="344.0" y="97.0"/>
+        <di:waypoint xsi:type="dc:Point" x="344.0" y="74.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_11">
-          <dc:Bounds height="15.0" width="16.0" x="513.0" y="50.0"/>
+          <dc:Bounds height="15.0" width="16.0" x="337.0" y="98.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ExclusiveGateway_2">
-        <di:waypoint xsi:type="dc:Point" x="953.0" y="163.0"/>
-        <di:waypoint xsi:type="dc:Point" x="953.0" y="181.0"/>
-        <di:waypoint xsi:type="dc:Point" x="953.0" y="200.0"/>
+        <di:waypoint xsi:type="dc:Point" x="909.0" y="169.0"/>
+        <di:waypoint xsi:type="dc:Point" x="909.0" y="184.0"/>
+        <di:waypoint xsi:type="dc:Point" x="909.0" y="200.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_21"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ScriptTask_5">
-        <di:waypoint xsi:type="dc:Point" x="978.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="999.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="934.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="977.0" y="225.0"/>
         <di:waypoint xsi:type="dc:Point" x="1020.0" y="225.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_22">
-          <dc:Bounds height="15.0" width="16.0" x="992.0" y="226.0"/>
+          <dc:Bounds height="15.0" width="16.0" x="970.0" y="226.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ScriptTask_8">
-        <di:waypoint xsi:type="dc:Point" x="928.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="904.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="880.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="884.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="862.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="840.0" y="225.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_23">
-          <dc:Bounds height="15.0" width="21.0" x="894.0" y="226.0"/>
+          <dc:Bounds height="15.0" width="21.0" x="852.0" y="226.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ScriptTask_6" targetElement="BPMNShape_EndEvent_2">
-        <di:waypoint xsi:type="dc:Point" x="431.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="414.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="396.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="419.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="434.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="450.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_26"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_4">
-        <di:waypoint xsi:type="dc:Point" x="841.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="869.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="898.0" y="138.0"/>
+        <di:waypoint xsi:type="dc:Point" x="810.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="832.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="854.0" y="144.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_27"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_EndEvent_3">
@@ -547,64 +764,98 @@ var BPMN_RESPONSE_MESSAGE = 'No se puede devolver Pago Adelantado';
         <bpmndi:BPMNLabel id="BPMNLabel_29"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_4">
-        <di:waypoint xsi:type="dc:Point" x="474.0" y="74.0"/>
-        <di:waypoint xsi:type="dc:Point" x="474.0" y="93.0"/>
-        <di:waypoint xsi:type="dc:Point" x="474.0" y="113.0"/>
+        <di:waypoint xsi:type="dc:Point" x="369.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="388.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="407.0" y="144.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_31">
-          <dc:Bounds height="15.0" width="11.0" x="469.0" y="95.0"/>
+          <dc:Bounds height="15.0" width="11.0" x="383.0" y="145.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_ScriptTask_7" targetElement="BPMNShape_ServiceTask_1">
-        <di:waypoint xsi:type="dc:Point" x="690.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="710.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="731.0" y="138.0"/>
+        <di:waypoint xsi:type="dc:Point" x="669.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="684.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="700.0" y="144.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_32"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_ServiceTask_4" targetElement="BPMNShape_ScriptTask_7">
-        <di:waypoint xsi:type="dc:Point" x="529.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="554.0" y="138.0"/>
-        <di:waypoint xsi:type="dc:Point" x="580.0" y="138.0"/>
+        <di:waypoint xsi:type="dc:Point" x="517.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="538.0" y="144.0"/>
+        <di:waypoint xsi:type="dc:Point" x="559.0" y="144.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_34"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_20" bpmnElement="SequenceFlow_20" sourceElement="BPMNShape_ScriptTask_8" targetElement="BPMNShape_ServiceTask_6">
-        <di:waypoint xsi:type="dc:Point" x="770.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="741.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="250.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="268.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="286.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_37"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ServiceTask_6" targetElement="BPMNShape_ScriptTask_6">
-        <di:waypoint xsi:type="dc:Point" x="601.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="571.0" y="225.0"/>
-        <di:waypoint xsi:type="dc:Point" x="541.0" y="225.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="336.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="352.0"/>
+        <di:waypoint xsi:type="dc:Point" x="785.0" y="369.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_13"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ExclusiveGateway_3">
-        <di:waypoint xsi:type="dc:Point" x="228.0" y="134.0"/>
-        <di:waypoint xsi:type="dc:Point" x="265.0" y="134.0"/>
-        <di:waypoint xsi:type="dc:Point" x="303.0" y="134.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_18"/>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_9">
-        <di:waypoint xsi:type="dc:Point" x="328.0" y="159.0"/>
-        <di:waypoint xsi:type="dc:Point" x="328.0" y="234.0"/>
-        <di:waypoint xsi:type="dc:Point" x="228.0" y="234.0"/>
+        <di:waypoint xsi:type="dc:Point" x="345.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="345.0" y="284.0"/>
+        <di:waypoint xsi:type="dc:Point" x="346.0" y="310.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_25">
-          <dc:Bounds height="15.0" width="21.0" x="306.0" y="235.0"/>
+          <dc:Bounds height="15.0" width="21.0" x="335.0" y="286.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ExclusiveGateway_1">
-        <di:waypoint xsi:type="dc:Point" x="328.0" y="109.0"/>
-        <di:waypoint xsi:type="dc:Point" x="328.0" y="49.0"/>
-        <di:waypoint xsi:type="dc:Point" x="449.0" y="49.0"/>
+        <di:waypoint xsi:type="dc:Point" x="345.0" y="209.0"/>
+        <di:waypoint xsi:type="dc:Point" x="345.0" y="189.0"/>
+        <di:waypoint xsi:type="dc:Point" x="344.0" y="169.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_38">
-          <dc:Bounds height="15.0" width="16.0" x="352.0" y="50.0"/>
+          <dc:Bounds height="15.0" width="16.0" x="338.0" y="190.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_ScriptTask_9" targetElement="BPMNShape_EndEvent_4">
-        <di:waypoint xsi:type="dc:Point" x="173.0" y="259.0"/>
-        <di:waypoint xsi:type="dc:Point" x="173.0" y="284.0"/>
-        <di:waypoint xsi:type="dc:Point" x="173.0" y="310.0"/>
+        <di:waypoint xsi:type="dc:Point" x="401.0" y="335.0"/>
+        <di:waypoint xsi:type="dc:Point" x="422.0" y="335.0"/>
+        <di:waypoint xsi:type="dc:Point" x="443.0" y="335.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_40"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ExclusiveGateway_4">
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="180.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="194.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="209.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_41"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="198.0" y="234.0"/>
+        <di:waypoint xsi:type="dc:Point" x="259.0" y="234.0"/>
+        <di:waypoint xsi:type="dc:Point" x="320.0" y="234.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_42">
+          <dc:Bounds height="15.0" width="16.0" x="252.0" y="235.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_24" bpmnElement="SequenceFlow_24" sourceElement="BPMNShape_ScriptTask_10" targetElement="BPMNShape_EndEvent_5">
+        <di:waypoint xsi:type="dc:Point" x="229.0" y="534.0"/>
+        <di:waypoint xsi:type="dc:Point" x="251.0" y="534.0"/>
+        <di:waypoint xsi:type="dc:Point" x="274.0" y="534.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_45"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_28" bpmnElement="SequenceFlow_28" sourceElement="BPMNShape_ServiceTask_5" targetElement="BPMNShape_ScriptTask_10">
+        <di:waypoint xsi:type="dc:Point" x="174.0" y="469.0"/>
+        <di:waypoint xsi:type="dc:Point" x="174.0" y="489.0"/>
+        <di:waypoint xsi:type="dc:Point" x="174.0" y="509.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_48"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_29" bpmnElement="SequenceFlow_29" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_ScriptTask_11">
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="259.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="289.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="320.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_50">
+          <dc:Bounds height="15.0" width="11.0" x="168.0" y="291.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_30" bpmnElement="SequenceFlow_30" sourceElement="BPMNShape_ScriptTask_11" targetElement="BPMNShape_ServiceTask_5">
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="370.0"/>
+        <di:waypoint xsi:type="dc:Point" x="173.0" y="394.0"/>
+        <di:waypoint xsi:type="dc:Point" x="174.0" y="419.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_51"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">

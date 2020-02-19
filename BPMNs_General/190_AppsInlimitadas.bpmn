@@ -914,7 +914,7 @@ if (typeof vLAC == 'undefined') {&#xD;
 };
 
 if(typeof vPrice=='undefined'){
-	var vPrice='';
+    var vPrice='';
 }
 </bpmn2:script>
     </bpmn2:scriptTask>

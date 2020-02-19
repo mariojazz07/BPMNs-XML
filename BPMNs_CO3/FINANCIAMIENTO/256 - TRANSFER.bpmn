@@ -11,7 +11,7 @@
       <bpmn2:script>var MSFinancial = JsonMS;
 LOGGER.info(tLinea+MSFinancial+tLinea);
 
-var vDeudaInitDate = getMSAttributes('FECHA_INICIO_EQUIPO', MSFinancial);
+var vDeudaInitDate = getMSAttributes('FECHA_INICIO_DEUDA', MSFinancial);
 var vEquipoInitDate = getMSAttributes('FECHA_INICIO_EQUIPO', MSFinancial);
 var vDeudaEndDate = getMSAttributes('FECHA_FIN_DEUDA', MSFinancial);
 var vEquipoEndDate = getMSAttributes('FECHA_FIN_EQUIPO', MSFinancial);
@@ -22,8 +22,9 @@ var vSeqEquipo = getMSAttributes('SEQUENCE_EQUIPO', MSFinancial);
 var vSysdate = new Date();
 var vDeudaVigente = false;
 var vEquipoVigente = false;
-//var vJson={Installments:[]};
+//var vJson={Installments:new Object()};
 var vJson = {};
+var vInstallArray=new Array();
 
 if (typeof vDeudaInitDate != 'undefined') {
     vDeudaInitDate = getFinancialDate(vDeudaInitDate);
@@ -31,10 +32,9 @@ if (typeof vDeudaInitDate != 'undefined') {
 }
 
 if (typeof vDeudaEndDate != 'undefined') {
-    LOGGER.info(tLinea+'Antes:'+vDeudaEndDate+tLinea);
+    
     vDeudaEndDate = getFinancialDate(vDeudaEndDate);
-    LOGGER.info(tLinea+'Despues:'+vDeudaEndDate+tLinea);
-    LOGGER.info(tLinea+vSysdate+tLinea);
+   
     
     if (vDeudaEndDate >= vSysdate) {
         vDeudaVigente = true;
@@ -109,6 +109,7 @@ if (typeof vEquipoEndDate != 'undefined') {
         <bpmn2:dataOutput id="DataOutput_4" name="CURRENCY_ID_0"/>
         <bpmn2:dataOutput id="DataOutput_5" name="PROCESSED_CYCLE_NUM_0"/>
         <bpmn2:dataOutput id="DataOutput_6" name="SUCESS_CYCLE_NUM_0"/>
+        <bpmn2:dataOutput id="DataOutput_16" name="OFFERING_ID_0"/>
         <bpmn2:inputSet id="InputSet_4" name="Input Set 4">
           <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
@@ -121,6 +122,7 @@ if (typeof vEquipoEndDate != 'undefined') {
           <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
           <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
           <bpmn2:dataOutputRefs>DataOutput_6</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_16</bpmn2:dataOutputRefs>
         </bpmn2:outputSet>
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation id="DataInputAssociation_1">
@@ -186,6 +188,13 @@ if (typeof vEquipoEndDate != 'undefined') {
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_29">vSucessCyclesE</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_16">
+        <bpmn2:sourceRef>DataOutput_16</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_25">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_7">DataOutput_16</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">vOfferingIdE</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
     </bpmn2:serviceTask>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="HasDeuda" default="SequenceFlow_11">
       <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
@@ -200,13 +209,16 @@ if (typeof vEquipoEndDate != 'undefined') {
     <bpmn2:scriptTask id="ScriptTask_5" name="ProcessQueryDeuda">
       <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_26</bpmn2:outgoing>
-      <bpmn2:script>var vDeudaIsOK = false;
+      <bpmn2:script>
+
+var vDeudaIsOK = false;
 
 
-if (typeof QueryRentCycleTaskService__responseCode != 'undefined') {
-    if (QueryRentCycleTaskService__responseCode == 0) {
+if (typeof vOfferingIdD != 'undefined') {
+    
         vDeudaIsOK = true;
-    }
+        //LOGGER.info(tLinea+'Llega a procesar vDeudaIsOK_1'+tLinea);
+    
 }
 
 if (vDeudaIsOK) {
@@ -214,23 +226,31 @@ if (vDeudaIsOK) {
     var vDatesArray = new Array();
     var vTmpAmount='';
     var vTmpInstallTotal='';
+    //var vInstallArray=new Array();
 
+    //LOGGER.info(tLinea+'Llega a procesar vDeudaIsOK_2'+tLinea);
     TmpInstall.Name = 'Financiamiento de Deuda:' + getMSAttributes('NAME_DEUDA', MSFinancial);
     TmpInstall.Type = 'Deuda';
     TmpInstall.Offering = vOfferingDeuda;
+    TmpInstall.Sequence=getMSAttributes('SEQUENCE_DEUDA',MSFinancial);
     vTmpAmount=getMSAttributes('MONTO_DEUDA', MSFinancial);
     TmpInstall.Amount = vTmpAmount;
     vTmpInstallTotal=getMSAttributes('CUOTAS_DEUDA', MSFinancial);
     TmpInstall.Install_total = vTmpInstallTotal;
-    TmpInstall.Total_amount = parseFloat(vTmpAmount) * parseFloat(vTmpInstallTotal);
+    TmpInstall.Total_amount = (parseFloat(vTmpAmount) * parseFloat(vTmpInstallTotal)).toString();
 
     //processed
-    vDatesArray = getProcessedInstallments(vProcessedCycleD, vDeudaInitDate, SubscriberInfoJson, vOfferingDeuda);
+   // LOGGER.info(tLinea+'vProcessedCyclesD:'+vProcessedCyclesD+tLinea);
+   
+  
+    vDatesArray = getProcessedInstallments(vProcessedCyclesD, vDeudaInitDate, SubscriberInfoJson, vOfferingDeuda);
+    
     TmpInstall.Processed = vDatesArray;
     vInstallArray.push(TmpInstall);
-
     vJson.Installments=vInstallArray;
-}</bpmn2:script>
+}
+
+//LOGGER.info(tLinea+'vDeudaIsOK:'+vDeudaIsOK+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_9" name="SetResponse">
       <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
@@ -265,12 +285,12 @@ JSON_RESPONSE = JSON.stringify(vJson);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:script>var vEquipoIsOK = false;
-var vInstallArray=new Array();
+//var vInstallArray=new Array();
 
-if (typeof QueryRentCycleTaskService__responseCode != 'undefined') {
-    if (QueryRentCycleTaskService__responseCode == 0) {
+if (typeof vOfferingIdE != 'undefined') {
+    
         vEquipoIsOK = true;
-    }
+    
 }
 
 if (vEquipoIsOK) {
@@ -282,20 +302,23 @@ if (vEquipoIsOK) {
     TmpInstall.Name = 'Financiamiento de Equipo:' + getMSAttributes('NAME_EQUIPO', MSFinancial);
     TmpInstall.Type = 'Equipo';
     TmpInstall.Offering = vOfferingEquipo;
+    TmpInstall.Sequence=getMSAttributes('SEQUENCE_EQUIPO',MSFinancial);
     vTmpAmount=getMSAttributes('MONTO_EQUIPO', MSFinancial);
     TmpInstall.Amount = vTmpAmount;
     vTmpInstallTotal=getMSAttributes('CUOTAS_EQUIPO', MSFinancial);
     TmpInstall.Install_total = vTmpInstallTotal;
-    TmpInstall.Total_amount = parseFloat(vTmpAmount) * parseFloat(vTmpInstallTotal);
+    TmpInstall.Total_amount = (parseFloat(vTmpAmount) * parseFloat(vTmpInstallTotal)).toString();
 
     //processed
-    vDatesArray = getProcessedInstallments(vProcessedCycleE, vEquipoInitDate, SubscriberInfoJson, vOfferingEquipo);
+    vDatesArray = getProcessedInstallments(vProcessedCyclesE, vEquipoInitDate, SubscriberInfoJson, vOfferingEquipo);
     TmpInstall.Processed = vDatesArray;
     vInstallArray.push(TmpInstall);
 
     vJson.Installments=vInstallArray;
     
-}</bpmn2:script>
+}
+
+LOGGER.info(tLinea+'vEquipoIsOK:'+vEquipoIsOK+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ScriptTask_3" targetRef="ExclusiveGateway_4"/>
     <bpmn2:serviceTask id="ServiceTask_1" name="SubscriberInfoByIdentityTask">
@@ -346,6 +369,7 @@ if (vEquipoIsOK) {
         <bpmn2:dataOutput id="DataOutput_11" name="CURRENCY_ID_0"/>
         <bpmn2:dataOutput id="DataOutput_12" name="PROCESSED_CYCLE_NUM_0"/>
         <bpmn2:dataOutput id="DataOutput_13" name="SUCESS_CYCLE_NUM_0"/>
+        <bpmn2:dataOutput id="DataOutput_15" name="OFFERING_ID_0"/>
         <bpmn2:inputSet id="InputSet_9" name="Input Set 4">
           <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
           <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
@@ -358,6 +382,7 @@ if (vEquipoIsOK) {
           <bpmn2:dataOutputRefs>DataOutput_11</bpmn2:dataOutputRefs>
           <bpmn2:dataOutputRefs>DataOutput_12</bpmn2:dataOutputRefs>
           <bpmn2:dataOutputRefs>DataOutput_13</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_15</bpmn2:dataOutputRefs>
         </bpmn2:outputSet>
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation id="DataInputAssociation_5">
@@ -421,6 +446,13 @@ if (vEquipoIsOK) {
         <bpmn2:assignment id="Assignment_20">
           <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_54">DataOutput_6</bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_55">vSucessCyclesD</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_15">
+        <bpmn2:sourceRef>DataOutput_15</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_24">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1">DataOutput_15</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">vOfferingIdD</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataOutputAssociation>
     </bpmn2:serviceTask>
@@ -518,7 +550,8 @@ function getProcessedInstallments(processedCycles, DateInit, infoJson, vOffering
     var vSubscriberObject = getJSON(infoJson);
     var vOfferingItems = getSupplementaryOfferings(vOfferingE, vSubscriberObject);
 
-    var vInitDate = getFinancialDate(DateInit);
+    //var vInitDate = getFinancialDate(DateInit);
+    var vInitDate=DateInit;
     var vTmpDate = new Date();
     var vYear = '';
     var vMonth = '';
@@ -528,14 +561,17 @@ function getProcessedInstallments(processedCycles, DateInit, infoJson, vOffering
 
     for (var i = 1; i &lt;= parseInt(processedCycles); i++) {
         vTmpObject = new Object();
-        vTmpDate = new Date(vInitDate);
+        //vTmpDate = new Date(vInitDate);
+        vTmpDate=vInitDate;
+        //LOGGER.info(tLinea+'vInitDate:'+vInitDate+tLinea);
         vTmpDate.setMonth(vTmpDate.getMonth() + i);
 
         vYear = vTmpDate.getFullYear();
         vMonth = (vTmpDate.getMonth()) &lt; 10 ? '0' + (vTmpDate.getMonth()) : (vTmpDate.getMonth());
         vDay = (vTmpDate.getDate()) &lt; 10 ? '0' + vTmpDate.getDate() : vTmpDate.getDate();
         vTmpObject.InstallNumber = i;
-        vTmpObject.Date = vYear + vMonth + vDay;
+        vTmpObject.Date = vYear.toString() + vMonth.toString() + vDay.toString();
+        
         vTmpObject.Status = &quot;closed&quot;;
         vProcessedObject.push(vTmpObject);
 

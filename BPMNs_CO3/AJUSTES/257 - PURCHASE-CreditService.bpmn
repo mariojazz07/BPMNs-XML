@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- origin at X=0.0 Y=0.0 -->
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
+  <bpmn2:process id="process_1" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:scriptTask id="ScriptTask_1" name="Functions">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:script>//Functions</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
+    <bpmn2:scriptTask id="ScriptTask_2" name="ProcessAdjustment">
+      <bpmn2:documentation id="Documentation_3">procesa y construye variables del request</bpmn2:documentation>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
+      <bpmn2:script>var vIsFiscal=false;
+var vAccount=ACCOUNT;
+var vAmount=AMOUNT;
+var vType=TYPE;
+var vOperation=OPERATION;
+var vMotivo=MOTIVO;
+var vSucursal='';
+var vRuleType='';
+
+
+if(typeof vType != 'undefined'){
+    if(vType=='FISCAL'){
+        vIsFiscal=true;
+        vSucursal=SUCURSAL;
+        var vInvoiceNo=INVOICE_No;
+        
+    }
+    vSucursal='NA';
+}
+
+if(vOperation=='CREDITO' &amp;&amp; vIsFiscal){
+    vRuleType='NC';
+}
+else if(vOperation=='DEBITO' &amp;&amp; vIsFiscal){
+    vRuleType='ND';
+}
+else if(vOperation=='CREDITO' &amp;&amp; !vIsFiscal){
+    vRuleType='NAC';
+}
+else if(vOperation=='DEBITO' &amp;&amp; !vIsFiscal){
+    vRuleType='NAD';
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_1" targetRef="ScriptTask_2"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="IsFiscal" gatewayDirection="Diverging" default="SequenceFlow_11">
+      <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:serviceTask id="ServiceTask_3" name="BalanceAdjustmentBySubJsonTask">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_7">
+        <bpmn2:dataInput id="DataInput_2" name="JSON"/>
+        <bpmn2:dataOutput id="DataOutput_3" name="ADJUSTMENT_SERIAL"/>
+        <bpmn2:inputSet id="InputSet_7" name="Input Set 7">
+          <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_7" name="Output Set 7">
+          <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn2:targetRef>DataInput_2</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_2">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6">JsonString</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4">DataInput_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn2:sourceRef>DataOutput_3</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_8">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9">DataOutput_3</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_14">vAdjustmentSerial</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:scriptTask id="ScriptTask_5" name="BuildJson">
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      <bpmn2:script>var JsonObject={adjustmentObj:{acctAccessCode:new Object()}};
+var JsonString='';
+var TmpArray=new Array();
+var TmpObject=new Object();
+var vRemark='';
+
+JsonObject.adjustmentSerialNo=transactionId;
+JsonObject.adjustmentObj.acctAccessCode.accountCode=vAccount;
+JsonObject.opType='1';
+TmpObject.adjustmentType= (vOperation=='DEBITO')?'2':'1';
+TmpObject.adjustmentAmt=(parseFloat(vAmount).toFixed(2))*1000000;
+TmpObject.currencyID='1153';
+TmpArray.push(TmpObject);
+JsonObject.adjustmentInfo=TmpArray;
+JsonObject.adjustmentReasonCode=vReasonCode;
+//JsonObject.adjustmentReasonCode='312';
+TmpArray=new Array();
+TmpObject=new Object();
+TmpObject.code='C_ADJUST_TYPE';
+TmpObject.value='ADJ';
+TmpArray.push(TmpObject);
+TmpObject=new Object();
+TmpObject.code='C_REMARKS';
+TmpObject.value= vRemark;
+TmpArray.push(TmpObject);
+JsonObject.additionalProperty=TmpArray;
+JsonString=JSON.stringify(JsonObject);
+
+
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" name="No" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ScriptTask_5" targetRef="ServiceTask_3"/>
+    <bpmn2:scriptTask id="ScriptTask_6" name="ValidAdjustment">
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
+      <bpmn2:script>if (typeof vAdjustmentSerial != 'undefined'){
+    var vAdjSerial=vAdjustmentSerial;
+}
+else{
+    vAdjSerial='';
+}</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="ServiceTask_3" targetRef="ScriptTask_6"/>
+    <bpmn2:scriptTask id="ScriptTask_7" name="SetResponse">
+      <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_17</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '0';
+var BPMN_RESPONSE_MESSAGE = 'Ajuste No Fiscal Aplicado Correctamente';
+ADJUSTMENT_SERIAL=vAdjSerial;
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:endEvent id="EndEvent_1" name="End Event 1">
+      <bpmn2:incoming>SequenceFlow_17</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_17" sourceRef="ScriptTask_7" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="ScriptTask_6" targetRef="ScriptTask_7"/>
+    <bpmn2:serviceTask id="ServiceTask_4" name="RuleEngineTask">
+      <bpmn2:documentation id="Documentation_2">Obtiene Reason code para CBS</bpmn2:documentation>
+      <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_22</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_25">
+        <bpmn2:dataInput id="DataInput_3" name="MOTIVO"/>
+        <bpmn2:dataInput id="DataInput_5" name="TYPE"/>
+        <bpmn2:dataInput id="DataInput_4" name="SESSION"/>
+        <bpmn2:dataOutput id="DataOutput_1" name="REASONCODE"/>
+        <bpmn2:inputSet id="InputSet_25" name="Input Set 25">
+          <bpmn2:dataInputRefs>DataInput_3</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_25" name="Output Set 25">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn2:targetRef>DataInput_3</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_3">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_12">vMotivo</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10">DataInput_3</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn2:targetRef>DataInput_4</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_5">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18">'GetReasonCodeKS'</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_16">DataInput_4</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn2:targetRef>DataInput_5</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_7">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_13">vRuleType</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5">DataInput_5</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn2:sourceRef>DataOutput_1</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_6">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19">DataOutput_1</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_21">vReasonCode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_21" sourceRef="ScriptTask_2" targetRef="ServiceTask_4"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_22" sourceRef="ServiceTask_4" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:scriptTask id="ScriptTask_10" name="ValidRules">
+      <bpmn2:incoming>SequenceFlow_45</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_25</bpmn2:outgoing>
+      <bpmn2:script>var vIsValid=true;</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="IsValid" default="SequenceFlow_30">
+      <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_30</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_39</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_25" sourceRef="ScriptTask_10" targetRef="ExclusiveGateway_3"/>
+    <bpmn2:scriptTask id="ScriptTask_11" name="SetResponse">
+      <bpmn2:incoming>SequenceFlow_30</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_31</bpmn2:outgoing>
+      <bpmn2:script>var BPMN_RESPONSE_CODE = '100';
+var BPMN_RESPONSE_MESSAGE = 'Error de Procesamiento';
+</bpmn2:script>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_30" name="No" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_11"/>
+    <bpmn2:endEvent id="EndEvent_3" name="End Event 3">
+      <bpmn2:incoming>SequenceFlow_31</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_31" sourceRef="ScriptTask_11" targetRef="EndEvent_3"/>
+    <bpmn2:scriptTask id="ScriptTask_20" name="BuildRequest">
+      <bpmn2:incoming>SequenceFlow_39</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_40</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_39" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_20"/>
+    <bpmn2:serviceTask id="ServiceTask_6" name="ExecuteOrderTask">
+      <bpmn2:incoming>SequenceFlow_40</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_44</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_40" sourceRef="ScriptTask_20" targetRef="ServiceTask_6"/>
+    <bpmn2:scriptTask id="ScriptTask_21" name="ValidaExecute">
+      <bpmn2:incoming>SequenceFlow_44</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_46</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_44" sourceRef="ServiceTask_6" targetRef="ScriptTask_21"/>
+    <bpmn2:scriptTask id="ScriptTask_22" name="SetResponse">
+      <bpmn2:incoming>SequenceFlow_46</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_47</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_46" sourceRef="ScriptTask_21" targetRef="ScriptTask_22"/>
+    <bpmn2:endEvent id="EndEvent_6" name="End Event 6">
+      <bpmn2:incoming>SequenceFlow_47</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_47" sourceRef="ScriptTask_22" targetRef="EndEvent_6"/>
+    <bpmn2:serviceTask id="ServiceTask_1" name="QueryInvoiceDetail_Invoicing">
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:serviceTask id="ServiceTask_2" name="QueryCreditServiceOrderDetailTask">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ServiceTask_2" targetRef="ServiceTask_1"/>
+    <bpmn2:scriptTask id="ScriptTask_4" name="ValidateAmount">
+      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_29</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_15" sourceRef="ServiceTask_1" targetRef="ScriptTask_4"/>
+    <bpmn2:serviceTask id="ServiceTask_7" name="CreateCreditServiceOrderDetailTask">
+      <bpmn2:incoming>SequenceFlow_29</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_34</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_29" sourceRef="ScriptTask_4" targetRef="ServiceTask_7"/>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_5" name="IsSP" gatewayDirection="Diverging">
+      <bpmn2:incoming>SequenceFlow_34</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_35</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_45</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_34" sourceRef="ServiceTask_7" targetRef="ExclusiveGateway_5"/>
+    <bpmn2:serviceTask id="ServiceTask_8" name="MSCassandra">
+      <bpmn2:incoming>SequenceFlow_35</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_43</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_35" sourceRef="ExclusiveGateway_5" targetRef="ServiceTask_8"/>
+    <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
+      <bpmn2:incoming>SequenceFlow_43</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_43" sourceRef="ServiceTask_8" targetRef="EndEvent_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_45" sourceRef="ExclusiveGateway_5" targetRef="ScriptTask_10"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_1">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="61.0" y="32.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="68.0" x="45.0" y="68.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_1" bpmnElement="ScriptTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="142.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="54.0" x="170.0" y="42.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_2" bpmnElement="ScriptTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="292.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="108.0" x="293.0" y="42.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="590.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="43.0" x="593.0" y="75.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_3" bpmnElement="ServiceTask_3" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="277.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_16" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="106.0" x="279.0" y="120.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_5" bpmnElement="ScriptTask_5" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="440.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_19" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="55.0" x="467.0" y="135.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_6" bpmnElement="ScriptTask_6" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="135.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_23" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="89.0" x="145.0" y="135.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_7" bpmnElement="ScriptTask_7" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="135.0" y="203.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_25" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="152.0" y="220.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="172.0" y="295.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_26" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="158.0" y="331.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_4" bpmnElement="ServiceTask_4" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="440.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_29" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="92.0" x="449.0" y="42.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_10" bpmnElement="ScriptTask_10" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="922.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_33" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="60.0" x="947.0" y="135.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_3" bpmnElement="ExclusiveGateway_3" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="748.0" y="194.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_35" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="37.0" x="754.0" y="244.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_11" bpmnElement="ScriptTask_11" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="588.0" y="203.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_40" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="605.0" y="220.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_3" bpmnElement="EndEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="625.0" y="332.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_42" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="611.0" y="368.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_20" bpmnElement="ScriptTask_20" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="852.0" y="193.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_70" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="75.0" x="869.0" y="210.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_6" bpmnElement="ServiceTask_6" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="852.0" y="270.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_72" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="101.0" x="856.0" y="287.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_21" bpmnElement="ScriptTask_21" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="852.0" y="344.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_74" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="77.0" x="868.0" y="361.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_22" bpmnElement="ScriptTask_22" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="852.0" y="428.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_76" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="76.0" x="869.0" y="445.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_6" bpmnElement="EndEvent_6">
+        <dc:Bounds height="36.0" width="36.0" x="887.0" y="510.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_78" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="873.0" y="546.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_1" bpmnElement="ServiceTask_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="863.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="86.0" x="875.0" y="35.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_2" bpmnElement="ServiceTask_2" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="688.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_15" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="77.0" x="704.0" y="27.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_4" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="1031.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_22" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="86.0" x="1043.0" y="42.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_7" bpmnElement="ServiceTask_7" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="1200.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_37" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="45.0" width="77.0" x="1216.0" y="27.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_5" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="1363.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_44" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="26.0" x="1375.0" y="75.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_8" bpmnElement="ServiceTask_8" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="1450.0" y="25.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_53" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="79.0" x="1465.0" y="42.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_2">
+        <dc:Bounds height="36.0" width="36.0" x="1487.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_57" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="15.0" width="65.0" x="1473.0" y="154.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_1">
+        <di:waypoint xsi:type="dc:Point" x="97.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="119.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="142.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_5"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ScriptTask_1" targetElement="BPMNShape_ScriptTask_2">
+        <di:waypoint xsi:type="dc:Point" x="252.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="272.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="292.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_7"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ScriptTask_5">
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="75.0"/>
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="550.0" y="143.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_20">
+          <dc:Bounds height="15.0" width="16.0" x="608.0" y="143.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_ScriptTask_5" targetElement="BPMNShape_ServiceTask_3">
+        <di:waypoint xsi:type="dc:Point" x="440.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="414.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="387.0" y="143.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_21"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ServiceTask_3" targetElement="BPMNShape_ScriptTask_6">
+        <di:waypoint xsi:type="dc:Point" x="277.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="261.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="245.0" y="143.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_24"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_17" bpmnElement="SequenceFlow_17" sourceElement="BPMNShape_ScriptTask_7" targetElement="BPMNShape_EndEvent_2">
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="253.0"/>
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="274.0"/>
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="295.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_27"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_ScriptTask_6" targetElement="BPMNShape_ScriptTask_7">
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="168.0"/>
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="185.0"/>
+        <di:waypoint xsi:type="dc:Point" x="190.0" y="203.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_28"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ScriptTask_2" targetElement="BPMNShape_ServiceTask_4">
+        <di:waypoint xsi:type="dc:Point" x="402.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="421.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="440.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_30"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_22" bpmnElement="SequenceFlow_22" sourceElement="BPMNShape_ServiceTask_4" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="550.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="570.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="590.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_31"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_25" bpmnElement="SequenceFlow_25" sourceElement="BPMNShape_ScriptTask_10" targetElement="BPMNShape_ExclusiveGateway_3">
+        <di:waypoint xsi:type="dc:Point" x="922.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="773.0" y="194.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_36"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_30" bpmnElement="SequenceFlow_30" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_11">
+        <di:waypoint xsi:type="dc:Point" x="748.0" y="219.0"/>
+        <di:waypoint xsi:type="dc:Point" x="723.0" y="219.0"/>
+        <di:waypoint xsi:type="dc:Point" x="698.0" y="219.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_41">
+          <dc:Bounds height="15.0" width="16.0" x="716.0" y="220.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_31" bpmnElement="SequenceFlow_31" sourceElement="BPMNShape_ScriptTask_11" targetElement="BPMNShape_EndEvent_3">
+        <di:waypoint xsi:type="dc:Point" x="643.0" y="253.0"/>
+        <di:waypoint xsi:type="dc:Point" x="643.0" y="292.0"/>
+        <di:waypoint xsi:type="dc:Point" x="643.0" y="332.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_43"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_39" bpmnElement="SequenceFlow_39" sourceElement="BPMNShape_ExclusiveGateway_3" targetElement="BPMNShape_ScriptTask_20">
+        <di:waypoint xsi:type="dc:Point" x="798.0" y="219.0"/>
+        <di:waypoint xsi:type="dc:Point" x="825.0" y="219.0"/>
+        <di:waypoint xsi:type="dc:Point" x="852.0" y="218.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_71"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_40" bpmnElement="SequenceFlow_40" sourceElement="BPMNShape_ScriptTask_20" targetElement="BPMNShape_ServiceTask_6">
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="243.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="256.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="270.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_73"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_44" bpmnElement="SequenceFlow_44" sourceElement="BPMNShape_ServiceTask_6" targetElement="BPMNShape_ScriptTask_21">
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="320.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="332.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="344.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_75"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_46" bpmnElement="SequenceFlow_46" sourceElement="BPMNShape_ScriptTask_21" targetElement="BPMNShape_ScriptTask_22">
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="394.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="411.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="428.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_77"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_47" bpmnElement="SequenceFlow_47" sourceElement="BPMNShape_ScriptTask_22" targetElement="BPMNShape_EndEvent_6">
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="478.0"/>
+        <di:waypoint xsi:type="dc:Point" x="907.0" y="494.0"/>
+        <di:waypoint xsi:type="dc:Point" x="905.0" y="494.0"/>
+        <di:waypoint xsi:type="dc:Point" x="905.0" y="510.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_79"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_ServiceTask_2">
+        <di:waypoint xsi:type="dc:Point" x="640.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="664.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="688.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_17"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_ServiceTask_2" targetElement="BPMNShape_ServiceTask_1">
+        <di:waypoint xsi:type="dc:Point" x="798.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="830.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="863.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_18"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_4">
+        <di:waypoint xsi:type="dc:Point" x="973.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1002.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1031.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_34"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_29" bpmnElement="SequenceFlow_29" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ServiceTask_7">
+        <di:waypoint xsi:type="dc:Point" x="1141.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1170.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1200.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_38"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_34" bpmnElement="SequenceFlow_34" sourceElement="BPMNShape_ServiceTask_7" targetElement="BPMNShape_ExclusiveGateway_5">
+        <di:waypoint xsi:type="dc:Point" x="1310.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1336.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1363.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_45"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_35" bpmnElement="SequenceFlow_35" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ServiceTask_8">
+        <di:waypoint xsi:type="dc:Point" x="1413.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1431.0" y="50.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1450.0" y="50.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_54"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_43" bpmnElement="SequenceFlow_43" sourceElement="BPMNShape_ServiceTask_8" targetElement="BPMNShape_EndEvent_1">
+        <di:waypoint xsi:type="dc:Point" x="1505.0" y="75.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1505.0" y="96.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1505.0" y="118.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_60"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_45" bpmnElement="SequenceFlow_45" sourceElement="BPMNShape_ExclusiveGateway_5" targetElement="BPMNShape_ScriptTask_10">
+        <di:waypoint xsi:type="dc:Point" x="1388.0" y="75.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1388.0" y="143.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1032.0" y="143.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_61"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9.0"/>
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

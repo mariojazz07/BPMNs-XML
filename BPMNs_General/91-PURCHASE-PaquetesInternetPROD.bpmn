@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- origin at X=0.0 Y=0.0 -->
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.5.0.Final-v20180515-1642-B1" targetNamespace="http://org.eclipse.bpmn2/default/process">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
   <bpmn2:process id="PaquetesInternet-Purchase" name="Default Process" isExecutable="false">
     <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
@@ -86,519 +86,251 @@
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:script>var vInstanciasTotal = 0;
-
 var STR_PAD_LEFT = 1;
-
 var STR_PAD_RIGHT = 2;
-
 var STR_PAD_BOTH = 3;
-
 var BPMN_RESPONSE_CODE = '100';
-
 var BPMN_RESPONSE_MESSAGE = 'Error durante el proceso.';
-
 var BPMN_RESPONSE_NOTIFY_ADAPTER = '-1';
-
 var MESSAGE = MENSAJE_ERROR;
-
 var sendSms = true;
-
 var vTransactionId = transactionId;
-
 var vProductIdBB = '129';
-
 var vExternalTransacionId = '0';
-
 var vSysDate = new Date();
-
 var vMtrProduct = MTR;
-
 var vRemark2 = 'NA;';
-
 var vProductIdDelegate = '273';
-
 var vTask = '9';
-
 var vComment = 'Subscriber delegation';
-
 var vRecurrent = 'FALSE';
-
 var vQuantity = '1';
-
 var vDescription = 'Master Status Delegate';
-
 var vScheduleDT = new Date(vSysDate.getTime());
-
 var vScheduleDateDelegate = parseTimeToScheduleDate(vScheduleDT.getTime());
-
 var vDelegateSell = 'TRUE';
-
 var vDelegateNotify = 'TRUE';
-
 var vSellWL = '250,251,246,247,248,252';
-
 var vRemoveAcl = false;
-
 var vAclId = '0';
-
 var vAclAction = 'REMOVE';
-
 var vImsi = '-1';
-
 var vImei = '-1';
-
 var vMake = 'NA';
-
 var vModel = 'NA';
-
 var vMtrPcc = 'NA';
-
-
-
 vScheduleDT.setSeconds(vSysDate.getSeconds() + 6);
-
-vDelegateSell = vSellWL.indexOf(productId) < 0 ? 'TRUE' : 'FALSE';
-
+vDelegateSell = vSellWL.indexOf(productId) &lt; 0 ? 'TRUE' : 'FALSE';
 vDelegateNotify = vDelegateSell;
-
-
-
-if(typeof WL_REMOVE != 'undefined'){
-
+if (typeof WL_REMOVE != 'undefined') {
     vRemoveAcl = WL_REMOVE.toUpperCase() == 'TRUE';
-
 }
-
-
-
-if(typeof ACL_FREE_PAQ_ID != 'undefined'){
-
+if (typeof ACL_FREE_PAQ_ID != 'undefined') {
     vAclId = ACL_FREE_PAQ_ID;
-
 }
-
-
-
-if(typeof ACL_ACTION_ADD != 'undefined'){
-
+if (typeof ACL_ACTION_ADD != 'undefined') {
     vAclAction = ACL_ACTION_ADD;
-
 }
-
-
-
-if(typeof externalTransacionId != 'undefined'){
-
-    if(externalTransacionId != '' && externalTransacionId != ' ' && externalTransacionId != '0' && externalTransacionId != null && externalTransacionId != 'null'){
-
+if (typeof externalTransacionId != 'undefined') {
+    if (externalTransacionId != '' &amp;&amp; externalTransacionId != ' ' &amp;&amp; externalTransacionId != '0' &amp;&amp; externalTransacionId != null &amp;&amp; externalTransacionId != 'null') {
         vExternalTransacionId = externalTransacionId;
-
         vTransactionId = externalTransacionId;
-
     }
-
 }
-
-
-
 //Funcion a la cual se le manda un valor y le hace lpad o rpad con el caracter indicado y la longitud indicada
-
 function padStr(str, len, pad, dir) {
-
-
-
-    if (typeof(len) == 'undefined') { var len = 0; };
-
-    if (typeof(pad) == 'undefined') { var pad = ' '; };
-
-    if (typeof(dir) == 'undefined') { var dir = STR_PAD_RIGHT; };
-
-
+    if (typeof (len) == 'undefined') {
+        var len = 0;
+    };
+    if (typeof (pad) == 'undefined') {
+        var pad = ' ';
+    };
+    if (typeof (dir) == 'undefined') {
+        var dir = STR_PAD_RIGHT;
+    };
     if (len + 1 >= str.length) {
-
-
-
-        switch (dir){
-
-
-
+        switch (dir) {
             case STR_PAD_LEFT:
-
                 str = Array(len + 1 - str.length).join(pad) + str;
-
-            break;
-
-
-
+                break;
             case STR_PAD_BOTH:
-
                 var right = Math.ceil((padlen = len - str.length) / 2);
-
                 var left = padlen - right;
-
-                str = Array(left+1).join(pad) + str + Array(right+1).join(pad);
-
-            break;
-
-
-
+                str = Array(left + 1).join(pad) + str + Array(right + 1).join(pad);
+                break;
             default:
-
                 str = str + Array(len + 1 - str.length).join(pad);
-
-            break;
-
-
-
+                break;
         } // switch
-
-
-
     }
-
-
-
     return str;
-
-
-
 }
-
-
-
 //Transforma el mtr que se pasa a COMVERSE
-
-function transformMtr(mtr, vProducto, vCalendario, vAprovisiona, vPrestamo, vCosto, vComision, vSvcKey, vPrecio){
-
+function transformMtr(mtr, vProducto, vCalendario, vAprovisiona, vPrestamo, vCosto, vComision, vSvcKey, vPrecio) {
     var vMtrTransform = mtr;
-
     var fechaActual = new Date();
-
     var strFecha = parseDateToStringAS(fechaActual);
-
-    
-
     vMtrTransform = vMtrTransform.replace('PRODUCT_ID', vProducto);
-
     vMtrTransform = vMtrTransform.replace('CANAL_ACTIVACION', channelId);
-
     vMtrTransform = vMtrTransform.replace('TRANSACTION_ID', vTransactionId);
-
     vMtrTransform = vMtrTransform.replace('CALENDARIO', vCalendario);
-
     vMtrTransform = vMtrTransform.replace('APROVISIONA', vAprovisiona);
-
     vMtrTransform = vMtrTransform.replace('FECHA', strFecha);
-
     vMtrTransform = vMtrTransform.replace('PRESTAMO', vPrestamo);
-
     vMtrTransform = vMtrTransform.replace('COSTO_PRESTAMO', vCosto);
-
     vMtrTransform = vMtrTransform.replace('COMISION', vComision);
-
     vMtrTransform = vMtrTransform.replace('SVC_KEY', vSvcKey);
-
-	vMtrTransform = vMtrTransform.replace('PRECIO', vPrecio);
-
+    vMtrTransform = vMtrTransform.replace('PRECIO', vPrecio);
     return vMtrTransform;
-
 }
-
-
-
 //Convierte un valor texto a al formato yyyyMMdd
-
-function parseDateToStringAS (Fecha) {
-
+function parseDateToStringAS(Fecha) {
     var strDate = ' ';
-
     var year = Fecha.getFullYear();
-
     var month = Fecha.getMonth() + 1;
-
     var day = Fecha.getDate();
-
-    strDate = String(year) + padStr(String(month), 2, '0', STR_PAD_LEFT) + padStr(String(day), 2, '0', STR_PAD_LEFT); 
-
-
-
+    strDate = String(year) + padStr(String(month), 2, '0', STR_PAD_LEFT) + padStr(String(day), 2, '0', STR_PAD_LEFT);
     return strDate;
-
 }
-
-
 
 function parseTimeToComissionDate(gTime) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
     var strDate = parseDateToStringComission(date);
-
     return strDate;
-
 }
-
-
 
 function parseTimeToCBSDate(gTime) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
     var strDate = parseDateToStringCBS(date);
-
     return strDate;
-
 }
-
-
-
 //Convierte un valor texto a al formato yyyyMMddhhmiss
-
-function parseDateToStringCBS(date){
-
+function parseDateToStringCBS(date) {
     var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
-
     month = padStr(String(month), 2, '0', STR_PAD_LEFT);
-
     var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
-
     var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
-
     var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
-
     var format = year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds;
-
-
-
     return format;
-
 }
-
-
-
 //Convierte un Time a un string de Date en formato yyyyMMddhhmiss
-
 function parseTimeToDHDate(gTime) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
     var strDate = parseDateToStringDH(date);
-
     return strDate;
-
 }
-
-
-
 //Convierte un valor texto a al formato ddMMyyyy HH:mm:ss
-
-function parseDateToStringComission(date){
-
+function parseDateToStringComission(date) {
     var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
-
     month = padStr(String(month), 2, '0', STR_PAD_LEFT);
-
     var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
-
     var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
-
     var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
-
     var format = day + '' + month + '' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-
-
-
     return format;
-
 }
-
-
-
 //Convierte un valor texto a al formato yyyyMMddhhmiss
-
-function parseDateToStringDH(date){
-
+function parseDateToStringDH(date) {
     var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
-
     month = padStr(String(month), 2, '0', STR_PAD_LEFT);
-
     var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
-
     var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
-
     var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
-
     var format = year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds;
-
-
-
     return format;
-
 }
-
-
-
 //Convierte un Time a un string de Date en formato yyyy-MM-ddThh:mm:ss.000-06:00
-
 function parseTimeToDate(gTime, timeZone) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
     var strDate = parseDateToString(date);
-
-    strDate = timeZone ? strDate.replace(' ','T') + '.000-06:00' : strDate.replace(' ','T');    
-
+    strDate = timeZone ? strDate.replace(' ', 'T') + '.000-06:00' : strDate.replace(' ', 'T');
     return strDate;
-
 }
-
-
-
 //Convierte un Time a un string de Date en formato yyyy-MM-dd hh:mm:ss
-
 function parseTimeToDateGeneric(gTime) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
-    var strDate = parseDateToString(date);  
-
+    var strDate = parseDateToString(date);
     return strDate;
-
 }
-
-
-
 //Convierte un Time a un string de Date en formato dd/MM/yyyy hh:mm:ss
-
 function parseTimeToScheduleDate(gTime) {
-
     var date = new Date();
-
     date.setTime(gTime);
-
     var strDate = parseDateToStringSchedule(date);
-
     return strDate;
-
 }
-
-
-
 //Transforma un string con formato de fecha a un objeto Date
-
-function parseStringToDate (strDate) {
-
-    strDate = strDate.replace(/\D/g,' ');
-
+function parseStringToDate(strDate) {
+    strDate = strDate.replace(/\D/g, ' ');
     var dateArray = strDate.split(' ');
-
     var year = dateArray[0];
-
     var month = dateArray[1] - 1;
-
     var day = dateArray[2];
-
     var hours = dateArray[3];
-
     var minutes = dateArray[4];
-
     var seconds = dateArray[5];
-
-
-
-    return new Date(year,month,day,hours,minutes,seconds);
-
+    return new Date(year, month, day, hours, minutes, seconds);
 }
-
-
-
 //Convierte un valor texto a al formato yyyy-MM-dd hh:mm:ss
-
-function parseDateToString(date){
-
+function parseDateToString(date) {
     var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
-
     month = padStr(String(month), 2, '0', STR_PAD_LEFT);
-
     var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
-
     var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
-
     var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
-
     var format = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
-
-
-
     return format;
-
 }
-
-
-
 //Convierte un valor texto a al formato dd/MM/yyyy hh:mm:ss
-
-function parseDateToStringSchedule(date){
-
+function parseDateToStringSchedule(date) {
     var day = padStr(String(date.getDate()), 2, '0', STR_PAD_LEFT);
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
-
     month = padStr(String(month), 2, '0', STR_PAD_LEFT);
-
     var hours = padStr(String(date.getHours()), 2, '0', STR_PAD_LEFT);
-
     var minutes = padStr(String(date.getMinutes()), 2, '0', STR_PAD_LEFT);
-
     var seconds = padStr(String(date.getSeconds()), 2, '0', STR_PAD_LEFT);
-
     var format = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-
-
-
     return format;
-
 }
-
-
-
-TRXID=transactionId;
+TRXID = transactionId;
 var tSaltoL = '\n';
+var tLinea = tSaltoL + '************************************************************************' + tSaltoL;
 
-var tLinea = tSaltoL + '************************************************************************' + tSaltoL ;
-</bpmn2:script>
+
+function getJSON(strJson) {
+    var vExpr = &quot;([b,c,s]+|[t*,n,s,(0-9)*]+|[v,(0-9)*]+):&quot;;
+    var vNumExpr = '(&quot;[a-z]+&quot;:)([0-9]+)(s*,|}|$)';
+    var regEx;
+    var numRegExp;
+    var tmpJson = &quot;&quot;;
+    if (typeof REG_EXP != &quot;undefined&quot;) {
+      vExpr = REG_EXP;
+    }
+    regEx = new RegExp(vExpr, &quot;gi&quot;);
+    numRegExp = new RegExp(vNumExpr, &quot;gmi&quot;);
+    tmpJson = strJson.replace(regEx, &quot;&quot;);
+    tmpJson = tmpJson.replace(numRegExp, '$1&quot;$2&quot;$3');
+    return JSON.parse(tmpJson);
+  }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="ScriptTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ScriptTask_2" targetRef="ServiceTask_2"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ServiceTask_2" targetRef="ScriptTask_14"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ServiceTask_2" targetRef="ServiceTask_9"/>
     <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
       <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_30</bpmn2:incoming>
@@ -642,61 +374,6 @@ var tLinea = tSaltoL + '********************************************************
       </bpmn2:dataInputAssociation>
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="ServiceTask_5" targetRef="EndEvent_2"/>
-    <bpmn2:serviceTask id="ServiceTask_7" name="SubscriberInfoByIdentityTask" implementation="##WebService">
-      <bpmn2:incoming>SequenceFlow_56</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
-      <bpmn2:ioSpecification id="InputOutputSpecification_7">
-        <bpmn2:dataInput id="DataInput_21" name="SUBPRIMARY_IDENTITY"/>
-        <bpmn2:dataOutput id="DataOutput_32" name="PRIMARY_OFFERINGID"/>
-        <bpmn2:dataOutput id="DataOutput_33" name="PAYMENT_MODE"/>
-        <bpmn2:dataOutput id="DataOutput_35" name="SUB_STATUS"/>
-        <bpmn2:dataOutput id="DataOutput_36" name="PRIMARY_OFFERING_STATUS"/>
-        <bpmn2:inputSet id="InputSet_9" name="Input Set 10">
-          <bpmn2:dataInputRefs>DataInput_21</bpmn2:dataInputRefs>
-        </bpmn2:inputSet>
-        <bpmn2:outputSet id="OutputSet_9" name="Output Set 13">
-          <bpmn2:dataOutputRefs>DataOutput_32</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_33</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_35</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_36</bpmn2:dataOutputRefs>
-        </bpmn2:outputSet>
-      </bpmn2:ioSpecification>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_21">
-        <bpmn2:targetRef>DataInput_21</bpmn2:targetRef>
-        <bpmn2:assignment id="Assignment_52">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_111">subscriberId</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_112">DataInput_15</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_32">
-        <bpmn2:sourceRef>DataOutput_32</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_54">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_115">DataOutput_4</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_116">vPrimaryOffering</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_33">
-        <bpmn2:sourceRef>DataOutput_33</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_55">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_117">DataOutput_5</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_118">vPaymentMode</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_35">
-        <bpmn2:sourceRef>DataOutput_35</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_57">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_121">DataOutput_7</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_122">vSubStatus</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_36">
-        <bpmn2:sourceRef>DataOutput_36</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_58">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_123">DataOutput_36</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_125">vPrimaryOfferingStatus</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-    </bpmn2:serviceTask>
     <bpmn2:scriptTask id="ScriptTask_5" name="EvalRules">
       <bpmn2:incoming>SequenceFlow_119</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_120</bpmn2:incoming>
@@ -740,15 +417,15 @@ var cmbRemark = 'cmb;trx;';
 var vPrecioPromo = '';
 
 if (typeof PROD_HIST != 'undefined') {
-	vExpireProduct = PROD_HIST;
+    vExpireProduct = PROD_HIST;
 }
 
 if (typeof vPromoPaq != 'undefined') {
-	vPromo = vPromoPaq == 'TRUE';
+    vPromo = vPromoPaq == 'TRUE';
 }
 
 if (typeof SVC_KEY != 'undefined') {
-	vSKey = SVC_KEY;
+    vSKey = SVC_KEY;
 }
 if (typeof PRECIO_PAQUETE != 'undefined') {
     vPrecioPromo = PRECIO_PAQUETE;
@@ -791,10 +468,10 @@ if (isBlackberry) {
 
 if (typeof vPaqInfo != 'undefined') {
     navInfo = processJson(vPaqInfo);
-    if (validatePlan && typeof navInfo.Plans != 'undefined') {
+    if (validatePlan &amp;&amp; typeof navInfo.Plans != 'undefined') {
         //LOGGER.info(tLinea + 'navInfoQuota ' + navInfo.Plans.QuotaBalance);
         //LOGGER.info(tLinea + 'JSON ' + JSON.stringify(navInfo));
-        consumedPlanQuota = navInfo.Plans.QuotaBalance <= 0;
+        consumedPlanQuota = navInfo.Plans.QuotaBalance &lt;= 0;
         expiredPlanQuota = navInfo.Plans.ServiceExpired.toUpperCase() == 'TRUE';
         //LOGGER.info(tLinea + 'consumedPlanQuota  ' + consumedPlanQuota + '  expiredPlanQuota ' + expiredPlanQuota);
     }
@@ -808,11 +485,11 @@ if (typeof vPaqInfo != 'undefined') {
 //Valida Quota pospago CBS
 if(typeof vFreeUnitWallets !='undefined'){
     walletJson = getWalletJSON(vFreeUnitWallets);
-    if(validatePlan && typeof(walletJson)!= 'undefined'){
+    if(validatePlan &amp;&amp; typeof(walletJson)!= 'undefined'){
         planWallet=getWalletByType(vPlanBalance,walletJson);
         if(typeof planWallet != 'undefined'){
             planInstances=getSortedInstancesPospaid(planWallet);
-            if(planInstances.length<=0){
+            if(planInstances.length&lt;=0){
                 validPlan=true;
             }
         }
@@ -822,40 +499,41 @@ if(typeof vFreeUnitWallets !='undefined'){
 //LOGGER.info(tLinea + 'validPlan  ' + validPlan + '  validatePlan ' + validatePlan);
 if (typeof vFreeUnitWallets != 'undefined') {
 
-	walletJson = getWalletJSON(vFreeUnitWallets);
-	if (typeof (walletJson) != 'undefined') {
+    walletJson = getWalletJSON(vFreeUnitWallets);
+    if (typeof (walletJson) != 'undefined') {
 
-		packageWallet = getWalletByType(vPackageBalance, walletJson);
+        packageWallet = getWalletByType(vPackageBalance, walletJson);
 
-		if (validPlan) {
+        if (validPlan) {
 
-			if (typeof (packageWallet) != 'undefined') {
+            if (typeof (packageWallet) != 'undefined') {
 
-				packageInstances = getSortedInstances(packageWallet);
-				vInstanciasTotal = packageInstances.length;
-				LOGGER.info('[TOTAL INSTANCIAS] TOTAL PAQUETES ENCOLADOS: '+vInstanciasTotal);
-				
-				if (packageInstances.length > 0) {
-					vQueueDate = getCbsDateStr(packageInstances[0].ExpireTime);
-					vQueueDate.setMinutes(vQueueDate.getMinutes()+ vProductDuration);
-					vExpireTime = parseTimeToCBSDate(vQueueDate.getTime());
-					strExpireDate = parseTimeToDateGeneric(vQueueDate.getTime());
-					vEndDhDate = parseTimeToDHDate(vQueueDate.getTime());
-					vFinalDeezerDate = parseTimeToDate(vQueueDate.getTime(),false);
-					vBBEndDate = parseTimeToScheduleDate(vQueueDate.getTime());
-					vQueueDate.setMinutes(vQueueDate.getMinutes()+ vWarningMinutes);
-					vScheduleDateWarning = parseTimeToScheduleDate(vQueueDate.getTime());
-					vScheduleDate = parseTimeToScheduleDate(vQueueDate.getTime());
-					vProcess = 'C';
-					vQueued = true;
-				}
-			}
-		}
-	}
+                packageInstances = getSortedInstances(packageWallet);
+                vInstanciasTotal = packageInstances.length;
+                LOGGER.info('[TOTAL INSTANCIAS] TOTAL PAQUETES ENCOLADOS: '+vInstanciasTotal);
+                
+                if (packageInstances.length > 0) {
+                    LOGGER.info('FECHA EXPIRACION: '+packageInstances[0].ExpireTime);
+                    vQueueDate = getCbsDateStr(packageInstances[0].ExpireTime + '');
+                    vQueueDate.setMinutes(vQueueDate.getMinutes()+ vProductDuration);
+                    vExpireTime = parseTimeToCBSDate(vQueueDate.getTime());
+                    strExpireDate = parseTimeToDateGeneric(vQueueDate.getTime());
+                    vEndDhDate = parseTimeToDHDate(vQueueDate.getTime());
+                    vFinalDeezerDate = parseTimeToDate(vQueueDate.getTime(),false);
+                    vBBEndDate = parseTimeToScheduleDate(vQueueDate.getTime());
+                    vQueueDate.setMinutes(vQueueDate.getMinutes()+ vWarningMinutes);
+                    vScheduleDateWarning = parseTimeToScheduleDate(vQueueDate.getTime());
+                    vScheduleDate = parseTimeToScheduleDate(vQueueDate.getTime());
+                    vProcess = 'C';
+                    vQueued = true;
+                }
+            }
+        }
+    }
 }
 
 
-if (typeof packageInstances.length != 'undefined' && packageInstances.length > 0 && vSubscriberType != 'PRE') {
+if (typeof packageInstances.length != 'undefined' &amp;&amp; packageInstances.length > 0 &amp;&amp; vSubscriberType != 'PRE') {
     validPlan = false;
 }
 //LOGGER.info(tLinea + 'Llego a Validar EvalRules' + tLinea);
@@ -875,7 +553,7 @@ MESSAGE = strMsj;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ScriptTask_7" targetRef="ExclusiveGateway_13"/>
     <bpmn2:scriptTask id="ScriptTask_9" name="validateDataCBS">
-      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_56</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
       <bpmn2:script>var vCosValidos = vValidCos.toUpperCase();
 var vCos = vPrimaryOffering.toUpperCase();
@@ -888,7 +566,6 @@ if(typeof vSubStatus != 'undefined'){
 }
 </bpmn2:script>
     </bpmn2:scriptTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_15" sourceRef="ServiceTask_7" targetRef="ScriptTask_9"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_7" name="Balance" default="SequenceFlow_19">
       <bpmn2:incoming>SequenceFlow_74</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_76</bpmn2:incoming>
@@ -1358,7 +1035,7 @@ if(tEntitlementActivoInvalido){
 
     strMsj = MSG_PAQ_ACTIVO_INVALIDO;
 
-    strMsj = strMsj.replace('<NOMBRE_PAQUETE_ACTUAL>', tNombrePaqActual);
+    strMsj = strMsj.replace('&lt;NOMBRE_PAQUETE_ACTUAL>', tNombrePaqActual);
 
     MESSAGE = strMsj;
 
@@ -1400,7 +1077,7 @@ if(tEntitlementActivoInvalido){
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_498">!validPlan</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_55" sourceRef="ScriptTask_23" targetRef="ExclusiveGateway_13"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_56" sourceRef="ExclusiveGateway_25" targetRef="ServiceTask_7"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_56" sourceRef="ExclusiveGateway_25" targetRef="ScriptTask_9"/>
     <bpmn2:sequenceFlow id="SequenceFlow_57" name="Send sms" sourceRef="ExclusiveGateway_21" targetRef="ServiceTask_39"/>
     <bpmn2:sequenceFlow id="SequenceFlow_58" name="No sms" sourceRef="ExclusiveGateway_21" targetRef="ServiceTask_17">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_500">!sendSms</bpmn2:conditionExpression>
@@ -2112,52 +1789,32 @@ if (typeof vLAC == 'undefined') {
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_99" name="No warning" sourceRef="ExclusiveGateway_29" targetRef="EndEvent_1"/>
     <bpmn2:scriptTask id="ScriptTask_14" name="Subscriber">
-      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_27</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_100</bpmn2:outgoing>
       <bpmn2:script>var typeSubscriber = 'PRE,HIC,CIN,HIB,HIB20,POS';
-
 var vSubscriberFound = false;
-
 var vPaidType = '0';
 
-
-
-if(typeof vSubscriberType != 'undefined'){
-
-    if(typeSubscriber.indexOf(vSubscriberType) < 0){
-
+if (typeof vSubscriberType != 'undefined') {
+    if (typeSubscriber.indexOf(vSubscriberType) &lt; 0) {
         vSubscriberType = 'POS';
-
     }
-
-    if(vSubscriberType == 'CIN'){
-
+    if (vSubscriberType == 'CIN') {
         vSubscriberType = 'HIC';
-
     }
-
-    
-
-    switch(vSubscriberType){
-
+    switch (vSubscriberType) {
         case 'PRE':
-
             vPaidType = '0';
-
             break;
-
         default:
-
             vPaidType = '1';
-
     }
-
-    
-
     vSubscriberFound = true;
-
 }
-LOGGER.info(tLinea+'Llego a Validar Suscriptor'+tLinea);</bpmn2:script>
+LOGGER.info(tLinea + 'Llego a Validar Suscriptor' + tLinea);
+
+var vCBSSubscriberInfo=getJSON(vSubscriberInfoJson);
+var vBillingDay=vCBSSubscriberInfo.QueryCustomerInfoResultMsg.QueryCustomerInfoResult.Account.AcctInfo.BillCycleInfo.BillCycleType;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_100" sourceRef="ScriptTask_14" targetRef="ExclusiveGateway_14"/>
     <bpmn2:boundaryEvent id="BoundaryEvent_2" name="" attachedToRef="ScriptTask_2" cancelActivity="false">
@@ -2872,7 +2529,7 @@ if(typeof vModel == 'undefined'){
       <bpmn2:script>var comission = false;
 var vComissionMessage = '';
 
-if(typeof SE_REDIRECT != 'undefined' && typeof SE_MAPPING != 'undefined' && typeof SE_COMISSION_SHORTCODE != 'undefined'){
+if(typeof SE_REDIRECT != 'undefined' &amp;&amp; typeof SE_MAPPING != 'undefined' &amp;&amp; typeof SE_COMISSION_SHORTCODE != 'undefined'){
     if(SE_REDIRECT == '1'){
         comission = true;
         vComissionMessage = vProductToken + ',' + SE_MAPPING + ',' + vComissionDate; 
@@ -3769,7 +3426,7 @@ MESSAGE = 'Suscriptor no existe.';</bpmn2:script>
     regEx = new RegExp(vExpr, 'gi');
     numRegExp = new RegExp(vNumExpr, 'gmi');
     tmpJson = strJson.replace(regEx, '');
-    tmpJson = tmpJson.replace(numRegExp, '$1"$2"$3');
+    tmpJson = tmpJson.replace(numRegExp, '$1&quot;$2&quot;$3');
     return JSON.parse(tmpJson);
 }
 
@@ -3779,7 +3436,7 @@ function getWalletByType(strWalletName, walletJson) {
     var vItem;
     if (typeof (freeUnits) != 'undefined') {
         if (freeUnits instanceof Array) {
-            for (var i = 0; i < freeUnits.length; i++) {
+            for (var i = 0; i &lt; freeUnits.length; i++) {
                 vItem = freeUnits[i];
                 if (vItem.FreeUnitType == strWalletName) {
                     walletObj = vItem;
@@ -3799,7 +3456,7 @@ function trimExhaustedInstances(instances) {
     var tmpInstances = new Array();
     if (instances instanceof Array) {
         //LOGGER.info(tLinea + 'Entro a validar trimExhaustedInstances:' + typeof (instances) + tLinea);
-        for (var i = 0; i < instances.length; i++) {
+        for (var i = 0; i &lt; instances.length; i++) {
             if (new Number(instances[i].CurrentAmount) > 0) {
                 tmpInstances.push(instances[i]);
             }
@@ -3818,7 +3475,7 @@ function trimExhaustedInstancesPospaid(instances){
     var tmpInstances = new Array();
     var flag = false;
     if(instances instanceof Array){
-        for(var i = 0; i < instances.length; i++){
+        for(var i = 0; i &lt; instances.length; i++){
             if(typeof(instances[i].CurrentAmount) != 'undefined'){
                 flag = true;
                 if(new Number(instances[i].CurrentAmount) > 0){
@@ -3880,14 +3537,14 @@ function partition(items, left, right) {
     var pivot = items[Math.floor((right + left) / 2)];
     var i = left;
     var j = right;
-    while (i <= j) {
-        while (new Number(items[i].ExpireTime) < new Number(pivot.ExpireTime)) {
+    while (i &lt;= j) {
+        while (new Number(items[i].ExpireTime) > new Number(pivot.ExpireTime)) {
             i++;
         }
-        while (new Number(items[j].ExpireTime) < new Number(pivot.ExpireTime)) {
+        while (new Number(items[j].ExpireTime) &lt; new Number(pivot.ExpireTime)) {
             j--;
         }
-        if (i <= j) {
+        if (i &lt;= j) {
             swap(items, i, j);
             i++;
             j--;
@@ -3901,10 +3558,10 @@ function quickSort(items, left, right) {
     //LOGGER.info(tLinea + 'Entro a validar quickSort:' + typeof (items) + tLinea);
     if (items.length > 1) {
         idx = partition(items, left, right);
-        if (left < (idx - 1)) {
+        if (left &lt; (idx - 1)) {
             quickSort(items, left, (idx - 1));
         }
-        if (idx F right) {
+        if (idx &lt; right) {
             quickSort(items, idx, right);
         }
     }
@@ -4094,54 +3751,8 @@ LOGGER.info(tLinea+'Llego a Validar ValidarPCC'+tLinea);</bpmn2:script>
       <bpmn2:outgoing>SequenceFlow_109</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_119</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:serviceTask id="ServiceTask_33" name="AS400GetSubscriberBasicInfoTask" implementation="##WebService">
-      <bpmn2:incoming>SequenceFlow_109</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_112</bpmn2:outgoing>
-      <bpmn2:ioSpecification id="InputOutputSpecification_27">
-        <bpmn2:dataInput id="DataInput_124" name="MSISDN"/>
-        <bpmn2:dataOutput id="DataOutput_48" name="SUBSCRIBER_TYPE"/>
-        <bpmn2:dataOutput id="DataOutput_49" name="BILLING_DAY"/>
-        <bpmn2:dataOutput id="DataOutput_50" name="ANEX"/>
-        <bpmn2:inputSet id="InputSet_32" name="MSISDN">
-          <bpmn2:dataInputRefs>DataInput_124</bpmn2:dataInputRefs>
-        </bpmn2:inputSet>
-        <bpmn2:outputSet id="OutputSet_32" name="SUBSCRIBER_TYPE">
-          <bpmn2:dataOutputRefs>DataOutput_48</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_49</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_50</bpmn2:dataOutputRefs>
-        </bpmn2:outputSet>
-      </bpmn2:ioSpecification>
-      <bpmn2:dataInputAssociation id="DataInputAssociation_124">
-        <bpmn2:targetRef>DataInput_124</bpmn2:targetRef>
-        <bpmn2:assignment id="Assignment_165">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_367">subscriberId</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_369">DataInput_3</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataInputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_48">
-        <bpmn2:sourceRef>DataOutput_48</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_169">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_378">DataOutput_2</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_379">vSubscriberType</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_49">
-        <bpmn2:sourceRef>DataOutput_49</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_173">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_380">DataOutput_50</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_381">vBillingDay</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-      <bpmn2:dataOutputAssociation id="DataOutputAssociation_50">
-        <bpmn2:sourceRef>DataOutput_50</bpmn2:sourceRef>
-        <bpmn2:assignment id="Assignment_174">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_382">DataOutput_51</bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_384">vAnexo</bpmn2:to>
-        </bpmn2:assignment>
-      </bpmn2:dataOutputAssociation>
-    </bpmn2:serviceTask>
     <bpmn2:scriptTask id="ScriptTask_26" name="ValidaBillingDay">
-      <bpmn2:incoming>SequenceFlow_112</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_109</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_117</bpmn2:outgoing>
       <bpmn2:script>if(typeof vBillingDay != 'undefined'){
     if(vBillingDay == '00' || vBillingDay == '0'){
@@ -4245,7 +3856,7 @@ LOGGER.info(tLinea+'Llego a Validar BillingDay'+tLinea);</bpmn2:script>
 
                 if (vSubscribedServices instanceof Array) {
 
-                    for (var i = 0; i < vSubscribedServices.length; i++) {
+                    for (var i = 0; i &lt; vSubscribedServices.length; i++) {
 
                         vDataObj = setDataProperties(joinInfo(vSubscribedServices[i],
 
@@ -4283,7 +3894,7 @@ function getAttribute(serviceItems, attribute) {
 
 
 
-        for (var i = 0; i < serviceItems.attribute.length; i++) {
+        for (var i = 0; i &lt; serviceItems.attribute.length; i++) {
 
             if (serviceItems.attribute[i].key == attribute) {
 
@@ -4313,7 +3924,7 @@ function getQuota(quotaItems, serviceName) {
     /*****************Agregado codigo Mario*******************************/
     if(typeof(quotaItems)!='undefined'){
         if (quotaItems instanceof Array) {
-            for (var i = 0; i < quotaItems.length; i++) {
+            for (var i = 0; i &lt; quotaItems.length; i++) {
                 if (getAttribute(quotaItems[i], 'SRVNAME').value == serviceName) {
                     quotaItem = quotaItems[i];
                     break;
@@ -4332,7 +3943,7 @@ function getQuota(quotaItems, serviceName) {
 
 
 /* Codigo Hector
-    for(var i = 0; i < quotaItems.length; i++){
+    for(var i = 0; i &lt; quotaItems.length; i++){
     
         if(getAttribute(quotaItems[i], 'SRVNAME').value == serviceName){
     
@@ -4460,10 +4071,9 @@ function setDataProperties(objItem, dataItem) {
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_78" sourceRef="ServiceTask_31" targetRef="ScriptTask_16"/>
     <bpmn2:sequenceFlow id="SequenceFlow_87" sourceRef="ScriptTask_16" targetRef="ExclusiveGateway_19"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_109" sourceRef="ExclusiveGateway_19" targetRef="ServiceTask_33">
+    <bpmn2:sequenceFlow id="SequenceFlow_109" sourceRef="ExclusiveGateway_19" targetRef="ScriptTask_26">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_425"><![CDATA[allowError && vCreatePcc]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="SequenceFlow_112" sourceRef="ServiceTask_33" targetRef="ScriptTask_26"/>
     <bpmn2:sequenceFlow id="SequenceFlow_117" sourceRef="ScriptTask_26" targetRef="ServiceTask_36"/>
     <bpmn2:sequenceFlow id="SequenceFlow_118" sourceRef="ScriptTask_31" targetRef="ServiceTask_31"/>
     <bpmn2:sequenceFlow id="SequenceFlow_119" sourceRef="ExclusiveGateway_19" targetRef="ScriptTask_5"/>
@@ -4728,15 +4338,80 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
       <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="ExclusiveGateway_2" targetRef="ScriptTask_4">
+    <bpmn2:sequenceFlow id="SequenceFlow_11" name="TRUE" sourceRef="ExclusiveGateway_2" targetRef="ScriptTask_4">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_40">vInstanciasTotal >= TOTAL_PAQUETES_ENCOLADOS</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="ExclusiveGateway_2" targetRef="ExclusiveGateway_25"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" name="FALSE" sourceRef="ExclusiveGateway_2" targetRef="ExclusiveGateway_25"/>
     <bpmn2:sequenceFlow id="SequenceFlow_21" sourceRef="ScriptTask_5" targetRef="ExclusiveGateway_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_24" sourceRef="ExclusiveGateway_1" targetRef="EndEvent_3">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_56">!sendSms</bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_25" sourceRef="ExclusiveGateway_1" targetRef="ServiceTask_1"/>
+    <bpmn2:serviceTask id="ServiceTask_9" name="SubscriberInfoByIdentityTask" implementation="##WebService">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_27</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_4">
+        <bpmn2:dataInput id="DataInput_13" name="SUBPRIMARY_IDENTITY"/>
+        <bpmn2:dataOutput id="DataOutput_16" name="PRIMARY_OFFERINGID"/>
+        <bpmn2:dataOutput id="DataOutput_18" name="PAYMENT_MODE"/>
+        <bpmn2:dataOutput id="DataOutput_19" name="SUB_STATUS"/>
+        <bpmn2:dataOutput id="DataOutput_25" name="PRIMARY_OFFERING_STATUS"/>
+        <bpmn2:dataOutput id="DataOutput_26" name="JSON_RESPONSE"/>
+        <bpmn2:inputSet id="InputSet_11" name="Input Set 10">
+          <bpmn2:dataInputRefs>DataInput_13</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_8" name="Output Set 13">
+          <bpmn2:dataOutputRefs>DataOutput_16</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_18</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_19</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_25</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_26</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="DataInputAssociation_13">
+        <bpmn2:targetRef>DataInput_13</bpmn2:targetRef>
+        <bpmn2:assignment id="Assignment_30">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_47">subscriberId</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_61">DataInput_15</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_16">
+        <bpmn2:sourceRef>DataOutput_16</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_32">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_63">DataOutput_4</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_65">vPrimaryOffering</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_18">
+        <bpmn2:sourceRef>DataOutput_18</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_33">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_66">DataOutput_5</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_68">vPaymentMode</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_19">
+        <bpmn2:sourceRef>DataOutput_19</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_35">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_75">DataOutput_7</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_77">vSubStatus</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_25">
+        <bpmn2:sourceRef>DataOutput_25</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_36">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_80">DataOutput_36</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_81">vPrimaryOfferingStatus</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:dataOutputAssociation id="DataOutputAssociation_26">
+        <bpmn2:sourceRef>DataOutput_26</bpmn2:sourceRef>
+        <bpmn2:assignment id="Assignment_39">
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_89">DataOutput_26</bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_128">vSubscriberInfoJson</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_27" sourceRef="ServiceTask_9" targetRef="ScriptTask_14"/>
     <bpmn2:association id="Association_3" associationDirection="One" sourceRef="BoundaryEvent_2" targetRef="ServiceTask_12"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
@@ -4775,12 +4450,6 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <dc:Bounds height="50.0" width="110.0" x="1444.0" y="507.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1">
           <dc:Bounds height="30.0" width="120.0" x="1439.0" y="517.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_5" bpmnElement="ServiceTask_7">
-        <dc:Bounds height="50.0" width="110.0" x="816.0" y="1259.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_22" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="30.0" width="158.0" x="792.0" y="1269.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_4" bpmnElement="ScriptTask_5">
@@ -5129,16 +4798,10 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
           <dc:Bounds height="15.0" width="26.0" x="219.0" y="1121.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_28" bpmnElement="ServiceTask_33">
-        <dc:Bounds height="50.0" width="110.0" x="0.0" y="1071.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_141" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="45.0" width="97.0" x="6.0" y="1073.0"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ScriptTask_19" bpmnElement="ScriptTask_26">
-        <dc:Bounds height="50.0" width="110.0" x="0.0" y="1167.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="0.0" y="1071.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_143" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="15.0" width="89.0" x="10.0" y="1184.0"/>
+          <dc:Bounds height="15.0" width="89.0" x="10.0" y="1088.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ServiceTask_32" bpmnElement="ServiceTask_36">
@@ -5201,6 +4864,12 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
           <dc:Bounds height="30.0" width="76.0" x="513.0" y="1309.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ServiceTask_9" bpmnElement="ServiceTask_9">
+        <dc:Bounds height="50.0" width="110.0" x="278.0" y="168.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_55" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds height="30.0" width="102.0" x="282.0" y="178.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_ScriptTask_1">
         <di:waypoint xsi:type="dc:Point" x="199.0" y="25.0"/>
         <di:waypoint xsi:type="dc:Point" x="469.0" y="25.0"/>
@@ -5211,9 +4880,10 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="524.0" y="91.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ScriptTask_16">
-        <di:waypoint xsi:type="dc:Point" x="524.0" y="141.0"/>
-        <di:waypoint xsi:type="dc:Point" x="524.0" y="168.0"/>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_ServiceTask_1" targetElement="BPMNShape_ServiceTask_9">
+        <di:waypoint xsi:type="dc:Point" x="469.0" y="116.0"/>
+        <di:waypoint xsi:type="dc:Point" x="333.0" y="116.0"/>
+        <di:waypoint xsi:type="dc:Point" x="333.0" y="168.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_ServiceTask_4" targetElement="BPMNShape_EndEvent_1">
@@ -5232,11 +4902,6 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="956.0" y="532.0"/>
         <di:waypoint xsi:type="dc:Point" x="1223.0" y="532.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_29" labelStyle="BPMNLabelStyle_1"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_ServiceTask_5" targetElement="BPMNShape_ScriptTask_6">
-        <di:waypoint xsi:type="dc:Point" x="926.0" y="1284.0"/>
-        <di:waypoint xsi:type="dc:Point" x="1006.0" y="1284.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_32" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_ScriptTask_6" targetElement="BPMNShape_ExclusiveGateway_25">
         <di:waypoint xsi:type="dc:Point" x="1061.0" y="1259.0"/>
@@ -5299,9 +4964,10 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="1248.0" y="557.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_101" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_56" bpmnElement="SequenceFlow_56" sourceElement="BPMNShape_ExclusiveGateway_13" targetElement="BPMNShape_ServiceTask_5">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_56" bpmnElement="SequenceFlow_56" sourceElement="BPMNShape_ExclusiveGateway_13" targetElement="BPMNShape_ScriptTask_6">
         <di:waypoint xsi:type="dc:Point" x="728.0" y="1284.0"/>
-        <di:waypoint xsi:type="dc:Point" x="816.0" y="1284.0"/>
+        <di:waypoint xsi:type="dc:Point" x="919.0" y="1284.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1006.0" y="1284.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_102" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_57" bpmnElement="SequenceFlow_57" sourceElement="BPMNShape_ExclusiveGateway_11" targetElement="BPMNShape_ServiceTask_22">
@@ -5652,18 +5318,15 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="232.0" y="1071.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_178" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_96" bpmnElement="SequenceFlow_109" sourceElement="BPMNShape_ExclusiveGateway_19" targetElement="BPMNShape_ServiceTask_28">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_96" bpmnElement="SequenceFlow_109" sourceElement="BPMNShape_ExclusiveGateway_19" targetElement="BPMNShape_ScriptTask_19">
         <di:waypoint xsi:type="dc:Point" x="207.0" y="1096.0"/>
+        <di:waypoint xsi:type="dc:Point" x="159.0" y="1096.0"/>
         <di:waypoint xsi:type="dc:Point" x="110.0" y="1096.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_180" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_99" bpmnElement="SequenceFlow_112" sourceElement="BPMNShape_ServiceTask_28" targetElement="BPMNShape_ScriptTask_19">
-        <di:waypoint xsi:type="dc:Point" x="55.0" y="1121.0"/>
-        <di:waypoint xsi:type="dc:Point" x="55.0" y="1167.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_192" labelStyle="BPMNLabelStyle_1"/>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_104" bpmnElement="SequenceFlow_117" sourceElement="BPMNShape_ScriptTask_19" targetElement="BPMNShape_ServiceTask_32">
-        <di:waypoint xsi:type="dc:Point" x="55.0" y="1217.0"/>
+        <di:waypoint xsi:type="dc:Point" x="55.0" y="1121.0"/>
+        <di:waypoint xsi:type="dc:Point" x="55.0" y="1190.0"/>
         <di:waypoint xsi:type="dc:Point" x="55.0" y="1259.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_193" labelStyle="BPMNLabelStyle_1"/>
       </bpmndi:BPMNEdge>
@@ -5722,13 +5385,17 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="551.0" y="1309.0"/>
         <di:waypoint xsi:type="dc:Point" x="551.0" y="1355.0"/>
         <di:waypoint xsi:type="dc:Point" x="551.0" y="1401.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_46"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_46">
+          <dc:Bounds height="15.0" width="33.0" x="535.0" y="1356.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_ExclusiveGateway_13">
         <di:waypoint xsi:type="dc:Point" x="576.0" y="1284.0"/>
         <di:waypoint xsi:type="dc:Point" x="627.0" y="1284.0"/>
         <di:waypoint xsi:type="dc:Point" x="678.0" y="1284.0"/>
-        <bpmndi:BPMNLabel id="BPMNLabel_47"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_47">
+          <dc:Bounds height="15.0" width="37.0" x="609.0" y="1285.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_24" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_ScriptTask_4" targetElement="BPMNShape_ExclusiveGateway_2">
         <di:waypoint xsi:type="dc:Point" x="287.0" y="1284.0"/>
@@ -5747,6 +5414,12 @@ LOGGER.info('[TOTAL INSTANCIAS]*** MENSAJE:'+strMsj);</bpmn2:script>
         <di:waypoint xsi:type="dc:Point" x="326.0" y="1426.0"/>
         <di:waypoint xsi:type="dc:Point" x="273.0" y="1426.0"/>
         <bpmndi:BPMNLabel id="BPMNLabel_51"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_27" sourceElement="BPMNShape_ServiceTask_9" targetElement="BPMNShape_ScriptTask_16">
+        <di:waypoint xsi:type="dc:Point" x="388.0" y="193.0"/>
+        <di:waypoint xsi:type="dc:Point" x="428.0" y="193.0"/>
+        <di:waypoint xsi:type="dc:Point" x="469.0" y="193.0"/>
+        <bpmndi:BPMNLabel id="BPMNLabel_56"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">

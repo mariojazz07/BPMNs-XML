@@ -42,26 +42,18 @@ var STARTIME = '000000';
 //var vSkey=SVKEY;
 var vExecuteProcess = false;
 var vExecuteValue = false;
-
-
 /* if(typeof TYPE != 'undefined'){
-	vGnricType = TYPE.toUpperCase() == 'GNR';
+    vGnricType = TYPE.toUpperCase() == 'GNR';
 } */
-
 vGnricType = true;
-
-
 if (typeof EXECUTE != 'undefined') {
-
   if (EXECUTE == 'TRUE') {
     vExecuteValue = true;
   }
 }
-
 if (vExecuteValue) {
   vExecuteProcess = true;
   if (vGnricType) {
-
     if (typeof ENTITLEMENT != &quot;undefined&quot;) {
       //vEntitlement = ENTITLEMENT.replace('&quot;', '').split(/[&quot;,&quot;,&quot;;&quot;]/)[0];
       vEntitlement = ENTITLEMENT;
@@ -71,7 +63,6 @@ if (vExecuteValue) {
       vMissingParam = true;
       vParams += &quot;ENTITLEMENT&quot;;
     }
-
     if (typeof BILLDAY != &quot;undefined&quot;) {
       vBillingDay = BILLDAY == &quot;0&quot; || BILLDAY == &quot;00&quot; ? &quot;1&quot; : BILLDAY;
       vBillingDay = new Number(String(vBillingDay));
@@ -80,7 +71,6 @@ if (vExecuteValue) {
       vConcat = vParams == &quot;&quot; ? &quot;&quot; : &quot;,&quot;;
       vParams += vConcat + &quot;BILLDAY&quot;;
     }
-
     if (typeof subscriberType != &quot;undefined&quot;) {
       vTier = subscriberType.toUpperCase() == &quot;PRE&quot; ? &quot;0&quot; : &quot;1&quot;;
       vSubType = typeSubscriber.indexOf(subscriberType.toUpperCase()) >= 0 ? subscriberType : &quot;POS&quot;;
@@ -89,42 +79,27 @@ if (vExecuteValue) {
       vConcat = vParams == &quot;&quot; ? &quot;&quot; : &quot;,&quot;;
       vParams += vConcat + &quot;subscriberType&quot;;
     }
-
-
     if (typeof SRVSTARDATE != 'undefined') {
       vStarDateAs400 = SRVSTARDATE + STARTIME;
       vServiceStartDate = getCbsDate(vStarDateAs400);
       if (vServiceStartDate > SysDate) {
         vDoSchedule = true;
-
         vScheduleDateWarning = parseTimeToScheduleDate(vServiceStartDate.getTime());
       }
-
     }
-
-
-
     if (typeof SRVENDDATE != &quot;undefined&quot; &amp;&amp; SRVENDDATE != '0') {
       vEndDateAs400 = SRVENDDATE + ENDTIME;
       vUpdateService = true;
-
       vEffectiveTime = parseDateToStringCBS(vEffectiveTime);
       //vServiceEndDate = getCbsDate(vEndDateAs400);
-      vServiceEndDate=vEndDateAs400;
-
+      vServiceEndDate = vEndDateAs400;
     } else {
       vEffectiveTime = parseDateToStringCBS(vEffectiveTime);
       vServiceEndDate = parseDateToStringCBS2(SysDate, vBillingDay);
-
     }
-
     //vCRemarkCbs=transformMtr(C_REMARKS,productId,vSkey);
-
-
   }
 }
-
-
 //FUNCIONES
 //Funcion a la cual se le manda un valor y le hace lpad o rpad con el caracter indicado y la longitud indicada
 function padStr(str, len, pad, dir) {
@@ -154,11 +129,7 @@ function padStr(str, len, pad, dir) {
   }
   return str;
 }
-
-
-
 ///
-
 function getCbsDate(cbsDate) {
   var vYear = cbsDate.substring(0, 4);
   var vMonth = new Number(cbsDate.substring(4, 6)) - 1;
@@ -168,9 +139,6 @@ function getCbsDate(cbsDate) {
   var vSeconds = cbsDate.substring(12, 14);
   return new Date(vYear, vMonth, vDay, vHours, vMinutes, vSeconds);
 }
-
-
-
 
 function parseTimeToCBSDate(gTime) {
   var date = new Date();
@@ -191,8 +159,6 @@ function parseDateToStringCBS(date) {
     year + &quot;&quot; + month + &quot;&quot; + day + &quot;&quot; + hours + &quot;&quot; + minutes + &quot;&quot; + seconds;
   return format;
 }
-
-
 //Convierte un valor texto a al formato hhmiss
 function parseDateToStringCBSTime(date) {
   var day = padStr(String(date.getDate()), 2, &quot;0&quot;, STR_PAD_LEFT);
@@ -206,17 +172,13 @@ function parseDateToStringCBSTime(date) {
     hours + &quot;&quot; + minutes + &quot;&quot; + seconds;
   return format;
 }
-
-
-
-
-
 ////Convierte un valor texto a al formato yyyyMMddhhmiss anio 2036
 function parseDateToStringCBS2(date, billday) {
   //var day = padStr(String(date.getDate()), 2, &quot;0&quot;, STR_PAD_LEFT);
   date.setDate(billday);
   var day = padStr(String(date.getDate()), 2, &quot;0&quot;, STR_PAD_LEFT);
-  var year = date.getFullYear() + 18;
+  //var year = date.getFullYear() + 18;
+  var year = '2036';
   var month = date.getMonth() + 1;
   month = padStr(String(month), 2, &quot;0&quot;, STR_PAD_LEFT);
   var hours = padStr(String(date.getHours()), 2, &quot;0&quot;, STR_PAD_LEFT);
@@ -226,8 +188,6 @@ function parseDateToStringCBS2(date, billday) {
     year + &quot;&quot; + month + &quot;&quot; + day + &quot;&quot; + hours + &quot;&quot; + minutes + &quot;&quot; + seconds;
   return format;
 }
-
-
 //Convierte un valor texto a al formato yyyyMMdd
 function parseDateToStringAS(Fecha) {
   var strDate = &quot; &quot;;
@@ -240,11 +200,11 @@ function parseDateToStringAS(Fecha) {
     padStr(String(day), 2, &quot;0&quot;, STR_PAD_LEFT);
   return strDate;
 }
-
 //Fecha con anio 2036
 function parseDateToStringAS2(Fecha) {
   var strDate = &quot; &quot;;
-  var year = Fecha.getFullYear() + 18;
+  //var year = Fecha.getFullYear() + 18;
+  var year = '2036';
   var month = Fecha.getMonth() + 1;
   var day = Fecha.getDate();
   strDate =
@@ -253,8 +213,6 @@ function parseDateToStringAS2(Fecha) {
     padStr(String(day), 2, &quot;0&quot;, STR_PAD_LEFT);
   return strDate;
 }
-
-
 //Convierte un Time a un string de Date en formato yyyyMMddhhmiss
 function parseTimeToDHDate(gTime) {
   var date = new Date();
@@ -357,13 +315,8 @@ function parseDateToStringSchedule(date) {
     seconds;
   return format;
 }
-
-
 var tSaltoL = '\n';
-
 var tLinea = tSaltoL + '************************************************************************' + tSaltoL;
-
-
 LOGGER.info(tLinea + 'vDoSchedule:' + vDoSchedule + tLinea);
 LOGGER.info(tLinea + 'vServiceEndDate:' + vServiceEndDate + tLinea);
 LOGGER.info(tLinea + 'vScheduleDateWarning:' + vScheduleDateWarning + tLinea);</bpmn2:script>
@@ -481,7 +434,9 @@ LOGGER.info(tLinea + 'vScheduleDateWarning:' + vScheduleDateWarning + tLinea);</
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_103</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '135';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = strMissingParam + vParams;
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ExclusiveGateway_1" targetRef="ScriptTask_1">
@@ -493,19 +448,36 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
       <bpmn2:script>var validSub = false;
 
+
+
 //if(typeof vAllowedTypes != 'undefined'){
 
-	validSub = vAllowedTypes.indexOf(vSubType) >= 0;
+
+
+    validSub = vAllowedTypes.indexOf(vSubType) >= 0;
+
+
 
 //}
 
+
+
 /* 
+
+
 
 if(typeof vEntitlementVAS != 'undefined'){
 
-	vEntitlement = vEntitlementVAS == 'NA' ? vEntitlement : vEntitlementVAS;
+
+
+    vEntitlement = vEntitlementVAS == 'NA' ? vEntitlement : vEntitlementVAS;
+
+
 
 } */
+
+
+
 
 
 </bpmn2:script>
@@ -515,8 +487,11 @@ if(typeof vEntitlementVAS != 'undefined'){
       <bpmn2:incoming>SequenceFlow_98</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_99</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = 'Operation Successful';
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;
+
 </bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_2" name="addService" default="SequenceFlow_13">
@@ -541,7 +516,9 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_105</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '101';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = 'Suscriptor no valido';
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_18" name="No" sourceRef="ExclusiveGateway_3" targetRef="ScriptTask_8">
@@ -714,279 +691,548 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:incoming>SequenceFlow_38</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_41</bpmn2:outgoing>
       <bpmn2:script>var plMultiQuota=false;
+
 var quotaBL = 'TEST_FUP_APP_FACEBOOK Quota';
 
+
+
 function processJson(strJsonInfo){
+
     var vSubscribedServices;
+
     var vSubscriberQuotas;
+
     var vSubscriber;
+
     var vJsonObj;
+
     var vDataObj = new Object();
+
     var vTmpObj = new Object();
+
     if(typeof strJsonInfo != 'undefined'){
+
         vJsonObj = JSON.parse(strJsonInfo);
+
         if(vJsonObj.getSubscriberAllInfResponse.result.resultCode == 0){
+
             vSubscriber = vJsonObj.getSubscriberAllInfResponse.result.subscriber;
+
             if(typeof vJsonObj.getSubscriberAllInfResponse.result.subscribedService != 'undefined'){
+
                 vSubscribedServices = vJsonObj.getSubscriberAllInfResponse.result.subscribedService;
+
                 vSubscriberQuotas = vJsonObj.getSubscriberAllInfResponse.result.subscriberQuota;
+
                 if(vSubscribedServices instanceof Array){
+
                   for(var i = 0; i &lt; vSubscribedServices.length; i++){
+
                     vDataObj= setDataProperties(joinInfo(vSubscribedServices[i], vSubscriberQuotas), vDataObj);
+
                     
+
                   }
+
                 } else {
+
                   vDataObj = setDataProperties(joinInfo(vSubscribedServices, vSubscriberQuotas), vDataObj);
+
                 }
+
             }
+
             vDataObj.User = joinInfo(undefined, undefined, vSubscriber);
+
         }
+
     }
+
     return vDataObj;
+
 }
+
+
 
 function getAttribute(serviceItems, attribute){
 
+
+
     var attributeItem = {key: 'NA', value: 'NA'};
 
+
+
     if(typeof serviceItems != 'undefined'){
+
         for(var i = 0; i &lt; serviceItems.attribute.length; i++){
+
             if(serviceItems.attribute[i].key == attribute){
+
                 attributeItem = serviceItems.attribute[i];
+
                 break;
+
             }
+
         }
+
     }
+
     return attributeItem;
+
 }
+
+
+
 
 
 function getQuota(quotaItems, serviceName){
+
     var quotaItem = new Array();
+
     if(typeof(quotaItems) != 'undefined'){
+
         if(quotaItems instanceof Array){
+
             for(var i = 0; i &lt; quotaItems.length; i++){
+
                 if(getAttribute(quotaItems[i], 'SRVNAME').value == serviceName){
+
                     quotaItem.push(quotaItems[i]);
+
                 }
+
             }
+
         } else {
+
             if(getAttribute(quotaItems, 'SRVNAME').value == serviceName){
+
                 quotaItem.push(quotaItems);
+
             }
+
         }
+
     }
+
     return quotaItem;
+
 }
+
+
+
+
 
 
 
 function getUniqueQuota(quotaItems){
+
     var quotaItem;
+
     if(typeof(quotaItems) != 'undefined'){
+
         if(quotaItems instanceof Array){
+
             for(var i = 0; i &lt; quotaItems.length; i++){
+
                 if(quotaBL.toUpperCase().indexOf(getAttribute(quotaItems[i], 'QTANAME').value.toUpperCase()) &lt; 0){
+
                     quotaItem = quotaItems[i];
+
                     break;
+
                 }
+
             }
+
         } else {
+
             if(quotaBL.toUpperCase().indexOf(getAttribute(quotaItems, 'QTANAME').value.toUpperCase()) &lt; 0){
+
                 quotaItem = quotaItems;
+
             }
+
         }
+
     }
+
     return quotaItem;
+
 }
+
 function joinInfo(serviceItem, quotaItem, subscriberItem){
+
     var tmpObj = new Object();
+
     var itemTmp;
+
     var quotaArray = new Array();
+
     var tmpQuotaArray = new Array();
+
     var quotaObj;
+
     var tmpQuota = new Object();
+
     tmpObj.ServiceName = getAttribute(serviceItem, 'SRVNAME').value;
+
     tmpObj.ProductName = getAttribute(serviceItem, 'SRVPRODUCTNAME').value;
+
     quotaArray = getQuota(quotaItem, tmpObj.ServiceName);
+
     itemTmp = getAttribute(serviceItem, 'SRVPRODUCTTYPE');
+
     tmpObj.ServiceType = tmpObj.ServiceName == 'Default_Service_Local' ? 'DEF' : itemTmp.value;
+
     itemTmp = getAttribute(serviceItem, 'SRVPRODUCTTYPEID');
+
     tmpObj.ServiceTypeId = itemTmp.value;
+
     tmpObj.ServiceExpired = getAttribute(serviceItem, 'SRVISEXPIRED').value;
+
     tmpObj.ServiceStartDate = getAttribute(serviceItem, 'SRVSTARTDATETIME').value;
+
     tmpObj.ServiceEndDate = getAttribute(serviceItem, 'SRVENDDATETIME').value;
+
     if(!plMultiQuota){
+
         if(quotaArray.length > 0){
+
             quotaObj = getUniqueQuota(quotaArray);
+
         }
+
         tmpObj.QuotaName = getAttribute(quotaObj, 'QTANAME').value;
+
         tmpObj.QuotaValue = getAttribute(quotaObj, 'QTAVALUE').value;
+
         tmpObj.QuotaBalance = getAttribute(quotaObj, 'QTABALANCE').value;
+
         tmpObj.QuotaConsumption = getAttribute(quotaObj, 'QTACONSUMPTION').value;
+
         tmpObj.QuotaValueMb = getAttribute(quotaObj, 'QTAVALUE_MB').value;
+
         tmpObj.QuotaBalanceMb = getAttribute(quotaObj, 'QTABALANCE_MB').value;
+
         tmpObj.QuotaConsumptionMb = getAttribute(quotaObj, 'QTACONSUMPTION_MB').value;
+
         tmpObj.QuotaPercentage = getAttribute(quotaObj, 'QTAPERCENTAGE').value;
+
         tmpObj.QuotaStatus = getAttribute(quotaObj, 'QTASTATUS').value;
+
         tmpObj.SubscriberBillCycle = getAttribute(subscriberItem, 'USRBILLCYCLEDATE').value;
+
     } else {
+
         if(tmpObj.ServiceType == 'PL'){
+
             for(var i = 0; i &lt; quotaArray.length; i++){
+
                 tmpQuota.QuotaName = getAttribute(quotaArray[i], 'QTANAME').value;
+
                 tmpQuota.QuotaValue = getAttribute(quotaArray[i], 'QTAVALUE').value;
+
                 tmpQuota.QuotaBalance = getAttribute(quotaArray[i], 'QTABALANCE').value;
+
                 tmpQuota.QuotaConsumption = getAttribute(quotaArray[i], 'QTACONSUMPTION').value;
+
                 tmpQuota.QuotaValueMb = getAttribute(quotaArray[i], 'QTAVALUE_MB').value;
+
                 tmpQuota.QuotaBalanceMb = getAttribute(quotaArray[i], 'QTABALANCE_MB').value;
+
                 tmpQuota.QuotaConsumptionMb = getAttribute(quotaArray[i], 'QTACONSUMPTION_MB').value;
+
                 tmpQuota.QuotaPercentage = getAttribute(quotaArray[i], 'QTAPERCENTAGE').value;
+
                 tmpQuota.QuotaStatus = getAttribute(quotaArray[i], 'QTASTATUS').value;
+
                 tmpQuotaArray.push(tmpQuota);
+
                 tmpQuota = new Object();
+
             }
+
             tmpObj.Quotas = tmpQuotaArray;
+
         } else {
+
             if(quotaArray.length > 0){
+
                 quotaObj = getUniqueQuota(quotaArray);
+
             }
+
             tmpObj.QuotaName = getAttribute(quotaObj, 'QTANAME').value;
+
             tmpObj.QuotaValue = getAttribute(quotaObj, 'QTAVALUE').value;
+
             tmpObj.QuotaBalance = getAttribute(quotaObj, 'QTABALANCE').value;
+
             tmpObj.QuotaConsumption = getAttribute(quotaObj, 'QTACONSUMPTION').value;
+
             tmpObj.QuotaValueMb = getAttribute(quotaObj, 'QTAVALUE_MB').value;
+
             tmpObj.QuotaBalanceMb = getAttribute(quotaObj, 'QTABALANCE_MB').value;
+
             tmpObj.QuotaConsumptionMb = getAttribute(quotaObj, 'QTACONSUMPTION_MB').value;
+
             tmpObj.QuotaPercentage = getAttribute(quotaObj, 'QTAPERCENTAGE').value;
+
             tmpObj.QuotaStatus = getAttribute(quotaObj, 'QTASTATUS').value;
+
             tmpObj.SubscriberBillCycle = getAttribute(subscriberItem, 'USRBILLCYCLEDATE').value;
+
         }
+
     }
+
     return tmpObj;
+
 }
+
+
+
+
 
 
 
 function setDataProperties(objItem, dataItem){
+
     switch(objItem.ServiceType){
+
         case 'PAQ':
+
             dataItem.Packages = objItem;
+
             break;
+
         case 'SUS':
+
             dataItem.Subscriptions = objItem;
+
             break;
+
         case 'PL':
+
              if(typeof dataItem.Plans=='undefined'){
+
             dataItem.Plans=new Array();
+
           }
+
             dataItem.Plans.push(objItem);
+
             break;
+
         case 'APP':
+
             if(typeof dataItem.Applications == 'undefined'){
+
                 dataItem.Applications = new Array();
+
             }
+
             dataItem.Applications.push(objItem);
+
             break;
+
         case 'ADD':
+
             if(typeof dataItem.Addons == 'undefined'){
+
                 dataItem.Addons = new Array();
+
             }
+
             dataItem.Addons.push(objItem);
+
             break;
+
         case 'DEF':
+
             dataItem.DefaultService = objItem;
+
             break;
+
         case 'SUB':
+
             dataItem.User = objItem;
+
             break;
+
         default:
+
             if(typeof dataItem.Unbound == 'undefined'){
+
                 dataItem.Unbound = new Array();
+
             }
+
             dataItem.Unbound.push(objItem);
+
     }
+
     return dataItem;
+
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_9" name="setValidacion">
       <bpmn2:incoming>SequenceFlow_49</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
       <bpmn2:script>var navInfo = new Object();
+
 var vPlanEntitlement = '';
+
 var vDefaultEntitlement = 'Default_Service_Local';
+
 var vUnsub = false;
+
 var vUnSubDef = false;
+
 var vUnSubCbs = false;
+
 var vPlanVasPurchaseSeq = '';
 
+
+
 //if (typeof vPaqInfo != 'undefined') {
+
 if (navObject.pccJson.filled) {
-	//navInfo = processJson(vPaqInfo);
-	navInfo = navObject.pccJson.obj;
-	// if(typeof navInfo.Plans != 'undefined'){
-	// 	vPlanEntitlement = navInfo.Plans.ServiceName;
-	// 	vUnsub = true;
-	// }
-	if (typeof navInfo.DefaultService != 'undefined') {
-		vDefaultEntitlement = navInfo.DefaultService.ServiceName;
-		vUnSubDef = true;
-	}
-	/*********************************valida servicios de Apps existentes en PCC***********/
-	var vCounter2 = 0;
-	var vUnsubPCCApp = new Array();
-	var vPCCAppDel = '';
-	// if(vAppsArray != 'undefined'){
-	// 	if(navInfo.Applications != 'undefined'){
-	// 		for(var k=0;k&lt;vAppsArray.length;k++){
-	// 		for(var j=0;j&lt;navInfo.Applications.length;j++){
-	// 				if(vAppsArray[k]==navInfo.Applications[j].ServiceName){
-	// 					vUnsub=true;
-	// 					vUnsubPCCApp.push(navInfo.Applications[j].ServiceName);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-	if (typeof navInfo.Plans != 'undefined') {
-		for (var j = 0; j &lt; navInfo.Plans.length; j++) {
-			vUnsubPCCApp.push(navInfo.Plans[j].ServiceName);
-		}
-		vUnsub = true;
-		vPCCAppDel = vUnsubPCCApp[vCounter2];
-	}
-	
-	
+
+    //navInfo = processJson(vPaqInfo);
+
+    navInfo = navObject.pccJson.obj;
+
+    // if(typeof navInfo.Plans != 'undefined'){
+
+    //     vPlanEntitlement = navInfo.Plans.ServiceName;
+
+    //     vUnsub = true;
+
+    // }
+
+    if (typeof navInfo.DefaultService != 'undefined') {
+
+        vDefaultEntitlement = navInfo.DefaultService.ServiceName;
+
+        vUnSubDef = true;
+
+    }
+
+    /*********************************valida servicios de Apps existentes en PCC***********/
+
+    var vCounter2 = 0;
+
+    var vUnsubPCCApp = new Array();
+
+    var vPCCAppDel = '';
+
+    // if(vAppsArray != 'undefined'){
+
+    //     if(navInfo.Applications != 'undefined'){
+
+    //         for(var k=0;k&lt;vAppsArray.length;k++){
+
+    //         for(var j=0;j&lt;navInfo.Applications.length;j++){
+
+    //                 if(vAppsArray[k]==navInfo.Applications[j].ServiceName){
+
+    //                     vUnsub=true;
+
+    //                     vUnsubPCCApp.push(navInfo.Applications[j].ServiceName);
+
+    //                 }
+
+    //             }
+
+    //         }
+
+    //     }
+
+    // }
+
+    if (typeof navInfo.Plans != 'undefined') {
+
+        for (var j = 0; j &lt; navInfo.Plans.length; j++) {
+
+            vUnsubPCCApp.push(navInfo.Plans[j].ServiceName);
+
+        }
+
+        vUnsub = true;
+
+        vPCCAppDel = vUnsubPCCApp[vCounter2];
+
+    }
+
+    
+
+    
+
 }
+
+
+
+
 
 
 
 /****************************** Validacion CBS***********************/
+
 if (typeof supplementaryOffers != 'undefined') {
-	if (supplementaryOffers instanceof Array) {
-		for (var i = 0; i &lt; supplementaryOffers.length; i++) {
-			if (vOfferingPlanVAS == supplementaryOffers[i].OfferingKey.OfferingID) {
-				vUnSubCbs = true;
-				vUnsubOffering = supplementaryOffers[i].OfferingKey.OfferingID;
-				vPlanVasPurchaseSeq = supplementaryOffers[i].OfferingKey.PurchaseSeq;
-				break;
-			}
-		}
-	} else {
-		if (vOfferingPlanVAS == supplementaryOffers.OfferingKey.OfferingID) {
-			vUnSubCbs = true;
-			vUnsubOffering = supplementaryOffers.OfferingKey.OfferingID;
-			vPlanVasPurchaseSeq = supplementaryOffers.OfferingKey.PurchaseSeq;
-		}
-	}
+
+    if (supplementaryOffers instanceof Array) {
+
+        for (var i = 0; i &lt; supplementaryOffers.length; i++) {
+
+            if (vOfferingPlanVAS == supplementaryOffers[i].OfferingKey.OfferingID) {
+
+                vUnSubCbs = true;
+
+                vUnsubOffering = supplementaryOffers[i].OfferingKey.OfferingID;
+
+                vPlanVasPurchaseSeq = supplementaryOffers[i].OfferingKey.PurchaseSeq;
+
+                break;
+
+            }
+
+        }
+
+    } else {
+
+        if (vOfferingPlanVAS == supplementaryOffers.OfferingKey.OfferingID) {
+
+            vUnSubCbs = true;
+
+            vUnsubOffering = supplementaryOffers.OfferingKey.OfferingID;
+
+            vPlanVasPurchaseSeq = supplementaryOffers.OfferingKey.PurchaseSeq;
+
+        }
+
+    }
+
 }
+
 /*************************Validacion de Apps*****************************/
+
 var vAppsArray = new Array();
+
 var vCounter = 0;
+
 var doLoop = false;
+
 var vPCCApp = '';
+
 if (vHasUnlimited) {
-	vAppsArray = vPCCService.split(',');
-	vPCCApp = vAppsArray[vCounter];
+
+    vAppsArray = vPCCService.split(',');
+
+    vPCCApp = vAppsArray[vCounter];
+
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_5" name="Unsubscribe">
@@ -1107,41 +1353,86 @@ if (vHasUnlimited) {
       <bpmn2:incoming>SequenceFlow_28</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_45</bpmn2:outgoing>
       <bpmn2:script>var vSubscriberFound = false;
+
 var vPrepaid = false;
+
 var vPostpaid = false;
+
 var vHybrid = false;
+
 var vPaymentType = '0';
+
 var vPreType = 'PRE';
+
 //var vPosType = 'POS,NRM,EMP,';
+
 var vHibType = 'HIB,HIC,CIN';
+
+
+
+
+
 
 
 
 
 if (typeof vAS400SubType != 'undefined') {
 
-	vSubscriberFound = true;
+
+
+    vSubscriberFound = true;
 
 
 
-	if (vPreType.indexOf(vAS400SubType) != -1) {
 
-		vPrepaid = true;
-		vPaymentType = '0';
 
-	}
-	else if (vHibType.indexOf(vAS400SubType) != -1) {
 
-		vHybrid = true;
-		vPaymentType = '2';
-	}
-	else{
-		
-		vPostpaid = true;
-		vPaymentType = '1';
 
-	}
-	}
+    if (vPreType.indexOf(vAS400SubType) != -1) {
+
+
+
+        vPrepaid = true;
+
+        vPaymentType = '0';
+
+
+
+    }
+
+    else if (vHibType.indexOf(vAS400SubType) != -1) {
+
+
+
+        vHybrid = true;
+
+        vPaymentType = '2';
+
+    }
+
+    else{
+
+        
+
+        vPostpaid = true;
+
+        vPaymentType = '1';
+
+
+
+    }
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1158,7 +1449,9 @@ if (typeof vAS400SubType != 'undefined') {
       <bpmn2:incoming>SequenceFlow_37</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_101</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '102';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = 'Suscriptor no existe en AS400';
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:serviceTask id="ServiceTask_9" name="RuleEngineTask" implementation="##WebService">
@@ -1353,262 +1646,521 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:incoming>SequenceFlow_43</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_48</bpmn2:outgoing>
       <bpmn2:script>if(typeof vSkey!='undefined'){
+
   vCRemarkCbs=transformMtr(MTR,productId,vSkey);
+
 }
+
 else{
+
   vCRemarkCbs=transformMtr(MTR,productId,'NA');
+
 }
+
+
+
+
 
 
 
 //Transforma el mtr que se pasa a COMVERSE
+
 //function transformMtr(mtr,vProducto,vCalendario,vAprovisiona,vPrestamo,vCosto,vComision) {
+
 function transformMtr(mtr,vProducto,vSrvKey) {  
+
   var vMtrTransform = mtr;
+
   //var fechaActual = new Date();
 
+
+
 //CPE;PRODUCT_ID;TRANSACTION_ID;SVKEY;
+
   //var strFecha = parseDateToStringAS(fechaActual);
+
   vMtrTransform = vMtrTransform.replace(&quot;PRODUCT_ID&quot;, vProducto);
+
   vMtrTransform = vMtrTransform.replace(&quot;TRANSACTION_ID&quot;, transactionId);
+
   //vMtrTransform = vMtrTransform.replace(&quot;CALENDARIO&quot;, vCalendario);
+
   //vMtrTransform = vMtrTransform.replace(&quot;APROVISIONA&quot;, vAprovisiona);
+
   //vMtrTransform = vMtrTransform.replace(&quot;FECHA&quot;, strFecha);
+
   //vMtrTransform = vMtrTransform.replace(&quot;PRESTAMO&quot;, vPrestamo);
+
   //vMtrTransform = vMtrTransform.replace(&quot;COSTO_PRESTAMO&quot;, vCosto);
+
   //vMtrTransform = vMtrTransform.replace(&quot;COMISION&quot;, vComision);
+
     vMtrTransform = vMtrTransform.replace(&quot;SVKEY&quot;, vSrvKey);
 
 
+
+
+
   return vMtrTransform;
+
 }
 
+
+
 function getJSON(strJson) {
+
   var vExpr = &quot;([b,c,s]+|[t*,n,s,(0-9)*]+|[v,(0-9)*]+):&quot;;
+
+
 
   var vNumExpr = '(&quot;[a-z]+&quot;:)([0-9]+)(s*,|}|$)';
 
+
+
   var regEx;
+
+
 
   var numRegExp;
 
+
+
   var tmpJson = &quot;&quot;;
 
+
+
   if (typeof REG_EXP != &quot;undefined&quot;) {
+
     vExpr = REG_EXP;
+
   }
+
+
 
   regEx = new RegExp(vExpr, &quot;gi&quot;);
 
+
+
   numRegExp = new RegExp(vNumExpr, &quot;gmi&quot;);
+
+
 
   tmpJson = strJson.replace(regEx, &quot;&quot;);
 
+
+
   tmpJson = tmpJson.replace(numRegExp, '$1&quot;$2&quot;$3');
 
+
+
   return JSON.parse(tmpJson);
+
 }
 
+
+
 function getSupplementaryOfferings(validOfferings, jsonObj) {
+
   var offeringObj;
+
+
 
   var supplementaryOfferings;
 
+
+
   var vItem;
+
+
 
   var vOfferingItem;
 
+
+
   var vOfferings = new Array();
 
+
+
   if (typeof jsonObj.QueryCustomerInfoResultMsg != &quot;undefined&quot;) {
+
     supplementaryOfferings =
+
       jsonObj.QueryCustomerInfoResultMsg.QueryCustomerInfoResult.Subscriber
+
         .SupplementaryOffering;
+
   }
 
+
+
   if (typeof supplementaryOfferings != &quot;undefined&quot;) {
+
     if (supplementaryOfferings instanceof Array) {
+
       for (var i = 0; i &lt; supplementaryOfferings.length; i++) {
+
         vItem = supplementaryOfferings[i];
+
+
 
         vOfferingItem = vItem.OfferingKey;
 
+
+
         if (typeof vOfferingItem != &quot;undefined&quot;) {
+
           if (
+
             isValidOffering(validOfferings, vOfferingItem.OfferingID) ||
+
             validOfferings == &quot;&quot;
+
           ) {
+
             vOfferings.push(vItem);
+
           }
+
         }
+
       }
+
     } else {
+
       vOfferingItem = supplementaryOfferings.OfferingKey;
 
+
+
       if (typeof vOfferingItem != &quot;undefined&quot;) {
+
         if (
+
           isValidOffering(validOfferings, vOfferingItem.OfferingID) ||
+
           validOfferings == &quot;&quot;
+
         ) {
+
           vOfferings.push(supplementaryOfferings);
+
         }
+
       }
+
     }
+
   }
 
+
+
   return vOfferings;
+
 }
 
+
+
 function getWalletByType(strWalletName, walletJson) {
+
   var walletObj;
+
+
 
   var freeUnits;
 
+
+
   var vItem;
 
+
+
   if (typeof walletJson.QueryFreeUnitResultMsg != &quot;undefined&quot;) {
+
     freeUnits =
+
       walletJson.QueryFreeUnitResultMsg.QueryFreeUnitResult.FreeUnitItem;
+
   }
+
+
 
   if (typeof freeUnits != &quot;undefined&quot;) {
+
     if (freeUnits instanceof Array) {
+
       for (var i = 0; i &lt; freeUnits.length; i++) {
+
         vItem = freeUnits[i];
 
+
+
         if (vItem.FreeUnitType == strWalletName) {
+
           walletObj = vItem;
 
+
+
           break;
+
         }
+
       }
+
     } else {
+
       if (freeUnits.FreeUnitType == strWalletName) {
+
         walletObj = freeUnits;
+
       }
+
     }
+
   }
 
+
+
   return walletObj;
+
 }
 
+
+
 function isValidOffering(validOfferings, offering) {
+
   var flag = false;
+
+
 
   var tmpArray = validOfferings.split(&quot;,&quot;);
 
+
+
   for (var i = 0; i &lt; tmpArray.length; i++) {
+
     if (tmpArray[i] == offering) {
+
       flag = true;
 
+
+
       break;
+
     }
+
   }
 
+
+
   return flag;
+
 }
 
+
+
 function trimExhaustedInstances(instances) {
+
   var tmpInstances = new Array();
+
+
 
   var flag = false;
 
+
+
   if (instances instanceof Array) {
+
     for (var i = 0; i &lt; instances.length; i++) {
+
       if (typeof instances[i].CurrentAmount != &quot;undefined&quot;) {
+
         flag = true;
 
+
+
         if (new Number(instances[i].CurrentAmount) > 0) {
+
           tmpInstances.push(instances[i]);
+
         }
+
       }
+
     }
+
   } else {
+
     if (typeof instances.CurrentAmount != &quot;undefined&quot;) {
+
       flag = true;
 
+
+
       if (new Number(instances.CurrentAmount) > 0) {
+
         tmpInstances.push(instances);
+
       }
+
     }
+
   }
+
+
 
   tmpInstances = flag ? tmpInstances : instances;
 
+
+
   return tmpInstances;
+
 }
 
+
+
 function getSortedItems(itemArray) {
+
   var sortedInstances = new Array();
+
+
 
   var tmpInstances = trimExhaustedInstances(itemArray);
 
+
+
   if (tmpInstances instanceof Array) {
+
     if (tmpInstances.length > 0) {
+
       sortedInstances = quickSort(tmpInstances, 0, tmpInstances.length - 1);
+
     }
+
   } else {
+
     sortedInstances.push(tmpInstances);
+
   }
 
+
+
   return sortedInstances;
+
 }
 
+
+
 function swap(items, firstIdx, secondIdx) {
+
   var tmp = items[firstIdx];
+
+
 
   items[firstIdx] = items[secondIdx];
 
+
+
   items[secondIdx] = tmp;
 
+
+
   return items;
+
 }
 
+
+
 function partition(items, pivot, left, right) {
+
   var partitionIdx = left;
+
+
 
   var pivotValue = new Number(pivot.EffectiveTime);
 
+
+
   var itemI = 0;
 
+
+
   for (var i = left; i &lt; right; i++) {
+
     itemI = new Number(items[i].EffectiveTime);
 
+
+
     if (itemI &lt; pivotValue) {
+
       swap(items, i, partitionIdx);
 
+
+
       partitionIdx++;
+
     }
+
   }
+
+
 
   swap(items, right, partitionIdx);
 
+
+
   return partitionIdx;
+
 }
 
+
+
 function quickSort(items, left, right) {
+
   var len = items.length;
+
+
 
   var pivot;
 
+
+
   var partitionIdx;
 
+
+
   if (len > 1) {
+
     if (left &lt; right) {
+
       pivot = items[right];
+
+
 
       partitionIdx = partition(items, pivot, left, right);
 
+
+
       //sort left and right
+
+
 
       quickSort(items, left, partitionIdx - 1);
 
+
+
       quickSort(items, partitionIdx + 1, right);
+
     }
+
   }
 
+
+
   return items;
+
 }
+
+
+
 
 
 LOGGER.info(tLinea+'Llego hasta el final de CbsFunctions'+tLinea);</bpmn2:script>
@@ -1618,448 +2170,891 @@ LOGGER.info(tLinea+'Llego hasta el final de CbsFunctions'+tLinea);</bpmn2:script
       <bpmn2:incoming>SequenceFlow_48</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_49</bpmn2:outgoing>
       <bpmn2:script>var navObject = setNavObjects();
+
 var enrichedOfferings = {appOfferings: [], susOfferings: [], cmbOfferings: [], packOfferings: [], undefOfferings: []};
+
 var bPckOffers = new Array();
+
 var supplementaryOffers = new Array();
+
 var subscriptionItems = new Array();
+
 var packageWallet;
+
 var tmpOffers;
+
 var activePackSeq = '0';
+
 var activeAppsSeq = new Array();
+
 var packInstances;
+
 var tmpInstances;
 
+
+
 if(typeof vOfferingPlanVAS == 'undefined'){
+
     vOfferingPlanVAS='';
-}
-if(typeof vAppServiceVAS == 'undefined'){
-    vAppServiceVAS='';
-}
-if(navObject.offeringJson.filled){
-    supplementaryOffers = getSupplementaryOfferings('', navObject.offeringJson.obj);
-} 
-//  if(navObject.offeringJson.filled){
-//     supplementaryOffers = getSupplementaryOfferings(vOfferingPlanVAS, navObject.offeringJson.obj);
-// } 
-if(navObject.walletJson.filled){
-    packageWallet = getWalletObj(strPackBalance, navObject.walletJson);
-}
-if(typeof(packageWallet) != 'undefined'){
-    tmpOffers = getSortedItems(packageWallet.FreeUnitItemDetail);
-    activePackSeq = tmpOffers.length > 0 ? tmpOffers[0].FreeUnitOrigin.OfferingKey.PurchaseSeq : '0';
+
 }
 
+if(typeof vAppServiceVAS == 'undefined'){
+
+    vAppServiceVAS='';
+
+}
+
+if(navObject.offeringJson.filled){
+
+    supplementaryOffers = getSupplementaryOfferings('', navObject.offeringJson.obj);
+
+} 
+
+//  if(navObject.offeringJson.filled){
+
+//     supplementaryOffers = getSupplementaryOfferings(vOfferingPlanVAS, navObject.offeringJson.obj);
+
+// } 
+
+if(navObject.walletJson.filled){
+
+    packageWallet = getWalletObj(strPackBalance, navObject.walletJson);
+
+}
+
+if(typeof(packageWallet) != 'undefined'){
+
+    tmpOffers = getSortedItems(packageWallet.FreeUnitItemDetail);
+
+    activePackSeq = tmpOffers.length > 0 ? tmpOffers[0].FreeUnitOrigin.OfferingKey.PurchaseSeq : '0';
+
+}
+
+
+
 function setNavObjects(){
+
     var navObject = {walletJson:{filled:false}, offeringJson:{filled:false}, pccJson:{filled: false}};
+
     if(typeof(vFreeUnitWallets) != 'undefined'){
+
         navObject.walletJson.obj = getJSON(vFreeUnitWallets);
+
         navObject.walletJson.filled = true;
+
     }
+
     if(typeof(vStrOfferingInfo) != 'undefined'){
+
         navObject.offeringJson.obj = getJSON(vStrOfferingInfo);
+
         navObject.offeringJson.filled = true;
+
     }
+
     // if(typeof(vStrPcc) != 'undefined'){
+
     //     navObject.pccJson.obj = processJson(vStrPcc);
+
     //     navObject.pccJson.filled = true;
+
     // }
+
       if(typeof(vPaqInfo) != 'undefined'){
+
         navObject.pccJson.obj = processJson(vPaqInfo);
+
         navObject.pccJson.filled = true;
+
     }
+
     return navObject;
+
 }
+
 function getWalletObj(walletName, walletObj){
+
     var tmpItm;
+
     if(walletObj.filled){
+
         tmpItm = getWalletByType(walletName, walletObj.obj);
+
     }
+
     return tmpItm;
+
 }
+
 function setEnrichment(pEnriched, enrichedItem){
+
     var enrichedObj = pEnriched;
+
     switch(enrichedItem.offerType){
+
         case 'APP':
+
             enrichedObj.appOfferings.push(enrichedItem);
+
             break;
+
         case 'SUS':
+
         case 'SUSAPP':
+
             enrichedObj.susOfferings.push(enrichedItem);
+
             break;
+
         case 'PAQ':
+
             enrichedObj.packOfferings.push(enrichedItem);
+
             break;
+
         case 'CMB':
+
             enrichedObj.cmbOfferings.push(enrichedItem);
+
             break;
+
         default:
+
             enrichedObj.undefOfferings.push(enrichedItem);
+
             break;
+
     }
+
     return enrichedObj;
+
 }
+
 function splitInstances(itemArray, activeId){
+
     var activeInstance = new Object();
+
     var queuedInstances = new Array();
+
     var splitObj = new Array();
+
     var strtIdx = 0;
+
     if(itemArray instanceof Array){
+
         if(itemArray.length > 0){
+
             if(activeId == itemArray[0].FreeUnitOrigin.OfferingKey.PurchaseSeq){
+
                 activeInstance = itemArray[0];
+
                 strtIdx = 1;
+
             }
+
             if(itemArray.length >= 1){
+
                 for(var i = strtIdx; i &lt; itemArray.length; i++){
+
                     queuedInstances.push(itemArray[i]);
+
                 }
+
             }
+
         }
+
     } else {
+
         if(activeId == itemArray.FreeUnitOrigin.OfferingKey.PurchaseSeq){
+
             activeInstance = itemArray;
+
         } else{
+
             queuedInstances.push(itemArray);
+
         }
+
     }
+
     splitObj.active = activeInstance;
+
     splitObj.queued = queuedInstances;
+
     return splitObj;
+
 }
+
 function snatchInstances(itemArray, offeringLst, include, snatchIns, snatchSeq){
+
     var snatchedInstances = new Array();
+
     var snatchId = '';
+
     if(itemArray instanceof Array){
+
         for(var i = 0; i &lt; itemArray.length; i++){
+
             if(snatchSeq){
+
                 if(snatchIns){
+
                     snatchId = itemArray[i].FreeUnitOrigin.OfferingKey.PurchaseSeq;
+
                 } else {
+
                     snatchId = itemArray[i].OfferingKey.PurchaseSeq;
+
                 }
+
             } else{
+
                 if(snatchIns){
+
                     snatchId = itemArray[i].FreeUnitOrigin.OfferingKey.OfferingID;
+
                 } else {
+
                     snatchId = itemArray[i].OfferingKey.OfferingID;
+
                 }
+
             }
+
             if(include){
+
                 if(existsOffer(offeringLst, snatchId)){
+
                     snatchedInstances.push(itemArray[i]);
+
                 }
+
             } else {
+
                 if(!existsOffer(offeringLst, snatchId)){
+
                     snatchedInstances.push(itemArray[i]);
+
                 }
+
             }
+
         }
+
     } else {
+
         if(snatchSeq){
+
             if(snatchIns){
+
                 snatchId = itemArray.FreeUnitOrigin.OfferingKey.PurchaseSeq;
+
             } else {
+
                 snatchId = itemArray.OfferingKey.PurchaseSeq;
+
             }
+
         } else{
+
             if(snatchIns){
+
                 snatchId = itemArray.FreeUnitOrigin.OfferingKey.OfferingID;
+
             } else {
+
                 snatchId = itemArray.OfferingKey.OfferingID;
+
             }
+
         }
+
         if(include){
+
             if(existsOffer(offeringLst, snatchId)){
+
                 snatchedInstances.push(itemArray);
+
             }
+
         } else {
+
             if(!existsOffer(offeringLst, snatchId)){
+
                 snatchedInstances.push(itemArray);
+
             }
+
         }
+
     }
+
     return snatchedInstances;
+
 }
+
 function existsOffer(offerLst, offerSeq){
+
     var flag = false;
+
     if(offerLst instanceof Array){
+
         for(var i = 0; i &lt; offerLst.length; i++){
+
             if(offerLst[i] == offerSeq){
+
                 flag = true;
+
                 break;
+
             }
+
         }
+
     } else {
+
         flag = offerLst == offerSeq;
+
     }
+
     return flag;
+
 }
+
 function setPackageItems(instances, queue){
+
     var packItem;
+
     var tmpItem;
+
     var currentAmtBts = 0;
+
     var initialAmtBts = 0;
+
     var consumptionAmtBts = 0;
+
     var itmClass = !queue ? 'Vigente' : 'Pendiente';
+
     var itmOffer = '';
+
     var itmProduct = '';
+
     var itmPurchaseSeq = '';
+
     var itmName = '';
+
     var itmType = 'Paquete';
+
     var itmMeasure = 'MB';
+
     var itmServiceStart = '';
+
     var itmServiceEnd = '';
+
     var itmQtaPrcntg = '';
+
     var itmQtaValue = '';
+
     var itmQtaConsumption = '';
+
     var itmQtaBalance = '';
+
     if(instances instanceof Array){
+
         packItem = new Array();
+
         for(var i = 0; i &lt; instances.length; i++){
+
             tmpItem = new Object();
+
             currentAmtBts = new Number(instances[i].CurrentAmount);
+
             initialAmtBts = new Number(instances[i].InitialAmount);
+
             consumptionAmtBts = initialAmtBts - currentAmtBts;
+
             itmOffer = instances[i].FreeUnitOrigin.OfferingKey.OfferingID;
+
             itmProduct = &quot;0&quot;;
+
             itmPurchaseSeq = instances[i].FreeUnitOrigin.OfferingKey.PurchaseSeq;
+
             itmName = instances[i].FreeUnitOrigin.OfferingKey.OfferingName;
+
             itmServiceStart = instances[i].EffectiveTime;
+
             itmServiceEnd = instances[i].ExpireTime;
+
             itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+
             itmQtaValue = getUnit(initialAmtBts, 'KB');
+
             itmQtaConsumption = getUnit(consumptionAmtBts, 'KB');
+
             itmQtaBalance = getUnit(currentAmtBts, 'KB');
+
             tmpItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+
                 itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, false, false, true);
+
             packItem.push(tmpItem);
+
         }
+
     } else {
+
         packItem = new Object();
+
         if(typeof(instances.CurrentAmount) != 'undefined'){
+
             currentAmtBts = new Number(instances.CurrentAmount);
+
             initialAmtBts = new Number(instances.InitialAmount);
+
             consumptionAmtBts = initialAmtBts - currentAmtBts;
+
             itmOffer = instances.FreeUnitOrigin.OfferingKey.OfferingID;
+
             itmProduct = &quot;0&quot;;
+
             itmPurchaseSeq = instances.FreeUnitOrigin.OfferingKey.PurchaseSeq;
+
             itmName = instances.FreeUnitOrigin.OfferingKey.OfferingName;
+
             itmServiceStart = instances.EffectiveTime;
+
             itmServiceEnd = instances.ExpireTime;
+
             itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+
             itmQtaValue = getUnit(initialAmtBts, 'KB');
+
             itmQtaConsumption = getUnit(consumptionAmtBts, 'KB');
+
             itmQtaBalance = getUnit(currentAmtBts, 'KB');
+
             packItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+
                 itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, false, false, true);
+
         }
+
     }
+
     return packItem;
+
 }
+
 function setItem(pOffering, pProduct, pPurchaseSeq, pName, pType, pMeasure, pServiceStart, 
+
     pServiceEnd, pQtaPcntg, pQtaValue, pQtaConsumption, pQtaBalance, pClass, isApp, addActive, pActive){
+
     var objItem = new Object();
+
     objItem.offering = pOffering;
+
     objItem.productId = pProduct;
+
     objItem.purchase_seq = pPurchaseSeq;
+
     objItem.product_name = pName;
+
     objItem.type_name = pType;
+
     objItem.measure = pMeasure;
+
     objItem.service_start = pServiceStart;
+
     objItem.service_end = pServiceEnd;
+
     if(!isApp){
+
         objItem.qta_percentage = pQtaPcntg;
+
         objItem.qta_value = pQtaValue;
+
         objItem.qta_consumption = pQtaConsumption;
+
         objItem.qta_balance = pQtaBalance;
+
     } else{
+
         objItem.hour_percentage = pQtaPcntg;
+
         objItem.total_hours = pQtaValue;
+
         objItem.hours_consumed = pQtaConsumption;
+
         objItem.hours_remaining = pQtaBalance;
+
     }
+
     if(addActive){
+
         objItem.active = pActive;
+
     }
+
     objItem[&quot;class&quot;] = pClass;
+
     return objItem;
+
 }
+
 function setItemSubs(pOffering, pProduct, pPurchaseSeq, pName, pType, pMeasure, pServiceStart, 
+
     pServiceEnd, pQtaPcntg, pQtaValue, pQtaConsumption, pQtaBalance, pClass, isApp, addActive, pActive){
+
     var objItem = new Object();
+
     objItem.offering = pOffering;
+
     objItem.productId = pProduct;
+
     objItem.purchase_seq = pPurchaseSeq;
+
     objItem.product_name = pName;
+
     objItem.type_name = pType;
+
     objItem.measure = pMeasure;
+
     objItem.service_start = pServiceStart;
+
     objItem.next_renewal = pServiceEnd;
+
     if(!isApp){
+
         objItem.qta_percentage = pQtaPcntg;
+
         objItem.qta_value = pQtaValue;
+
         objItem.qta_consumption = pQtaConsumption;
+
         objItem.qta_balance = pQtaBalance;
+
     } else{
+
         objItem.hour_percentage = pQtaPcntg;
+
         objItem.total_hours = pQtaValue;
+
         objItem.hours_consumed = pQtaConsumption;
+
         objItem.hours_remaining = pQtaBalance;
+
     }
+
     if(addActive){
+
         objItem.active = pActive;
+
     }
+
     objItem[&quot;class&quot;] = pClass;
+
     return objItem;
+
 }
+
 function getUnit(val, unit){
+
     var btKb = 1024;
+
     var kbMb = 1024;
+
     var valMB = '0';
+
     switch(unit){
+
         case &quot;BT&quot;:
+
             valMB = String(new Number(Math.ceil((val / 1024) / 1024)).toFixed(2));
+
             break;
+
         case &quot;KB&quot;:
+
             valMB = String(new Number(Math.ceil(val / 1024).toFixed(2)));
+
             break;
+
         default:
+
             valMB = String(val);
+
             break;
+
     }
+
     return valMB;
+
 }
+
 function setPackage(pInstances){
+
     var packItem = new Object();
+
     packItem.active = setPackageItems(pInstances.active, false);
+
     packItem.queued = setPackageItems(pInstances.queued, true);
+
     return packItem;
+
 }
+
 function setApplications(pInstances){
+
     var appItem = new Object();
+
     appItem.active = setAppItems(pInstances.active, false);
+
     appItem.queued = setAppItems(getSortedItems(pInstances.queued), true);
+
     return appItem;
+
 }
+
 function splitApps(itemArray){
+
     var appArray = new Array();
+
     var tmpArray;
+
     var bustedOffers = new Array();
+
     var tmpId;
+
     for(var i = 0; i &lt; itemArray.length; i++){
+
         tmpId = itemArray[i].OfferingKey.OfferingID;
+
         if(!existsOffer(bustedOffers, tmpId)){
+
             bustedOffers.push(tmpId);
+
             LOGGER.info('tmpId:' + tmpId);
+
             tmpArray = getSortedItems(snatchInstances(itemArray, tmpId, true, false, false));
+
             LOGGER.info('tmpArray:' + tmpArray.length);
+
             if(tmpArray.length > 0){
+
                 appArray.push(tmpArray);
+
             }
+
         }
+
     }
+
     LOGGER.info('appArray:' + JSON.stringify(appArray));
+
     return appArray;
+
 }
+
 function splitOffers(pApps, pActiveIds){
+
     var appItem = new Object();
+
     var activeOffers = new Array();
+
     var queuedOffers = new Array();
+
     var tmpArray;
+
     for(var i = 0; i &lt; pApps.length; i++){
+
         tmpArray = pApps[i];
+
         for(var j = 0; j &lt; tmpArray.length; j++){
+
             if(existsOffer(pActiveIds, tmpArray[j].OfferingKey.PurchaseSeq)){
+
                 activeOffers.push(tmpArray[j]);
+
             } else {
+
                 queuedOffers.push(tmpArray[j]);
+
             }
+
         }
+
     }
+
     appItem.active = activeOffers;
+
     appItem.queued = queuedOffers;
+
     return appItem;
+
 }
+
 function setAppItems(instances, queue){
+
     var packItem;
+
     var tmpItem;
+
     var currentAmtBts = 0;
+
     var initialAmtBts = 0;
+
     var consumptionAmtBts = 0;
+
     var itmClass = !queue ? 'Vigente' : 'Pendiente';
+
     var itmOffer = '';
+
     var itmProduct = '';
+
     var itmPurchaseSeq = '';
+
     var itmName = '';
+
     var itmType = 'Aplicacion';
+
     var itmMeasure = 'Hrs';
+
     var itmServiceStart = '';
+
     var itmServiceEnd = '';
+
     var itmQtaPrcntg = '';
+
     var itmQtaValue = '';
+
     var itmQtaConsumption = '';
+
     var itmQtaBalance = '';
+
     if(instances instanceof Array){
+
         packItem = new Array();
+
         for(var i = 0; i &lt; instances.length; i++){
+
             tmpItem = new Object();
+
             itmServiceStart = instances[i].EffectiveTime;
+
             itmServiceEnd = instances[i].ExpirationTime;
+
             currentAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, true);
+
             initialAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, false);
+
             consumptionAmtBts = initialAmtBts - currentAmtBts;
+
             itmOffer = typeof(instances[i].OfferingKey) != 'undefined' ? instances[i].OfferingKey.OfferingID : '0';
+
             itmProduct = typeof(instances[i].productId) != 'undefined' ? instances[i].productId : '0';
+
             itmPurchaseSeq = typeof(instances[i].OfferingKey) != 'undefined' ? instances[i].OfferingKey.PurchaseSeq : '0';
+
             itmName = instances[i].offerName;
+
             itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+
             itmQtaValue = getUnit(initialAmtBts, 'HR');
+
             itmQtaConsumption = getUnit(consumptionAmtBts, 'HR');
+
             itmQtaBalance = getUnit(currentAmtBts, 'HR');
+
             tmpItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+
                 itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, true, false, true);
+
             packItem.push(tmpItem);
+
         }
+
     } else {
+
         packItem = new Object();
+
         if(typeof(instances.CurrentAmount) != 'undefined'){
+
             itmServiceStart = instances.EffectiveTime;
+
             itmServiceEnd = instances.ExpirationTime;
+
             currentAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, true);
+
             initialAmtBts = getHoursDiff(itmServiceStart, itmServiceEnd, false);
+
             consumptionAmtBts = initialAmtBts - currentAmtBts;
+
             itmOffer = typeof(instances.OfferingKey) != 'undefined' ? instances.OfferingKey.OfferingID : '0';
+
             itmProduct = typeof(instances.productId) != 'undefined' ? instances.productId : '0';
+
             itmPurchaseSeq = typeof(instances.OfferingKey) != 'undefined' ? instances.OfferingKey.PurchaseSeq : '0';
+
             itmName = instances.offerName;
+
             itmQtaPrcntg = String(new Number((currentAmtBts / initialAmtBts) * 100).toFixed(2));
+
             itmQtaValue = getUnit(initialAmtBts, 'HR');
+
             itmQtaConsumption = getUnit(consumptionAmtBts, 'HR');
+
             itmQtaBalance = getUnit(currentAmtBts, 'HR');
+
             packItem = setItem(itmOffer, itmProduct, itmPurchaseSeq, itmName, itmType, itmMeasure, itmServiceStart, 
+
                 itmServiceEnd, itmQtaPrcntg, itmQtaValue, itmQtaConsumption, itmQtaBalance, itmClass, true, false, true);
+
         }
+
     }
+
     return packItem;
+
 }
+
 function getHoursDiff(pIni, pFin, sysdate){
+
     var initialDate = !sysdate ? getCbsDate(pIni) : new Date();
+
     var endDate = getCbsDate(pFin);
+
     var vDiffMillis = Math.abs(endDate.getTime() - initialDate.getTime());
+
     var vHourDiff = Math.ceil(vDiffMillis / (60*60*1000))
+
     return vHourDiff;
+
 }
+
 function getActiveApps(pArray){
+
     var activeArray = new Array();
+
     for(var i = 0; i &lt; pArray.length; i++){
+
         if(pArray[i] instanceof Array){
+
             activeArray.push(pArray[i][0].OfferingKey.PurchaseSeq);
+
         } else {
+
             activeArray.push(pArray[i].OfferingKey.PurchaseSeq);
+
         }
+
     }
+
     return activeArray;
+
 }
+
 LOGGER.info(tLinea+'Llego hasta el final de setObjects'+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_48" sourceRef="ScriptTask_7" targetRef="ScriptTask_10"/>
@@ -2330,110 +3325,215 @@ LOGGER.info(tLinea+'Llego hasta el final de setObjects'+tLinea);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:script>var vHasUnlimited = false;
+
 var vHasFUP128 = false;
+
 var vHasFUP64 = false;
+
 var vPccJsonInfo;
+
 var vUpdateUsrCategory = false;
+
 var vSetOffering = false;
+
 var vCategoryPCC = 'normal';
+
 var vPaidTypePCC='1';
 
+
+
 if (typeof vPCCService != 'undefined') {
-	if (vPCCService != 'NA') {
-		vHasUnlimited = true;
-	}
+
+    if (vPCCService != 'NA') {
+
+        vHasUnlimited = true;
+
+    }
+
 }
 
+
+
 if (typeof vIsPrimaryPlan != 'undefined') {
-	if (!vIsPrimaryPlan) {
-		vSetOffering = true;
-	}
+
+    if (!vIsPrimaryPlan) {
+
+        vSetOffering = true;
+
+    }
+
 }
+
+
+
 
 
 //Validar tipo de plan FUP
+
 if (typeof vPaqInfo != 'undefined') {
-	vPccJsonInfo = JSON.parse(vPaqInfo);
+
+    vPccJsonInfo = JSON.parse(vPaqInfo);
+
 }
+
+
+
 
 
 if (typeof vPlanFUP != 'undefined') {
-	vHasFUP128 = true;
-	vCategoryPCC = GetUsrCategoryByType(vPaymentType,vPlanFUP);
-	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
-	
+
+    vHasFUP128 = true;
+
+    vCategoryPCC = GetUsrCategoryByType(vPaymentType,vPlanFUP);
+
+    //vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+
+    
+
+
 
 } else if (vPaymentType == '2') {
-	vCategoryPCC = 'Hibrido';
-	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+
+    vCategoryPCC = 'Hibrido';
+
+    //vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+
 } else if (vPaymentType == '1'){
-	vCategoryPCC = 'normal';
-	//vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+
+    vCategoryPCC = 'normal';
+
+    //vUpdateUsrCategory = ValidateCategory(vPccJsonInfo, vCategoryPCC);
+
 }
+
+
+
+
+
+
 
 
 
 
 
 function ValidateCategory(vPCCObject, vFUPType) {
-	var vActualCategory = '';
-	var vUpdateCategory = false;
-	if (typeof vPCCObject != 'undefined') {
-		vActualCategory = GetUsrCategory(vPCCObject);
-		if (vFUPType != vActualCategory) {
-			vUpdateCategory = true;
-		}
-	}
-	return vUpdateCategory;
+
+    var vActualCategory = '';
+
+    var vUpdateCategory = false;
+
+    if (typeof vPCCObject != 'undefined') {
+
+        vActualCategory = GetUsrCategory(vPCCObject);
+
+        if (vFUPType != vActualCategory) {
+
+            vUpdateCategory = true;
+
+        }
+
+    }
+
+    return vUpdateCategory;
+
 }
+
+
 
 function GetUsrCategory(vPCCObject) {
-	var vUsrCategory = 'USRCATEGORY';
-	var vUsrSubscriber = '';
-	var vUsrActualCategory = '';
-	if (typeof vPCCObject != 'undefined') {
-		vUsrSubscriber = vPCCObject.getSubscriberAllInfResponse.result.subscriber.attribute;
-		for (var i = 0; i &lt; vUsrSubscriber.length; i++) {
-			if (vUsrCategory == vUsrSubscriber[i].key) {
-				vUsrActualCategory = vUsrSubscriber[i].value;
-				break;
-			}
-		}
-	}
-	return vUsrActualCategory;
+
+    var vUsrCategory = 'USRCATEGORY';
+
+    var vUsrSubscriber = '';
+
+    var vUsrActualCategory = '';
+
+    if (typeof vPCCObject != 'undefined') {
+
+        vUsrSubscriber = vPCCObject.getSubscriberAllInfResponse.result.subscriber.attribute;
+
+        for (var i = 0; i &lt; vUsrSubscriber.length; i++) {
+
+            if (vUsrCategory == vUsrSubscriber[i].key) {
+
+                vUsrActualCategory = vUsrSubscriber[i].value;
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    return vUsrActualCategory;
+
 }
+
+
 
 function GetUsrCategoryByType(vSubType, vFUPType) {
-	var vFUPByType = '';
-	if (vSubType == '1') {
-		switch (vFUPType) {
-			case '128':
-				vFUPByType = 'PosF128';
-				break;
-			case '64':
-				vFUPByType = 'PosF64';
-				break;
-		}
 
-	}
-	else if(vSubType=='2'){
-		switch(vFUPType){
-			case '128':
-				vFUPByType = 'HibF128';
-				break;
-			case '64':
-				vFUPByType = 'HibF64';
-				break;
-		}
-	}
+    var vFUPByType = '';
 
-	return vFUPByType;
+    if (vSubType == '1') {
+
+        switch (vFUPType) {
+
+            case '128':
+
+                vFUPByType = 'PosF128';
+
+                break;
+
+            case '64':
+
+                vFUPByType = 'PosF64';
+
+                break;
+
+        }
+
+
+
+    }
+
+    else if(vSubType=='2'){
+
+        switch(vFUPType){
+
+            case '128':
+
+                vFUPByType = 'HibF128';
+
+                break;
+
+            case '64':
+
+                vFUPByType = 'HibF64';
+
+                break;
+
+        }
+
+    }
+
+
+
+    return vFUPByType;
+
 }
+
+
+
 
 
 LOGGER.info(tLinea+'vCategoryPCC:'+vCategoryPCC+tLinea);
+
 //LOGGER.info(tLinea+'vPlanFUP:'+vPlanFUP+tLinea);
+
 LOGGER.info(tLinea+'vPaymentType:'+vPaymentType+tLinea);
+
 </bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ServiceTask_9" targetRef="ScriptTask_11"/>
@@ -2492,11 +3592,20 @@ LOGGER.info(tLinea+'vPaymentType:'+vPaymentType+tLinea);
       <bpmn2:outgoing>SequenceFlow_30</bpmn2:outgoing>
       <bpmn2:script>var vIsPrimaryPlan=false;
 
+
+
 if(typeof INCLUDE != 'undefined'){
-	if(INCLUDE=='TRUE'){
-		vIsPrimaryPlan=true;
-	}
+
+    if(INCLUDE=='TRUE'){
+
+        vIsPrimaryPlan=true;
+
+    }
+
 }
+
+
+
 
 
 LOGGER.info(tLinea+'vIsPrimaryPlan'+vIsPrimaryPlan+tLinea);</bpmn2:script>
@@ -2580,14 +3689,24 @@ LOGGER.info(tLinea+'vIsPrimaryPlan'+vIsPrimaryPlan+tLinea);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_74</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_75</bpmn2:outgoing>
       <bpmn2:script>doLoop=false;
+
 vCounter++;
 
+
+
 if(vCounter&lt;vAppsArray.length){
-	doLoop=true;	
-	
-	vPCCApp=vAppsArray[vCounter];
-	
+
+    doLoop=true;    
+
+    
+
+    vPCCApp=vAppsArray[vCounter];
+
+    
+
 }
+
+
 
 LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
@@ -2600,14 +3719,24 @@ LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_76</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_78</bpmn2:outgoing>
       <bpmn2:script>doLoop=false;
+
 vCounter++;
 
+
+
 if(vCounter&lt;vAppsArray.length){
-	doLoop=true;	
-	
-	vPCCApp=vAppsArray[vCounter];
-	
+
+    doLoop=true;    
+
+    
+
+    vPCCApp=vAppsArray[vCounter];
+
+    
+
 }
+
+
 
 LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
@@ -2657,16 +3786,27 @@ LOGGER.info(tLinea+'doLoop:'+doLoop+tLinea);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_90</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_91</bpmn2:outgoing>
       <bpmn2:script>doLoopUnsub=false;
+
 vCounter2++;
 
+
+
 if(vCounter2&lt;vUnsubPCCApp.length){
-	doLoopUnsub=true;	
-	
-	vPCCAppDel=vUnsubPCCApp[vCounter2];
-	
+
+    doLoopUnsub=true;    
+
+    
+
+    vPCCAppDel=vUnsubPCCApp[vCounter2];
+
+    
+
 }
 
+
+
 LOGGER.info(tLinea+'doLoopUnsub:'+doLoopUnsub+tLinea);
+
 LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_90" sourceRef="ServiceTask_8" targetRef="ScriptTask_18"/>
@@ -2886,13 +4026,21 @@ LOGGER.info(tLinea+'vPCCAppDel:'+vPCCAppDel+tLinea);</bpmn2:script>
       <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
       <bpmn2:script>if(typeof INCLUDE != 'undefined'){
-	if(INCLUDE =='TRUE'){
-		vCBSOffering='NA';
 
-	}
+    if(INCLUDE =='TRUE'){
+
+        vCBSOffering='NA';
+
+
+
+    }
+
 }
 
+
+
 LOGGER.info(tLinea+'llego aqui con valor :'+vCBSOffering+tLinea);
+
 </bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_6" name="No" sourceRef="ExclusiveGateway_16" targetRef="ScriptTask_15"/>
@@ -2904,42 +4052,88 @@ LOGGER.info(tLinea+'llego aqui con valor :'+vCBSOffering+tLinea);
       <bpmn2:incoming>SequenceFlow_32</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_50</bpmn2:outgoing>
       <bpmn2:script>var vEventType=eventType;
+
 var vSubEvent=subevent;
+
 var vSubscriberTypeVAS=subscriberType;
+
 var vVasTypePlan=typePlan;
+
 var vAnnex=annex;
+
 var vAs400TransactionID=TRANSACTIONID;
+
 var vOCEPExTransactionID= typeof externalTransacionId != 'undefined'?externalTransacionId:'';
+
 var vTransType=TRANSTYPE;
+
 // var vTransDate=TRANSDATE;
+
 // var vTransTime=TRANSTIME;
 
+
+
 //
+
 var vSubNum=SUBSNUMB;
+
 var vUser=USER;
+
 var vProgram=PROGRAM;
+
 //
+
 var vTransDate='';
+
 var vTransTime='';
+
 var vPlanCode=PLANCODE;
+
 var vPlanVas=PLANVAS;
 
+
+
 //
+
 var vIMSI=IMSI;
+
 var vSimcard=SIMCARD;
+
 //
+
 var vScheduleBillday=BILLDAY;
+
 var vScheduleEntitlement=ENTITLEMENT;
+
 var vSchSrvStartDate=SRVSTARDATE;
+
 var vSchSrvEndDate=SRVENDDATE;
+
 var vSchInclude=INCLUDE;
+
 var vExecute='TRUE';
 
+
+
 var vTmpDate=new Date();
+
 var vTmpTransDate = parseDateToStringAS(vTmpDate);
+
 var vTmpTransTime=parseDateToStringCBSTime(vTmpDate);
+
 vTransDate=vTmpTransDate;
+
 vTransTime=vTmpTransTime;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3307,7 +4501,9 @@ vTransTime=vTmpTransTime;
       <bpmn2:incoming>SequenceFlow_51</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_52</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = 'Alta Plan VAS Calendarizado para: '+vSchSrvStartDate;
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:serviceTask id="ServiceTask_23" name="AS400IndexedQueueTask">
@@ -3428,7 +4624,9 @@ var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSA
       <bpmn2:incoming>SequenceFlow_63</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_28</bpmn2:outgoing>
       <bpmn2:script>vAnnex=annex;
+
 vPlanCode=PLANCODE;
+
 vAS400SubType=typePlan;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_28" sourceRef="ScriptTask_19" targetRef="ScriptTask_13"/>
@@ -3437,21 +4635,39 @@ vAS400SubType=typePlan;</bpmn2:script>
       <bpmn2:outgoing>SequenceFlow_44</bpmn2:outgoing>
       <bpmn2:script>var vCreatePcc = false;
 
+
+
 var allowError = true;
+
+
 
 if(typeof PCCGetSubscriberAllInfTask__platformErrorCode != 'undefined'){
 
+
+
     if(PCCGetSubscriberAllInfTask__platformErrorCode == '12302' || PCCGetSubscriberAllInfTask__platformErrorCode == '' || PCCGetSubscriberAllInfTask__platformErrorCode == ' ' || PCCGetSubscriberAllInfTask__platformErrorCode == null || PCCGetSubscriberAllInfTask__platformErrorCode == 'null'){
+
+
 
         vCreatePcc = true;
 
+
+
     } else {
+
+
 
         allowError = false;
 
+
+
     }
 
+
+
 }
+
+
 
 </bpmn2:script>
     </bpmn2:scriptTask>
@@ -3514,46 +4730,89 @@ if(typeof PCCGetSubscriberAllInfTask__platformErrorCode != 'undefined'){
       <bpmn2:incoming>SequenceFlow_34</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_46</bpmn2:outgoing>
       <bpmn2:script>var vEventType = typeof eventType != 'undefined' ? eventType : 'PLAN_VAS';
+
 var vSubEvent = typeof subevent != 'undefined' ? subevent : 'CREATESUBS';
+
 var vSubscriberTypeVAS = subscriberType;
+
 var vVasTypePlan = typeof typePlan != 'undefined' ? typePlan : 'POS';
+
 var vAnnex = annex;
+
 var vAs400TransactionID = typeof TRANSACTIONID != 'undefined' ? TRANSACTIONID : '0';
+
 var vOCEPExTransactionID = typeof externalTransacionId != 'undefined' ? externalTransacionId : '0';
+
 var vTransType = typeof TRANSTYPE != 'undefined' ? TRANSTYPE : '1';
+
 var vTransDate = typeof TRANSDATE != 'undefined' ? TRANSDATE : ' ';
+
 var vTransTime = typeof TRANSTIME != 'undefined' ? TRANSTIME : ' ';
+
 var vSubNum = typeof SUBSNUMB != 'undefined' ? SUBSNUMB : subscriberId;
+
 var vUser = typeof USER != 'undefined' ? USER : 'CDCPE';
+
 var vProgram = typeof PROGRAM != 'undefined' ? PROGRAM : 'CDCPE';
+
 var vPlanCode = typeof PLANCODE != 'undefined' ? PLANCODE : ' ';
+
 var vPlanVas = typeof PLANVAS != 'undefined' ? PLANVAS : ' ';
+
 var vIMSI = typeof IMSI != 'undefined' ? IMSI : '0';
+
 var vSimcard = typeof SIMCARD != 'undefined' ? SIMCARD : '0';
+
 var vScheduleBillday = typeof BILLDAY != 'undefined' ? BILLDAY : ' ';
+
 var vScheduleEntitlement = typeof ENTITLEMENT != 'undefined' ? ENTITLEMENT : 'HN_POS,Postpaid';
+
 var vSchSrvStartDate='';
 
+
+
 if(typeof SRVSTARDATE != 'undefined'){
-	vSchSrvStartDate=SRVSTARDATE;
+
+    vSchSrvStartDate=SRVSTARDATE;
+
 }
+
 else{
-	if(typeof DEVICE != 'undefined'){
-		if(DEVICE=='CDCPE'){
-			vSchSrvStartDate=TRANSDATE;
-		}
-	}
+
+    if(typeof DEVICE != 'undefined'){
+
+        if(DEVICE=='CDCPE'){
+
+            vSchSrvStartDate=TRANSDATE;
+
+        }
+
+    }
+
 }
+
+
+
 
 
 var vSchSrvEndDate = typeof SRVENDDATE != 'undefined' ? SRVENDDATE : '0';
+
 var vSchInclude = typeof INCLUDE != 'undefined' ? INCLUDE : ' ';
+
 var vExecute = 'TRUE';
 
+
+
 var vExecuteDate = new Date();
+
 var ONE_MIN = 1 * 60 * 1000;
 
+
+
 vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime() + ONE_MIN);
+
+
+
 
 
 </bpmn2:script>
@@ -3920,7 +5179,9 @@ vScheduleDateWarning = parseTimeToScheduleDate(vExecuteDate.getTime() + ONE_MIN)
       <bpmn2:incoming>SequenceFlow_64</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_66</bpmn2:outgoing>
       <bpmn2:script>var BPMN_RESPONSE_CODE = '0';&#xD;
+
 var BPMN_RESPONSE_MESSAGE = 'Alta de Plan VAS Programado Minute';
+
 var AS400QueueOut=TRANSACTIONID+pipe+BPMN_RESPONSE_CODE+pipe+BPMN_RESPONSE_MESSAGE;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_64" sourceRef="ServiceTask_10" targetRef="ScriptTask_25"/>
