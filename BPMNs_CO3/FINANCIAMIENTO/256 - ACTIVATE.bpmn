@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- origin at X=0.0 Y=0.0 -->
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.3.1.Final-v20161006-1425-B58" targetNamespace="http://org.eclipse.bpmn2/default/process">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext" xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.5.1.Final-v20190425-2005-B1" targetNamespace="http://org.eclipse.bpmn2/default/process">
   <bpmn2:process id="process_1" name="Default Process" isExecutable="false">
     <bpmn2:startEvent id="StartEvent_1" name="Start Event 1">
       <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
@@ -44,11 +44,7 @@ else if(vType='EQUIPO'){
     vPsqEquipo=getMSAttributes('SEQUENCE_EQUIPO',JsonMS);
     vOldInstallTotal=getMSAttributes('CUOTAS_EQUIPO',JsonMS);
     vOldInstallAmount=getMSAttributes('MONTO_EQUIPO',JsonMS);
-}
-
-
-
-</bpmn2:script>
+}</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_3" name="IsPartial" gatewayDirection="Diverging" default="SequenceFlow_18">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
@@ -85,8 +81,8 @@ var BPMN_RESPONSE_CODE = '0';
 var BPMN_RESPONSE_MESSAGE = 'Operation Successful';
 }
 else{
-	var BPMN_RESPONSE_CODE = '100';
-	var BPMN_RESPONSE_MESSAGE = 'Error Changing Property';
+    var BPMN_RESPONSE_CODE = '100';
+    var BPMN_RESPONSE_MESSAGE = 'Error Changing Property';
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:endEvent id="EndEvent_2" name="End Event 2">
@@ -278,7 +274,7 @@ function getDateYMD(vDate) {
       <bpmn2:dataInputAssociation id="DataInputAssociation_22">
         <bpmn2:targetRef>DataInput_22</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_26">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_52">'FINANCIAMIENTO'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_52"><![CDATA['FINANCIAMIENTO']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_53">DataInput_9</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -366,18 +362,14 @@ var vChargeAmt=parseInt(vFeesToPay)*parseFloat(vFeeValue).toFixed(2);</bpmn2:scr
       <bpmn2:outgoing>SequenceFlow_24</bpmn2:outgoing>
       <bpmn2:script>var vWaivePenalty='No';
 var vOfferingId=vOfferingDeuda;
-var vPurchaseSeq=vPsqDeuda;
-
-</bpmn2:script>
+var vPurchaseSeq=vPsqDeuda;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:scriptTask id="ScriptTask_8" name="BuildTotalEquipo">
       <bpmn2:incoming>SequenceFlow_22</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_23</bpmn2:outgoing>
       <bpmn2:script>var vWaivePenalty='No';
 var vOfferingId=vOfferingEquipo;
-var vPurchaseSeq=vPsqEquipo;
-
-</bpmn2:script>
+var vPurchaseSeq=vPsqEquipo;</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_21" name="Yes" sourceRef="ExclusiveGateway_2" targetRef="ScriptTask_7">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_92">vIsDeuda</bpmn2:conditionExpression>
@@ -457,8 +449,8 @@ var vTmpObject = new Object();
 
 if (vIsDeuda) {
 
-    var vNameDeuda = ['CUENTA', 'OFFERING_DEUDA', 'SEQUENCE_DEUDA', 'MONTO_DEUDA', 'FECHA_INICIO_DEUDA', 'FECHA_FIN_DEUDA', 'STATUS_DEUDA'];
-    var vValueDeuda = [ACCOUNT, vOfferingDeuda, vPsqDeuda, '0', vEffectiveTime, getDateYMD(new Date()), 'CANCELADO'];
+    var vNameDeuda = ['OFFERING_DEUDA', 'SEQUENCE_DEUDA', 'MONTO_DEUDA', 'FECHA_INICIO_DEUDA', 'FECHA_FIN_DEUDA', 'STATUS_DEUDA'];
+    var vValueDeuda = [vOfferingDeuda, vPsqDeuda, '0', vEffectiveTime, getDateYMD(new Date()), 'CANCELADO'];
     for (var i = 0; i &lt; vNameDeuda.length; i++) {
         vTmpObject = new Object();
         vTmpObject.name = vNameDeuda[i];
@@ -470,8 +462,8 @@ if (vIsDeuda) {
 
 } else {
 
-    var vNameEquipo = ['CUENTA', 'OFFERING_EQUIPO', 'SEQUENCE_EQUIPO', 'MONTO_EQUIPO', 'FECHA_INICIO_EQUIPO', 'FECHA_FIN_EQUIPO', 'STATUS_EQUIPO'];
-    var vValueEquipo = [ACCOUNT, vOfferingID, vPurchaseSeq, '0', vEffectiveTime, getDateYMD(new Date()), 'CANCELADO'];
+    var vNameEquipo = ['OFFERING_EQUIPO', 'SEQUENCE_EQUIPO', 'MONTO_EQUIPO', 'FECHA_INICIO_EQUIPO', 'FECHA_FIN_EQUIPO', 'STATUS_EQUIPO'];
+    var vValueEquipo = [vOfferingID, vPurchaseSeq, '0', vEffectiveTime, getDateYMD(new Date()), 'CANCELADO'];
     //vTmpObject.name = 'NAME_EQUIPO';
     //vTmpObject.value = ACCOUNT;
     //vListArray.push(vTmpObject);
@@ -498,8 +490,8 @@ var BPMN_RESPONSE_CODE = '0';
 var BPMN_RESPONSE_MESSAGE = 'Operation Successful';
 }
 else{
-	var BPMN_RESPONSE_CODE = '101';
-	var BPMN_RESPONSE_MESSAGE = 'Error Deleting Offering';
+    var BPMN_RESPONSE_CODE = '101';
+    var BPMN_RESPONSE_MESSAGE = 'Error Deleting Offering';
 }</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:endEvent id="EndEvent_3" name="End Event 2">
@@ -534,14 +526,14 @@ else{
       <bpmn2:dataInputAssociation id="DataInputAssociation_34">
         <bpmn2:targetRef>DataInput_34</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_40">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_95">'PROCESO_CRM'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_95"><![CDATA['PROCESO_CRM']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_96">DataInput_22</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
       <bpmn2:dataInputAssociation id="DataInputAssociation_35">
         <bpmn2:targetRef>DataInput_35</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_41">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_97">'FINANCIAMIENTO'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_97"><![CDATA['FINANCIAMIENTO']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_98">DataInput_23</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -555,7 +547,7 @@ else{
       <bpmn2:dataInputAssociation id="DataInputAssociation_37">
         <bpmn2:targetRef>DataInput_37</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_43">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_101">'Perfil de Financiamiento de Deuda'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_101"><![CDATA['Perfil de Financiamiento de Deuda']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_102">DataInput_25</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -588,14 +580,14 @@ else{
       <bpmn2:dataInputAssociation id="DataInputAssociation_39">
         <bpmn2:targetRef>DataInput_39</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_45">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105">'PROCESO_CRM'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_105"><![CDATA['PROCESO_CRM']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_106">DataInput_22</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
       <bpmn2:dataInputAssociation id="DataInputAssociation_40">
         <bpmn2:targetRef>DataInput_40</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_46">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_107">'FINANCIAMIENTO'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_107"><![CDATA['FINANCIAMIENTO']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_108">DataInput_23</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
@@ -609,7 +601,7 @@ else{
       <bpmn2:dataInputAssociation id="DataInputAssociation_42">
         <bpmn2:targetRef>DataInput_42</bpmn2:targetRef>
         <bpmn2:assignment id="Assignment_48">
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_111">'Perfil de Financiamiento de Deuda'</bpmn2:from>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="FormalExpression_111"><![CDATA['Perfil de Financiamiento de Deuda']]></bpmn2:from>
           <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="FormalExpression_112">DataInput_25</bpmn2:to>
         </bpmn2:assignment>
       </bpmn2:dataInputAssociation>
